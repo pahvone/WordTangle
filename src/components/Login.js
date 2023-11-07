@@ -55,8 +55,7 @@ const Login = () => {
       <p/>
       <text className='slogan'>Or log in with...</text>
       <p/>
-      <IconButton imageSrc={google} altText="Google Logo Button" onClick={handleAlternateLoginButtonClick}/>
-      
+        <button className="button_icon" onClick={handleAlternateLoginButtonClick}><img src={google} height={100} width={100} alt={"Google logo"} /></button>
     </div>
   );
 };

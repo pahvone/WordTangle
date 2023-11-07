@@ -39,7 +39,7 @@ const SignUp = () => {
       <p/>
       <text className='slogan'>Or sign up with...</text>
       <p/>
-      <IconButton imageSrc={google} altText="Google Logo Button" onClick={handleAlternateSignUpButtonClick}/>
+        <button className="button_icon" onClick={handleAlternateSignUpButtonClick}><img src={google} height={100} width={100} alt={"Google logo"} /></button>
       
     </div>
   );
