@@ -1,17 +1,9 @@
 import React from 'react';
-import logo from '../img/logo.jpg';
+import logo from '../img/WTlogo_stacked_white_bordered.png';
 import google from '../img/google_logo.png';
 
 
 const SignUp = () => {
-  const Button = ({ text, onClick }) => {
-    return (
-      <button className="styled-button" onClick={onClick}>
-        {text}
-      </button>
-    );
-  };
-
   const IconButton = ({ imageSrc, altText, onClick }) => {
     return (
       <button className="button_icon" onClick={onClick}>
@@ -43,7 +35,7 @@ const SignUp = () => {
       <p/>
       <input className='textfield' type="password" id="password" />
       <p/>
-      <Button text="Sign Up" onClick={handleSignUpButtonClick} />
+      <button className="styled-button" onClick={handleSignUpButtonClick}>Sign Up</button>
       <p/>
       <text className='slogan'>Or sign up with...</text>
       <p/>

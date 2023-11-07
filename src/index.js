@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -7,6 +8,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import "firebase/compat/analytics";
+
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_APP_API_KEY,
@@ -23,7 +25,9 @@ firebase.initializeApp(firebaseConfig);
 const analytics = firebase.analytics()
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+       <App />
+    </BrowserRouter>
   </React.StrictMode>
 );
 
