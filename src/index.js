@@ -8,6 +8,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import "firebase/compat/analytics";
+import "react-toggle/style.css"
 
 
 const firebaseConfig = {
