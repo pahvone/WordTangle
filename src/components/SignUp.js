@@ -1,31 +1,31 @@
 import React from 'react'
 import logo from '../img/WTlogo_stacked_white_bordered.png'
 import google from '../img/google_logo.png'
-import { getDatabase, ref, set } from "firebase/database";
-import { firebaseConfig } from "../firebase.js"
+import { getDatabase, ref, set } from 'firebase/database'
+import { useState } from 'react';
 
-const db = getDatabase(firebaseConfig.appId);
-
-
-function writeUserData(userId, name, email, imageUrl) {
-    const db = getDatabase();
-    set(ref(db, 'users/' + userId), {
-        username: name,
-        email: email,
-        profile_picture : imageUrl
-    });
+function writeUserData (userId, username, email, password) {
+  const db = getDatabase(process.env.REACT_APP_FIREBASE_DATABASE_URL)
+  set(ref(db, 'users/' + userId), {
+    username: username,
+    email: email,
+    password: password
+  })
 }
 
-
-
-
 const SignUp = () => {
+    const [username, setusername] = useState('');
+    const [email, setemail] = useState('');
+    const [password, setpassword] = useState('');
 
-
-  const handleSignUpButtonClick = () => {}
+  const handleSignUpButtonClick = () => {
+      // writeUserData() broken
+      console.log(email)
+      console.log(password)
+      console.log(username)
+  }
 
   const handleAlternateSignUpButtonClick = () => {
-      writeUserData();
   }
 
   return (
@@ -33,15 +33,15 @@ const SignUp = () => {
       <img className='App-logo' src={logo} alt='Word Tangle Logo' />
       <text className='slogan'>Username</text>
       <p />
-      <input className='textfield' type='text' id='username' />
+      <input className='textfield' type='text' id='usernameID' value={username} onChange={e => setusername(e.target.value)} />
       <p />
       <text className='slogan'>Email</text>
       <p />
-      <input className='textfield' type='text' id='email' />
+      <input className='textfield' type='text' id='emailID' value={email} onChange={e => setemail(e.target.value)} />
       <p />
       <text className='slogan'>Password</text>
       <p />
-      <input className='textfield' type='password' id='password' />
+      <input className='textfield' type='password' id='passwordID' value={password} onChange={e => setpassword(e.target.value)} />
       <p />
       <button className='styled-button' onClick={handleSignUpButtonClick}>
         Sign Up

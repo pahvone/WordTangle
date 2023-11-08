@@ -4,12 +4,9 @@ import { useNavigate } from 'react-router-dom'
 
 import Toggle from 'react-toggle'
 import { useMediaQuery } from 'react-responsive'
-import { getDatabase } from 'firebase/database'
 
 const Welcome = () => {
-
-
-    const [isDark, setIsDark] = useState(true)
+  const [isDark, setIsDark] = useState(true)
 
   const systemPrefersDark = useMediaQuery(
     {
