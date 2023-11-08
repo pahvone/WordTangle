@@ -5,9 +5,19 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import 'react-toggle/style.css'
+import fb from './firebase'
+import { getDatabase, ref, onValue } from 'firebase/database'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
-
+const db = getDatabase(fb);
+const connectedRef = ref(db, ".info/connected");
+onValue(connectedRef, (snap) => {
+  if (snap.val() === true) {
+    console.log("firebase connected");
+  } else {
+    console.log("firebase not connected");
+  }
+})
 root.render(
   <React.StrictMode>
     <BrowserRouter>

@@ -31,15 +31,15 @@ const SignUp = () => {
   return (
     <div className='responsive-container'>
       <img className='App-logo' src={logo} alt='Word Tangle Logo' />
-      <text className='slogan'>Username</text>
+      <span className='slogan'>Username</span>
       <p />
       <input className='textfield' type='text' id='usernameID' value={username} onChange={e => setusername(e.target.value)} />
       <p />
-      <text className='slogan'>Email</text>
+      <span className='slogan'>Email</span>
       <p />
       <input className='textfield' type='text' id='emailID' value={email} onChange={e => setemail(e.target.value)} />
       <p />
-      <text className='slogan'>Password</text>
+      <span className='slogan'>Password</span>
       <p />
       <input className='textfield' type='password' id='passwordID' value={password} onChange={e => setpassword(e.target.value)} />
       <p />
@@ -47,7 +47,7 @@ const SignUp = () => {
         Sign Up
       </button>
       <p />
-      <text className='slogan'>Or sign up with...</text>
+      <span className='slogan'>Or sign up with...</span>
       <p />
       <button
         className='button-icon'
