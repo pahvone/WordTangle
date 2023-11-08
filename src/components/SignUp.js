@@ -1,42 +1,62 @@
-import React from "react";
-import logo from "../img/WTlogo_stacked_white_bordered.png";
-import google from "../img/google_logo.png";
+import React from 'react'
+import logo from '../img/WTlogo_stacked_white_bordered.png'
+import google from '../img/google_logo.png'
+import { getDatabase, ref, set } from "firebase/database";
+import { firebaseConfig } from "../index.js"
+
+const db = getDatabase(firebaseConfig.appId);
+
+
+function writeUserData(userId, name, email, imageUrl) {
+    const db = getDatabase();
+    set(ref(db, 'users/' + userId), {
+        username: name,
+        email: email,
+        profile_picture : imageUrl
+    });
+}
+
+
+
 
 const SignUp = () => {
 
-  const handleSignUpButtonClick = () => {};
 
-  const handleAlternateSignUpButtonClick = () => {};
+  const handleSignUpButtonClick = () => {}
+
+  const handleAlternateSignUpButtonClick = () => {
+      writeUserData();
+  }
 
   return (
-    <div className="responsive-container">
-      <img className="App-logo" src={logo} alt="Word Tangle Logo" />
-      <text className="slogan">Username</text>
+    <div className='responsive-container'>
+      <img className='App-logo' src={logo} alt='Word Tangle Logo' />
+      <text className='slogan'>Username</text>
       <p />
-      <input className="textfield" type="text" id="username" />
+      <input className='textfield' type='text' id='username' />
       <p />
-      <text className="slogan">Email</text>
+      <text className='slogan'>Email</text>
       <p />
-      <input className="textfield" type="text" id="email" />
+      <input className='textfield' type='text' id='email' />
       <p />
-      <text className="slogan">Password</text>
+      <text className='slogan'>Password</text>
       <p />
-      <input className="textfield" type="password" id="password" />
+      <input className='textfield' type='password' id='password' />
       <p />
-      <button className="styled-button" onClick={handleSignUpButtonClick}>
+      <button className='styled-button' onClick={handleSignUpButtonClick}>
         Sign Up
       </button>
       <p />
-      <text className="slogan">Or sign up with...</text>
+      <text className='slogan'>Or sign up with...</text>
       <p />
       <button
-        className="button-icon"
+        className='button-icon'
         onClick={handleAlternateSignUpButtonClick}
       >
-        <img src={google} height={100} width={100} alt="Google logo" />
+        <img src={google} height={100} width={100} alt='Google logo' />
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp
