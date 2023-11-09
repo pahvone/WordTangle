@@ -3,23 +3,37 @@ import logo from '../img/WTlogo_stacked_white_bordered.png'
 import google from '../img/google_logo.png'
 import { getDatabase, ref, set } from 'firebase/database'
 import { useState } from 'react';
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 
-function writeUserData (userId, username, email, password) {
-  const db = getDatabase(process.env.REACT_APP_FIREBASE_DATABASE_URL)
-  set(ref(db, 'users/' + userId), {
-    username: username,
-    email: email,
-    password: password
-  })
-}
+
 
 const SignUp = () => {
     const [username, setusername] = useState('');
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
 
+
+
+  function writeUserData () {
+    const auth = getAuth();
+    const db = getDatabase()
+
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+
+      const userId = userCredential.user.uid;
+
+      set(ref(db, `users/${userId}`), {
+        username: username,
+        email: email,
+        password: password
+      })
+    });
+  };
+
+
   const handleSignUpButtonClick = () => {
-      // writeUserData() broken
+      writeUserData()
       console.log(email)
       console.log(password)
       console.log(username)
