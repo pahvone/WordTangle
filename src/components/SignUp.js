@@ -3,9 +3,9 @@ import logo from '../img/WTlogo_stacked_white_bordered.png'
 import google from '../img/google_logo.png'
 import { getDatabase, ref, set } from 'firebase/database'
 import { useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 
-
+const provider = new GoogleAuthProvider();
 
 const SignUp = () => {
     const [username, setusername] = useState('');
@@ -24,22 +24,44 @@ const SignUp = () => {
       const userId = userCredential.user.uid;
 
       set(ref(db, `users/${userId}`), {
-        username: username,
-        email: email,
-        password: password
+        username: username
       })
     });
   };
 
 
+    function RegisterToFirebaseGoogle(){
+        const auth = getAuth();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                console.log("Registering Succesful!")
+                // IdP data available using getAdditionalUserInfo(result)
+                // ...
+            }).catch((error) => {
+            // Handle Errors here.
+            console.log(error.code)
+            console.log(error.message)
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+        });
+    }
+
+
   const handleSignUpButtonClick = () => {
       writeUserData()
-      console.log(email)
-      console.log(password)
       console.log(username)
   }
 
   const handleAlternateSignUpButtonClick = () => {
+        RegisterToFirebaseGoogle()
   }
 
   return (

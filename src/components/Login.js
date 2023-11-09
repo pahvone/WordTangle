@@ -3,6 +3,10 @@ import logo from '../img/WTlogo_stacked_white_bordered.png'
 import google from '../img/google_logo.png'
 import { getDatabase, ref, set } from 'firebase/database'
 import { useState } from 'react';
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+
+const provider = new GoogleAuthProvider();
 
 const Login = () => {
   const [username, setusername] = useState('');
@@ -23,21 +27,64 @@ const Login = () => {
     )
   }
 
+
+  function LoginToFirebaseEmail(){
+
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+              // Signed in
+              const user = userCredential.user;
+              console.log("login success!")
+              console.log(userCredential.user.uid)
+              // ...
+          })
+          .catch((error) => {
+              console.log(error.code)
+              console.log(error.message)
+          });
+  }
+
+
+  function LoginToFirebaseGoogle(){
+      const auth = getAuth();
+      signInWithPopup(auth, provider)
+          .then((result) => {
+              // This gives you a Google Access Token. You can use it to access the Google API.
+              const credential = GoogleAuthProvider.credentialFromResult(result);
+              const token = credential.accessToken;
+              // The signed-in user info.
+              const user = result.user;
+              console.log("Login Successful!")
+              // IdP data available using getAdditionalUserInfo(result)
+              // ...
+          }).catch((error) => {
+          // Handle Errors here.
+          console.log(error.code)
+          console.log(error.message)
+          // The email of the user's account used.
+          const email = error.customData.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+      });
+  }
+
   const handleLoginButtonClick = () => {
-          console.log(email)
-          console.log(password)
-          console.log(username)
+        LoginToFirebaseEmail()
   }
   const handleForgotPasswordButtonClick = () => {}
-  const handleAlternateLoginButtonClick = () => {}
-//lisää vertailu että onko käyttäjätunnus vai säpo(?)
+  const handleAlternateLoginButtonClick = () => {
+      LoginToFirebaseGoogle()
+  }
+//TODO: lisää vertailu että onko käyttäjätunnus vai säpo(?) (atm hardcoded email only)
   return (
     <div className='responsive-container'>
       <img className='App-logo' src={logo} alt='Word Tangle Logo' />
-      <span className='slogan'>Username/Email</span>
+      <span className='slogan'>Email</span>
       <p />
-      <label htmlFor='username' />
-      <input className='textfield' type='text' id='usernameID' value={username} onChange={e => setusername(e.target.value)} />
+      <label htmlFor='email' />
+      <input className='textfield' type='text' id='email' value={email} onChange={e => setemail(e.target.value)} />
       <p />
       <span className='slogan'>Password</span>
       <p />
