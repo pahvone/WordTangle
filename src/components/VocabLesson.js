@@ -8,6 +8,9 @@ const VocabLesson = () => {
     const [qIndex, setIndex] = useState(0);
     const [lesson, setLesson] = useState(null)
     const [qState, setQState] = useState(0);
+    const [result, setResult] = useState("")
+    const [correctCount, setCorrectCount] = useState(0)
+
     const choiceElements = [];
 
 
@@ -17,14 +20,23 @@ const VocabLesson = () => {
         else return false;
     }
 
-    const handleChoice = (e) => {
-        console.log("choice " + e);
+    const handleChoice = (index) => {
+        console.log("choice " + index);
+
+        if(index == 0) {
+            setResult("Correct!")
+            setCorrectCount(correctCount + 1)
+        }
+        else setResult("Incorrect. Correct answer is '" + lesson.translationList[qIndex][0] + "'")
+        setIndex(qIndex + 1);
+
     };
 
     const handleSkip = () => {
         console.log("skip");
         setIndex(qIndex + 1);
         console.log("qindex " + qIndex);
+        setResult("Correct answer would've been '" + lesson.translationList[qIndex][0] + "'")
     };
 
     const randNumber = () => {
@@ -38,14 +50,21 @@ const VocabLesson = () => {
             [lesson.translationList[i], lesson.translationList[j]] = [lesson.translationList[j], lesson.translationList[i]];
         }
 
-        console.log(lesson.wordList);
-        console.log(lesson.translationList);
-
+        //console.log(lesson.wordList);
+        //console.log(lesson.translationList);
 
     }
 
+    const createRandomizedChoiceOrder = (choices) => {
+        for (var i = 0; i < choices.length; i++) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [choices[i], choices[j]] = [choices[j], choices[i]];
+        }
+
+        console.log(choices)
+    }
+
     const createWrongAnswers = (exclude) => {
-        console.log("createWrongAnswers()")
         let indexes = [];
 
         for (var i = 0; i < 3; i++) {
@@ -61,24 +80,25 @@ const VocabLesson = () => {
     }
 
     const createChoices = () => {
-
+        let word = lesson.translationList[qIndex][0];
         choiceElements.push(
             <div key={"button0"} className='row'>
                 <div className="col-md-10 text-center">
-                    <button className="btn choice-button w-100 text-center" onClick={() => handleChoice(0)}>{lesson.translationList[qIndex][0]}
+                    <button className="btn choice-button w-100 text-center" onClick={() => handleChoice(0)}>{word}
                     </button>
                 </div>
             </div>
         );
 
         let wrongAnswers = createWrongAnswers(qIndex);
-
+        
         for (var i = 0; i < 3; i++) {
+            word = lesson.translationList[wrongAnswers[i]][0];
             (function (index) {
                 choiceElements.push(
                     <div key={"button" + (i + 1)} className='row'>
                         <div className="col-md-10 text-center">
-                            <button className="btn choice-button w-100 text-center" onClick={() => handleChoice(index + 1)}>{lesson.translationList[wrongAnswers[i]][0]}
+                            <button className="btn choice-button w-100 text-center" onClick={() => handleChoice(index + 1)}>{word}
                             </button>
                         </div>
                     </div>
@@ -86,13 +106,14 @@ const VocabLesson = () => {
             })(i);
         }
 
+        createRandomizedChoiceOrder(choiceElements);
+
+        console.log(choiceElements)
+
     }
 
-    console.log("qstate " + qState)
     if (qState == 0 && lesson == null) {
-        console.log("here")
         setLesson(new Lesson("Lesson1"));
-
     }
     else if (qState == 0 && lesson != null) {
         createRandomizedQuizOrder()
@@ -100,9 +121,8 @@ const VocabLesson = () => {
     }
     else if (qState == 1) {
         if (!endQuiz()) {
-            console.log("quizIndex " + qIndex + " word " + lesson.wordList[qIndex])
+            //console.log("quizIndex " + qIndex + " word " + lesson.wordList[qIndex])
             createChoices()
-
 
             return (
                 <div className='container-fluid '>
@@ -116,11 +136,21 @@ const VocabLesson = () => {
                     <div className='row justify-content-center'>
                         <div className='col-md-4'>{choiceElements}</div>
                     </div>
+                    <div className='row justify-content-center'>
+                    <div className='col-md-4'>{result}</div>
+                    </div>
                 </div>
             );
         }
         else {
-            return ("voitit pelin");
+            return (
+            <div className='container-fluid '>
+                <div className='row justify-content-center align-items-center'>
+                    <div className='col-md-4'>
+                    You got {correctCount} out of {lesson.wordList.length} correct
+                    </div>
+                </div>
+            </div>);
         }
     }
 
