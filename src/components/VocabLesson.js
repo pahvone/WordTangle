@@ -1,11 +1,17 @@
 import React from 'react';
-import Vocab from '../vocab/Vocab';
+import Lesson from '../vocab/Vocab';
 import './VocabLesson.css';
+import { random } from 'node-forge';
+
+
 const VocabLesson = () => {
-  
+        const quizWords = [];
+        const lesson = new Lesson("Lesson1"); //TESTI
+        var qIndex = 0;
+
         const qWord = () => {
             return (
-                <div className="wordcontainer">6</div>
+                <div className="wordcontainer">{lesson.wordList[0]}</div>
             )
         }
 
@@ -17,27 +23,53 @@ const VocabLesson = () => {
             console.log("skip");
         };
 
-      const quizWords = [];
-    
-      const vocab = new Vocab(); //TESTI
-      quizWords.push(vocab.getVocab());
 
-      quizWords.fill(["sana", "word"], 5, 20);
-      console.log(quizWords[0][0]);
+        const randNumber = () => {
+            return Math.floor(Math.random() * (20 - 0 + 1)) + 0;
+        }
+      const createWrongAnswers = (exclude) => {
+        let indexes = [];
+        
+        for(var i = 0; i < 3; i++){
+            let randIndex = randNumber();
 
-      var qIndex = 1;
+            while(indexes.includes(randIndex)) {
+                randIndex = randNumber();
+            }
+            indexes.push(randIndex);
+            console.log(randIndex)
+        }
+
+        return indexes;
+      }
 
       const createChoices = () => {
         let choiceElements = [];
-        let vocablist = ["yksi", "kaksi", "kolme", "kuusi"];
 
-        for(var i = 0; i < 4; i++){
-            var id = i;
-            choiceElements.push(
-                <div key={"button" + i} className='row'>
-                <div className="col-md-10 text-center"><button className="btn btn-primary choice-button w-100 text-center" onClick={() => handleChoice(id)}>{vocablist[i]}</button></div>
+        
+
+        choiceElements.push(
+            <div key={"button0"} className='row'>
+                <div className="col-md-10 text-center">
+                    <button className="btn choice-button w-100 text-center" onClick={() => handleChoice(0)}>{lesson.translationList[0][0]}
+                    </button>
                 </div>
-                )
+            </div>
+            );
+
+        let wrongAnswers = createWrongAnswers();
+
+        for(var i = 0; i < 3; i++){
+            (function (index) {
+            choiceElements.push(
+                <div key={"button" + (i + 1)} className='row'>
+                    <div className="col-md-10 text-center">
+                        <button className="btn choice-button w-100 text-center" onClick={() => handleChoice(index)}>{lesson.translationList[wrongAnswers[i]][0]}
+                        </button>
+                    </div>
+                </div>
+                );
+            })(i);
         }
         
         return choiceElements;
@@ -49,7 +81,7 @@ const VocabLesson = () => {
         <h1 align="center">Lessonname</h1>
 
         <div className='row justify-content-center align-items-center'>  
-            <div className='col-2'>{qIndex} / {quizWords.length}</div>
+            <div className='col-2'>{qIndex + 1} / {lesson.wordList.length}</div>
             <div className='col-md-5'>{qWord()}</div>
             <div className='col-md-3'><button className="btn skip-button w-100 text-center" onClick={() => handleSkip()}>Skip</button></div>
         </div>

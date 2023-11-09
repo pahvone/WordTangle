@@ -1,33 +1,20 @@
 
-export class Lesson {
+import "../vocab/Lesson1.json";
+
+export default class Lesson {
     lessonName = "";
-    wordList = [20];
-    translationList = [20];
+    wordList = [];
+    translationList = [];
 
     constructor(name){
         this.lessonName = name;
+
+        var vocabList = require('./' + this.lessonName + '.json');
+
+       for(var i = 0; i < vocabList.vocab.length; i++){
+            this.wordList.push(vocabList.vocab[i][0]);
+            this.translationList.push(vocabList.vocab[i][1]);
+       }
     }
 
-    addWords(words, translations){
-        this.wordList = words;
-        this.translationList = translations;
-    }
-}
-
-export default class Vocab {
-    
-    lessons = [];
-
-    constructor(){
-        const les = new Lesson("Vocab 1");
-        les.addWords([["yksi", "one"], ["kaksi", "two"], ["kolme", "three"],["neljä", "four"]])
-        this.lessons.push(les);
-    }
-    createVocab = () => {
-        
-    }
-
-    getVocab = () => {
-        return this.lessons;
-    }
 }
