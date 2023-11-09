@@ -1,14 +1,8 @@
 import React from 'react';
 import Vocab from '../vocab/Vocab';
-
+import './VocabLesson.css';
 const VocabLesson = () => {
-        const Button = ({ text, onClick, style }) => {
-        return (
-          <button width="100" className={style} onClick={onClick}>
-            {text}
-          </button>
-        );};
-    
+  
         const qWord = () => {
             return (
                 <div className="wordcontainer">6</div>
@@ -29,7 +23,7 @@ const VocabLesson = () => {
       quizWords.push(vocab.getVocab());
 
       quizWords.fill(["sana", "word"], 5, 20);
-      console.log(quizWords);
+      console.log(quizWords[0][0]);
 
       var qIndex = 1;
 
@@ -40,34 +34,28 @@ const VocabLesson = () => {
         for(var i = 0; i < 4; i++){
             var id = i;
             choiceElements.push(
-                <tr key={i}>
-                    <td colSpan="3">
-                        <Button style="styled-button" id={i} text={vocablist[i]} onClick={() => handleChoice(id)} />
-                    </td>
-                </tr>)
+                <div key={"button" + i} className='row'>
+                <div className="col-md-10 text-center"><button className="btn btn-primary choice-button w-100 text-center" onClick={() => handleChoice(id)}>{vocablist[i]}</button></div>
+                </div>
+                )
         }
         
         return choiceElements;
       }
 
       
-    
   return (
-    <div className="responsive-container2">
+    <div className='container-fluid '>
         <h1 align="center">Lessonname</h1>
 
-        <table align="center">
-            <tbody>
-                <tr>
-                    <td width="30%" className="text-center" key="word">{qIndex} / {quizWords.length}</td>
-                    <td width="40%" className="success">{qWord()}</td>
-                    <td width="30%"><Button style="styled-button2" text="Skip" onClick={handleSkip} /></td>
-                </tr>
-                {createChoices()}
-            </tbody>
-        </table>
-
-       
+        <div className='row justify-content-center align-items-center'>  
+            <div className='col-2'>{qIndex} / {quizWords.length}</div>
+            <div className='col-md-5'>{qWord()}</div>
+            <div className='col-md-3'><button className="btn skip-button w-100 text-center" onClick={() => handleSkip()}>Skip</button></div>
+        </div>
+        <div className='row justify-content-center'> 
+            <div className='col-md-4'>{createChoices()}</div>
+        </div>
     </div>
   );
 };
