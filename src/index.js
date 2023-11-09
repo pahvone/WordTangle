@@ -8,6 +8,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import "firebase/compat/analytics";
 
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_APP_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -22,9 +23,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 firebase.initializeApp(firebaseConfig);
 const analytics = firebase.analytics()
 root.render(
-  <React.StrictMode>
+  //<React.StrictMode> // hidden for debug
     <App />
-  </React.StrictMode>
+ // </React.StrictMode> // hidden for debug
 );
 
 // If you want to start measuring performance in your app, pass a function
