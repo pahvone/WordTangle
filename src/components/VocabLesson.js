@@ -23,21 +23,34 @@ const VocabLesson = () => {
             console.log("skip");
         };
 
+        const createRandomizedQuizOrder = () => {
+            for(var i = 0; i < lesson.wordList.length; i++){
+                const j = Math.floor(Math.random() * (i + 1));
+            [lesson.wordList[i], lesson.wordList[j]] = [lesson.wordList[j], lesson.wordList[i]];
+            [lesson.translationList[i], lesson.translationList[j]] = [lesson.translationList[j], lesson.translationList[i]];
+            }
+
+            console.log(lesson.wordList);
+            console.log(lesson.translationList);
+        }
+
+        createRandomizedQuizOrder();
 
         const randNumber = () => {
-            return Math.floor(Math.random() * (20 - 0 + 1)) + 0;
+            return Math.floor(Math.random() * (lesson.wordList.length - 0 + 1)) + 0;
         }
+
+
       const createWrongAnswers = (exclude) => {
         let indexes = [];
         
         for(var i = 0; i < 3; i++){
             let randIndex = randNumber();
 
-            while(indexes.includes(randIndex)) {
+            while(indexes.includes(randIndex) || randIndex == exclude) { 
                 randIndex = randNumber();
             }
             indexes.push(randIndex);
-            console.log(randIndex)
         }
 
         return indexes;
@@ -51,13 +64,13 @@ const VocabLesson = () => {
         choiceElements.push(
             <div key={"button0"} className='row'>
                 <div className="col-md-10 text-center">
-                    <button className="btn choice-button w-100 text-center" onClick={() => handleChoice(0)}>{lesson.translationList[0][0]}
+                    <button className="btn choice-button w-100 text-center" onClick={() => handleChoice(0)}>{lesson.translationList[qIndex][0]}
                     </button>
                 </div>
             </div>
             );
 
-        let wrongAnswers = createWrongAnswers();
+        let wrongAnswers = createWrongAnswers(qIndex);
 
         for(var i = 0; i < 3; i++){
             (function (index) {
@@ -78,7 +91,7 @@ const VocabLesson = () => {
       
   return (
     <div className='container-fluid '>
-        <h1 align="center">Lessonname</h1>
+        <h1 align="center">{lesson.lessonName}</h1>
 
         <div className='row justify-content-center align-items-center'>  
             <div className='col-2'>{qIndex + 1} / {lesson.wordList.length}</div>
