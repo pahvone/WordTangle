@@ -35,7 +35,7 @@ const Welcome = () => {
 
   return (
     <div className='responsive-container'>
-      <img className='App-logo' src={logo} alt='Word Tangle Logo' />
+      <img className='app-logo' src={logo} alt='Word Tangle Logo' />
       <div className='slogan'>No more getting tangled with words!</div>
       <p />
       <button className='styled-button' onClick={handleLoginButtonClick}>

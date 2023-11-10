@@ -1,6 +1,36 @@
 import React from 'react'
 import logo from '../img/WTlogo_stacked_white_bordered.png'
 import NavBar from './NavBar'
+import { getDatabase, ref, child, get } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import fb from "../firebase";
+
+
+const auth = getAuth();
+const user = auth.currentUser;
+const dbRef = ref(getDatabase(fb));
+
+const Button = ({ text, onClick }) => {
+  return (
+      <button className='styled-button' onClick={onClick}>
+          {text}
+      </button>
+  )
+}
+
+
+function GetData(){
+  get(child(dbRef, `users/${user.uid}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+          console.log(snapshot.val());
+      } else {
+          console.log("No data available");
+      }
+  }).catch((error) => {
+      console.error(error);
+  });
+
+}
 
 const DashBoard = () => {
 
@@ -9,22 +39,10 @@ const DashBoard = () => {
   return (
     <div>
     <NavBar />
-        <div className='responsive-container'>
-      <img className='App-logo' src={logo} alt='Word Tangle Logo' />
-      <span className='slogan'>Username</span>
-      <p />
-      
-      <p />
-      <span className='slogan'>Email</span>
-      <p />
-      
-      <p />
-      <span className='slogan'>Password</span>
-      <p />
-      
-      <span className='slogan'>Or sign up with...</span>
-      <p />
-      </div>
+      <div className='responsive-container'>
+        <img className='app-logo' src={logo} alt='Word Tangle Logo' />
+          <Button text='Get User Data' onClick={GetData} />
+        </div>
       </div>
   )
 }

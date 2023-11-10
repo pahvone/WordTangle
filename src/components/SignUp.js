@@ -70,7 +70,7 @@ const SignUp = () => {
 
   return (
     <div className='responsive-container'>
-      <img className='App-logo' src={logo} alt='Word Tangle Logo' />
+      <img className='app-logo' src={logo} alt='Word Tangle Logo' />
       <span className='slogan'>Username</span>
       <p />
       <input className='textfield' type='text' id='usernameID' value={username} onChange={e => setusername(e.target.value)} />

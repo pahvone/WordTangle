@@ -83,7 +83,7 @@ const Login = () => {
 //TODO: lisää vertailu että onko käyttäjätunnus vai säpo(?) (atm hardcoded email only)
   return (
     <div className='responsive-container'>
-      <img className='App-logo' src={logo} alt='Word Tangle Logo' />
+      <img className='app-logo' src={logo} alt='Word Tangle Logo' />
       <span className='slogan'>Email</span>
       <p />
       <label htmlFor='email' />
