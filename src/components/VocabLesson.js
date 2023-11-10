@@ -9,7 +9,7 @@ const VocabLesson = () => {
     const [qState, setQState] = useState(0);
     const [result, setResult] = useState("")
     const [correctCount, setCorrectCount] = useState(0)
-    const [inputMode, setInputMode] = useState(1)
+    const [inputMode, setInputMode] = useState(0)
     const [textInput, setTextInput] = useState("")
 
     const choiceElements = [];
@@ -103,6 +103,8 @@ const VocabLesson = () => {
             }
         }
 
+        setQState(1);
+
        // console.log(lesson.wordList);
        // console.log(lesson.translationList);
 
@@ -171,11 +173,10 @@ const VocabLesson = () => {
     //Quiz state machine
 
     if (qState == 0 && lesson == null) {
-        setLesson(new Lesson("Lesson1"));
+        setLesson(new Lesson("FIN",1));
     }
     else if (qState == 0 && lesson != null) {
         createRandomizedQuizOrder()
-        setQState(1);
     }
     else if (qState == 1) {
         if (!endQuiz()) {
