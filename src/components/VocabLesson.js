@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Lesson from '../vocab/Vocab';
 import './VocabLesson.css';
-import { random } from 'node-forge';
 
 
 const VocabLesson = () => {
@@ -12,7 +11,6 @@ const VocabLesson = () => {
     const [correctCount, setCorrectCount] = useState(0)
 
     const choiceElements = [];
-
 
 
     const endQuiz = () => {
@@ -50,8 +48,16 @@ const VocabLesson = () => {
             [lesson.translationList[i], lesson.translationList[j]] = [lesson.translationList[j], lesson.translationList[i]];
         }
 
-        //console.log(lesson.wordList);
-        //console.log(lesson.translationList);
+        for(var i = 0; i < lesson.wordList.length; i++){
+            if(randNumber() > 10){
+                var temp = lesson.wordList[i]
+                lesson.wordList[i] = lesson.translationList[i][0]
+                lesson.translationList[i][0] = temp
+            }
+        }
+
+       // console.log(lesson.wordList);
+       // console.log(lesson.translationList);
 
     }
 
@@ -60,8 +66,6 @@ const VocabLesson = () => {
             const j = Math.floor(Math.random() * (i + 1));
             [choices[i], choices[j]] = [choices[j], choices[i]];
         }
-
-        console.log(choices)
     }
 
     const createWrongAnswers = (exclude) => {
@@ -81,6 +85,7 @@ const VocabLesson = () => {
 
     const createChoices = () => {
         let word = lesson.translationList[qIndex][0];
+
         choiceElements.push(
             <div key={"button0"} className='row'>
                 <div className="col-md-10 text-center">
@@ -94,6 +99,7 @@ const VocabLesson = () => {
         
         for (var i = 0; i < 3; i++) {
             word = lesson.translationList[wrongAnswers[i]][0];
+
             (function (index) {
                 choiceElements.push(
                     <div key={"button" + (i + 1)} className='row'>
@@ -108,7 +114,7 @@ const VocabLesson = () => {
 
         createRandomizedChoiceOrder(choiceElements);
 
-        console.log(choiceElements)
+       // console.log(choiceElements)
 
     }
 
