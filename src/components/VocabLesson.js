@@ -9,6 +9,8 @@ const VocabLesson = () => {
     const [qState, setQState] = useState(0);
     const [result, setResult] = useState("")
     const [correctCount, setCorrectCount] = useState(0)
+    const [inputMode, setInputMode] = useState(1)
+    const [textInput, setTextInput] = useState("")
 
     const choiceElements = [];
 
@@ -17,23 +19,67 @@ const VocabLesson = () => {
         if (lesson.wordList.length != 0 && qIndex >= lesson.wordList.length) return true
         else return false;
     }
+    
+    const switchInputModeButton = () => {
 
+        if(inputMode == 0){
+            return(<button className="btn skip-button w-100 text-center" onClick={() => setInputMode(1)}>Answer in writing</button>)
+        }
+        else {
+            return(<button className="btn skip-button w-100 text-center" onClick={() => setInputMode(0)}>Multiple choice answers</button>)
+        }
+        
+    }
+
+    //Handles multiple choice answers
     const handleChoice = (index) => {
-        console.log("choice " + index);
+        if(index == 0) handleResult(true)
+        else handleResult(false)
+    };
 
-        if(index == 0) {
+    const handleResult = (result) => {
+        if(result == true) {
             setResult("Correct!")
             setCorrectCount(correctCount + 1)
         }
         else setResult("Incorrect. Correct answer is '" + lesson.translationList[qIndex][0] + "'")
         setIndex(qIndex + 1);
+    }
 
-    };
+    //Handles text input answers
+    const handleTextInput = (event) => {
+        event.preventDefault();
+        console.log(textInput + " vs " + lesson.translationList[qIndex][0])
+
+        if(textInput == lesson.translationList[qIndex][0] || (textInput == lesson.translationList[qIndex][1]))
+            handleResult(true);
+        else handleResult(false);
+
+        setTextInput("")
+        setIndex(qIndex + 1);
+    }
+
+    //Returns a text input form if inputMode == 1
+    const userInput = () => {
+        if(inputMode == 0) return choiceElements
+        else return (
+            <div>
+                <span className="align-middle">
+                    <div className="formDiv">
+                    <form onSubmit={handleTextInput}>
+                        <p><input className="form-control form-control-lg" type="text" id="char" value={textInput} onChange={(e) => setTextInput(e.target.value)} required></input></p>
+                        <p><button type="submit" className="btn styled-button w-100">Submit</button></p>
+                    </form>
+                    </div>
+                    </span>
+            </div>
+
+            
+        );
+    }
 
     const handleSkip = () => {
-        console.log("skip");
         setIndex(qIndex + 1);
-        console.log("qindex " + qIndex);
         setResult("Correct answer would've been '" + lesson.translationList[qIndex][0] + "'")
     };
 
@@ -41,6 +87,7 @@ const VocabLesson = () => {
         return Math.floor(Math.random() * (lesson.wordList.length - 1 + 1)) + 0;
     }
 
+    //Randomizes the order of the entries in the quiz
     const createRandomizedQuizOrder = () => {
         for (var i = 0; i < lesson.wordList.length; i++) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -61,6 +108,7 @@ const VocabLesson = () => {
 
     }
 
+    //Randomizes the order of the multiple choices
     const createRandomizedChoiceOrder = (choices) => {
         for (var i = 0; i < choices.length; i++) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -118,6 +166,10 @@ const VocabLesson = () => {
 
     }
 
+    //////////////////////////////////////////////////////////
+
+    //Quiz state machine
+
     if (qState == 0 && lesson == null) {
         setLesson(new Lesson("Lesson1"));
     }
@@ -140,10 +192,13 @@ const VocabLesson = () => {
                         <div className='col-md-3'><button className="btn skip-button w-100 text-center" onClick={() => handleSkip()}>Skip</button></div>
                     </div>
                     <div className='row justify-content-center'>
-                        <div className='col-md-4'>{choiceElements}</div>
+                        <div className='col-md-4'>{userInput()}</div>
                     </div>
                     <div className='row justify-content-center'>
-                    <div className='col-md-4'>{result}</div>
+                        <div className='col-md-4'>{result}</div>
+                    </div>
+                    <div className='row my-5 justify-content-center'>
+                        <div className='col-md-4'>{switchInputModeButton()}</div>
                     </div>
                 </div>
             );
