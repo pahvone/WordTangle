@@ -55,17 +55,15 @@ const SignUp = () => {
         });
     }
 
-
+    const redirect = useNavigate()
   const HandleSignUpButtonClick = () => {
       writeUserData()
       console.log(username)
-      const redirect = useNavigate()
       redirect('/Login')
   }
 
   const HandleAlternateSignUpButtonClick = () => {
         RegisterToFirebaseGoogle()
-      const redirect = useNavigate()
       redirect('/Login')
 
   }
