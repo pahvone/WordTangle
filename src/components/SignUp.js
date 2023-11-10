@@ -4,6 +4,7 @@ import google from '../img/google_logo.png'
 import { getDatabase, ref, set } from 'firebase/database'
 import { useState } from 'react';
 import {createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import { useNavigate } from 'react-router-dom'
 
 const provider = new GoogleAuthProvider();
 
@@ -55,13 +56,18 @@ const SignUp = () => {
     }
 
 
-  const handleSignUpButtonClick = () => {
+  const HandleSignUpButtonClick = () => {
       writeUserData()
       console.log(username)
+      const redirect = useNavigate()
+      redirect('/Login')
   }
 
-  const handleAlternateSignUpButtonClick = () => {
+  const HandleAlternateSignUpButtonClick = () => {
         RegisterToFirebaseGoogle()
+      const redirect = useNavigate()
+      redirect('/Login')
+
   }
 
   return (
@@ -79,7 +85,7 @@ const SignUp = () => {
       <p />
       <input className='textfield' type='password' id='passwordID' value={password} onChange={e => setpassword(e.target.value)} />
       <p />
-      <button className='styled-button' onClick={handleSignUpButtonClick}>
+      <button className='styled-button' onClick={HandleSignUpButtonClick}>
         Sign Up
       </button>
       <p />
@@ -87,7 +93,7 @@ const SignUp = () => {
       <p />
       <button
         className='button-icon'
-        onClick={handleAlternateSignUpButtonClick}
+        onClick={HandleAlternateSignUpButtonClick}
       >
         <img src={google} height={100} width={100} alt='Google logo' />
       </button>

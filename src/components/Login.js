@@ -4,6 +4,7 @@ import google from '../img/google_logo.png'
 import { getDatabase, ref, set } from 'firebase/database'
 import { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useNavigate } from 'react-router-dom'
 
 
 const provider = new GoogleAuthProvider();
@@ -37,6 +38,7 @@ const Login = () => {
               const user = userCredential.user;
               console.log("login success!")
               console.log(userCredential.user.uid)
+              redirect('/Dashboard')
               // ...
           })
           .catch((error) => {
@@ -45,7 +47,7 @@ const Login = () => {
           });
   }
 
-
+    const redirect = useNavigate()
   function LoginToFirebaseGoogle(){
       const auth = getAuth();
       signInWithPopup(auth, provider)
@@ -56,6 +58,7 @@ const Login = () => {
               // The signed-in user info.
               const user = result.user;
               console.log("Login Successful!")
+              redirect('/Dashboard')
               // IdP data available using getAdditionalUserInfo(result)
               // ...
           }).catch((error) => {
