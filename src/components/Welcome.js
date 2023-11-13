@@ -2,9 +2,7 @@ import logo from "../img/WTlogo_stacked_white_bordered.png";
 import { useNavigate } from "react-router-dom";
 import DarkMode from "./DarkMode";
 
-
 const Welcome = () => {
- 
   const redirect = useNavigate();
 
   const handleLoginButtonClick = () => {

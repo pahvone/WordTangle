@@ -8,13 +8,18 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container">
         <div className="logo">
-          <img src={logo} width={60} height={60} alt="Compact Word Tangle Logo" />
+          <img
+            src={logo}
+            width={60}
+            height={60}
+            alt="Compact Word Tangle Logo"
+          />
         </div>
         <DarkMode />
         <div className="nav-elements">
           <ul>
             <li>
-            <NavLink to="/Dashboard">DashBoard</NavLink>
+              <NavLink to="/Dashboard">DashBoard</NavLink>
             </li>
 
             <li>
