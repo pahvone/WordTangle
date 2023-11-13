@@ -31,7 +31,7 @@ function GetData() {
     });
 }
 
-const Dashboard = () => {
+const DashBoard = () => {
   return (
     <div>
       <NavBar />
@@ -43,4 +43,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashBoard;

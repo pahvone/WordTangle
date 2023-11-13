@@ -8,29 +8,29 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container">
         <div className="logo">
-          <img src={logo} width={60} height={60} />
+          <img src={logo} width={60} height={60} alt="Compact Word Tangle Logo" />
         </div>
         <DarkMode />
         <div className="nav-elements">
           <ul>
             <li>
-              <NavLink to="/">Dashboard</NavLink>
+            <NavLink to="/Dashboard">DashBoard</NavLink>
             </li>
 
             <li>
-              <NavLink to="/blog">Learn</NavLink>
+              <NavLink to="/Learn">Learn</NavLink>
             </li>
             <li>
-              <NavLink to="/projects">Forums</NavLink>
+              <NavLink to="/Forums">Forums</NavLink>
             </li>
             <li>
               <NavLink to="/Settings">Settings</NavLink>
             </li>
             <li>
-              <NavLink to="/contact">About</NavLink>
+              <NavLink to="/About">About</NavLink>
             </li>
             <li>
-              <NavLink to="/signout">Sign Out</NavLink>
+              <NavLink to="/SignOut">Sign Out</NavLink>
             </li>
           </ul>
         </div>
