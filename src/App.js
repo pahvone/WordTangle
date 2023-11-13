@@ -5,6 +5,7 @@ import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import Welcome from "./components/Welcome";
 import Dashboard from "./components/Dashboard";
+import Settings from "./components/Settings";
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/" element={<Welcome />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/Settings" element={<Settings />} />
       </Routes>
     </>
   );
