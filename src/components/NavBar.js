@@ -1,14 +1,17 @@
 import { NavLink } from "react-router-dom";
 import "./navbar.css";
 import logo from "../img/WTlogo_white_stroke.png";
+import DarkMode from "./DarkMode";
 
 const Navbar = () => {
+
   return (
     <nav className="navbar">
       <div className="container">
         <div className="logo">
           <img src={logo} width={60} height={60} />
         </div>
+        <DarkMode/>
         <div className="nav-elements">
           <ul>
             <li>
