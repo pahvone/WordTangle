@@ -13,6 +13,7 @@ body {
 body.dark {
   --textcolor: #fff;
   --background: #000;
+  background-color: var(--background);
 }
 
 code {

@@ -1,18 +1,18 @@
-import { NavLink } from 'react-router-dom'
-import './navbar.css'
-import logo from '../img/WTlogo_white_stroke.png'
+import { NavLink } from "react-router-dom";
+import "./navbar.css";
+import logo from "../img/WTlogo_white_stroke.png";
 
 const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="container">
         <div className="logo">
-        <img src={logo} width={60} height={60} />
+          <img src={logo} width={60} height={60} />
         </div>
         <div className="nav-elements">
           <ul>
             <li>
-              <NavLink to="/">DashBoard</NavLink>
+              <NavLink to="/">Dashboard</NavLink>
             </li>
 
             <li>
@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
