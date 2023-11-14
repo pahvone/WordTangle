@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import "./navbar.css";
 import logo from "../img/WTlogo_white_stroke.png";
 import DarkMode from "./DarkMode";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Navbar = () => {
   const [menuActive, setMenuActive] = useState(false);
@@ -11,15 +11,14 @@ const Navbar = () => {
     setMenuActive(!menuActive);
   };
 
-
   return (
-    <nav className={`navbar ${menuActive ? 'active' : ''}`}>
+    <nav className={`navbar ${menuActive ? "active" : ""}`}>
       <div className="container">
         <div className="logo">
           <img src={logo} alt="Compact Word Tangle Logo" />
         </div>
 
-        <div className={`nav-elements ${menuActive ? 'active' : ''}`}>
+        <div className={`nav-elements ${menuActive ? "active" : ""}`}>
           <ul>
             <li>
               <NavLink to="/Dashboard">Dashboard</NavLink>
@@ -36,10 +35,10 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <div className={`nav-elements-right ${menuActive ? 'active' : ''}`}>
+        <div className={`nav-elements-right ${menuActive ? "active" : ""}`}>
           <ul>
             <li>
-              <DarkMode/>
+              <DarkMode />
             </li>
             <li>
               <NavLink to="/About">About</NavLink>
@@ -49,7 +48,7 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        
+
         <div className="menu-toggle" onClick={toggleMenu}>
           <div className="bar"></div>
           <div className="bar"></div>
