@@ -60,7 +60,8 @@ const Login = () => {
         // The signed-in user info.
         const user = result.user;
         console.log("Login Successful!");
-        redirect("/Dashboard");
+        console.log(user.uid);
+        redirect("/UsernameChange");
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })

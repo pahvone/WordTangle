@@ -8,6 +8,7 @@ import DashBoard from "./components/Dashboard";
 import Settings from "./components/Settings";
 import Forums from "./components/Forums";
 import About from "./components/About";
+import UsernameChange from "./components/UsernameChange";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/Settings" element={<Settings />} />
         <Route path="/Forums" element={<Forums />} />
         <Route path="/About" element={<About />} />
+        <Route path="/UsernameChange" element={<UsernameChange />} />
       </Routes>
     </>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import CGlogo from "../img/CodeGoblins.png";
+import "./About.css";
 
 const About = () => {
   return (
