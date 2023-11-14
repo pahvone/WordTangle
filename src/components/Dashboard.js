@@ -4,6 +4,7 @@ import NavBar from "./NavBar";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import fb from "../firebase";
+import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 
 const auth = getAuth();
 const user = auth.currentUser;
@@ -36,7 +37,11 @@ const DashBoard = () => {
     <div>
       <NavBar />
       <div className="responsive-container">
-        <img className="app-logo" src={logo} alt="Word Tangle Logo" />
+        <img
+          className="app-logo-nonstacked"
+          src={nonstackedlogo}
+          alt="Word Tangle Logo"
+        />
         <Button text="Get User Data" onClick={GetData} />
       </div>
     </div>
