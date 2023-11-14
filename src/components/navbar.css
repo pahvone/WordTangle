@@ -25,6 +25,10 @@ body {
 }
 
 .nav-elements {
+  display: inline-flex;
+  position: absolute;
+  left: 5%;
+  font-family: Fira Mono;
 }
 
 .nav-elements ul {
