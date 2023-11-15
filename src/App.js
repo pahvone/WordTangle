@@ -5,7 +5,7 @@ import VocabLesson from './components/VocabLesson';
 function App() {
   return (
     <div className="App">
-      <VocabLesson />
+      <VocabLesson/>
     </div>
   );
 }

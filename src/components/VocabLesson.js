@@ -2,23 +2,22 @@ import React, { useState, useRef, useCallback} from 'react';
 import Lesson from '../vocab/Vocab';
 import './VocabLesson.css';
 
-const VocabLesson = () => {
+const VocabLesson = (_lesson) => {
     const [qIndex, setIndex] = useState(0);
     const [lesson, setLesson] = useState(null)
     const [qState, setQState] = useState(0);
     const [result, setResult] = useState("")
     const [correctCount, setCorrectCount] = useState(0)
     const [inputMode, setInputMode] = useState(0)
+    const [wordGenerated, setWordGenerated] = useState(false)
 
     const textInputRef = useRef(null)
-    const inputModeRef = useRef(null)
 
     const choiceElements = [];
 
     
-    
     const endQuiz = () => {
-        if (lesson.wordList.length != 0 && qIndex >= lesson.wordList.length) return true
+        if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length) return true
         else return false;
     }
 
@@ -28,23 +27,24 @@ const VocabLesson = () => {
 
     //Handles multiple choice answers
     const handleChoice = (index) => {
-        if (index == 0) handleResult("Correct")
+        if (index === 0) handleResult("Correct")
         else handleResult("Incorrect")
     };
 
     const handleResult = (result) => {
-        if (result == "Correct") {
+        if (result === "Correct") {
             setResult("Correct!")
             setCorrectCount(correctCount + 1)
         }
-        else if (result == "Typoed") {
+        else if (result === "Typoed") {
             setResult("You might have a typo. You answered '" + textInputRef.current.value + "'. Correct answer is '" + lesson.translationList[qIndex][0] + "'")
             setCorrectCount(correctCount + 1)
         }
-        else if (result == "Incorrect")
+        else if (result === "Incorrect")
             setResult("Incorrect. Correct answer is '" + lesson.translationList[qIndex][0] + "'")
 
         setIndex(qIndex + 1);
+        setWordGenerated(false);
     }
 
     //Handles text input answers
@@ -56,14 +56,14 @@ const VocabLesson = () => {
             
         }*/
         let compareTo = "";
-        if (qWordSwitch == 0) compareTo = lesson.translationList[qIndex]
+        if (qWordSwitch === 0) compareTo = lesson.translationList[qIndex]
         else compareTo = lesson.wordList[qIndex]
         var correct = false;
 
         if (Array.isArray(compareTo))
-            correct =  textInputRef.current.value == compareTo[0] || textInputRef.current.value == compareTo[1]
+            correct =  textInputRef.current.value === compareTo[0] || textInputRef.current.value === compareTo[1]
         else 
-            correct = textInputRef.current.value == compareTo || textInputRef.current.value == compareTo
+            correct = textInputRef.current.value === compareTo || textInputRef.current.value === compareTo
             
         if(!correct) {
             //Check for typos
@@ -95,7 +95,7 @@ const VocabLesson = () => {
 
     //Returns a text input form if inputMode == 1
     const userInput = (qWordSwitch) => {
-        if (inputMode == 0) return choiceElements
+        if (inputMode === 0) return choiceElements
         else return (
             <div>
                 <span className="align-middle">
@@ -115,8 +115,8 @@ const VocabLesson = () => {
         setResult("Correct answer would've been '" + lesson.translationList[qIndex][0] + "'")
     };
 
-    const randNumber = () => {
-        return Math.floor(Math.random() * (lesson.wordList.length - 1 + 1)) + 0;
+    const randNumber = (max) => {
+        return Math.floor(Math.random() * (max - 1 + 1)) + 0;
     }
 
     //Randomizes the order of the entries in the quiz
@@ -146,24 +146,21 @@ const VocabLesson = () => {
         let indexes = [];
 
         for (var i = 0; i < 3; i++) {
-            let randIndex = randNumber();
+            let randIndex = randNumber(lesson.wordList.length);
 
-            while (indexes.includes(randIndex) || randIndex == exclude) {
-                randIndex = randNumber();
+            while (indexes.includes(randIndex) || randIndex === exclude) {
+                randIndex = randNumber(lesson.wordList.length);
             }
             indexes.push(randIndex);
         }
-
         return indexes;
     }
 
-    const randomizeWordToTranslation = () => {
-
-    }
 
     //Generate the currently quizzed word
     const quizWord = () => {
-        
+        //if(wordGenerated == true) return;
+
         let qWordSwitch = 0;
         var qWord = lesson.wordList[qIndex]
         createChoices(qWordSwitch)
@@ -176,9 +173,10 @@ const VocabLesson = () => {
         createChoices(qWordSwitch)
         var qWord = ""
 
-    
+
         if (qWordSwitch == 0) qWord = lesson.wordList[qIndex]
         else qWord = lesson.translationList[qIndex][0]*/
+        //setWordGenerated(true);
 
         return (
             <div>
@@ -199,8 +197,8 @@ const VocabLesson = () => {
         let word = "";
         word = lesson.translationList[qIndex][0];
 
-        if (qWordSwitch == 0) word = lesson.translationList[qIndex][0];
-        else if (qWordSwitch == 1) word = lesson.wordList[qIndex];
+        if (qWordSwitch === 0) word = lesson.translationList[qIndex][0];
+        else if (qWordSwitch === 1) word = lesson.wordList[qIndex];
 
         choiceElements.push(
             <div key={"button0"} className='row'>
@@ -215,8 +213,8 @@ const VocabLesson = () => {
 
         for (var i = 0; i < 3; i++) {
             word = lesson.translationList[wrongAnswers[i]][0];
-            if (qWordSwitch == 0) word = lesson.translationList[wrongAnswers[i]][0];
-            else if (qWordSwitch == 1) word = lesson.wordList[wrongAnswers[i]];
+            if (qWordSwitch === 0) word = lesson.translationList[wrongAnswers[i]][0];
+            else if (qWordSwitch === 1) word = lesson.wordList[wrongAnswers[i]];
 
             (function (index) {
                 choiceElements.push(
@@ -238,13 +236,13 @@ const VocabLesson = () => {
 
     //Quiz state machine
 
-    if (qState == 0 && lesson == null) {
+    if (qState === 0 && lesson === null) {
         setLesson(new Lesson("FIN", 1));
     }
-    else if (qState == 0 && lesson != null) {
+    else if (qState === 0 && lesson != null) {
         createRandomizedQuizOrder()
     }
-    else if (qState == 1) {
+    else if (qState === 1) {
         if (!endQuiz()) {
             //console.log("quizIndex " + qIndex + " word " + lesson.wordList[qIndex])
 
@@ -276,7 +274,7 @@ const VocabLesson = () => {
                     </div>
                     <div className='row justify-content-center align-items-center'>
                         <div className='col-md-4'>
-                            <button className="btn choice-button w-100 text-center" onClick={() => { }}>Back to dashboard
+                            <button className="btn choice-button w-100 text-center" onClick={() => { }}>Back to lesson path
                             </button>
                         </div>
                     </div>

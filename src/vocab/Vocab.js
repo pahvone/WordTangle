@@ -1,6 +1,8 @@
 
 import "../vocab/FIN_1.json";
 
+
+
 export default class Lesson {
     fileName = "";
     lessonName = "";
@@ -10,7 +12,15 @@ export default class Lesson {
 
     constructor(lang, index){
         this.fileName = lang + "_" + index;
+        try{
         var vocabList = require('./' + this.fileName + '.json');
+        }
+        catch(error){
+            if (error.code === 'MODULE_NOT_FOUND') {
+                console.error('Lesson not found');
+              }
+              return;
+        }
         this.lessonName = vocabList.name;
         
        for(var i = 0; i < vocabList.vocab.length; i++){
@@ -18,5 +28,4 @@ export default class Lesson {
             this.translationList.push(vocabList.vocab[i][1]);
        }
     }
-
 }
