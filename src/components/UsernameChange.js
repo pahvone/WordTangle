@@ -1,7 +1,7 @@
 import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import React, { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./UsernameChange.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
@@ -18,6 +18,7 @@ const Button = ({ text, onClick }) => {
 };
 
 const Usernamechange = () => {
+  const redirect = useNavigate();
   const [username, setusername] = useState("");
 
   function UploadUserName() {
