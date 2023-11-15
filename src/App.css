@@ -1,41 +1,49 @@
-
-.App-logo {
-  width: 100%; 
+.app-logo {
+  width: 100%;
   height: auto;
 }
 
+.app-logo-nonstacked {
+  width: 75%;
+  height: auto;
+}
 
 .slogan {
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 25px;
+  color: var(--textcolor);
 }
 
 .textfield {
   width: 50%;
   padding: 10px;
-  background: #ECECEC;
+  background: #ececec;
   border: none;
   border-radius: 2px;
   font-size: 16px;
 }
+
 .responsive-container {
   text-align: center;
-  max-width: 700px; 
-  margin: 0 auto; 
+  max-width: 700px;
+  margin: 0 auto;
   padding: 20px;
 }
 
-.forgotpassword-button{
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+.forgotpassword-button {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 25px;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
 }
+
 .styled-button {
-  background-color: #50FFC0;
-  color: #000000;
+  background-color: #50ffc0;
+  color: #000;
   padding: 15px 100px;
   border: none;
   border-radius: 25px;
@@ -44,19 +52,20 @@
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: rgb(51, 168, 123)
+    background-color: rgb(51 168 123);
   }
 }
 
-.button_icon {
-  background: none;
-  border: none;
+.button-icon {
+  background: transparent;
+  border: 0;
   padding: 0;
   cursor: pointer;
 
   img {
-    width: 50px; /* Adjust the image width as needed */
-    height: 50px; /* Adjust the image height as needed */
+    width: 50px;
+    height: 50px;
+    background: var(--background);
   }
 }
 
