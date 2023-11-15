@@ -9,6 +9,8 @@ import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 const auth = getAuth();
 const user = auth.currentUser;
 const dbRef = ref(getDatabase(fb));
+const db = getDatabase();
+const userId = auth.currentUser.uid;
 
 const Button = ({ text, onClick }) => {
   return (
@@ -18,11 +20,12 @@ const Button = ({ text, onClick }) => {
   );
 };
 
-function GetData() {
-  get(child(dbRef, `users/${user.uid}`))
+function GetUserData() {
+  get(child(dbRef, "/users/" + userId))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
+        console.log(snapshot.val().username);
+        // functionality: snapshot.val().insertvaluetobefetchedhere
       } else {
         console.log("No data available");
       }
@@ -42,10 +45,9 @@ const DashBoard = () => {
           src={nonstackedlogo}
           alt="Word Tangle Logo"
         />
-        <Button text="Get User Data" onClick={GetData} />
+        {<Button text="Get User Data" onClick={GetUserData} />}
       </div>
     </div>
   );
 };
-
 export default DashBoard;
