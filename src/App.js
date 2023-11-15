@@ -9,6 +9,8 @@ import Settings from "./components/Settings";
 import Forums from "./components/Forums";
 import About from "./components/About";
 import UsernameChange from "./components/UsernameChange";
+import LessonPath from "./components/LessonPath";
+import LessonPage from "./components/LessonPage";
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
         <Route path="/Forums" element={<Forums />} />
         <Route path="/About" element={<About />} />
         <Route path="/UsernameChange" element={<UsernameChange />} />
+        <Route path="/LessonPath" element={<LessonPath />} />
+        <Route path="/LessonPage" element={<LessonPage />} />
       </Routes>
     </>
   );

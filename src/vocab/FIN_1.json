@@ -1,0 +1,25 @@
+{
+    "name": "Numbers 1",
+    "vocab": [
+      ["yksi", ["one", "1"]],
+      ["kaksi", ["two", "2"]],
+      ["kolme", ["three", "3"]],
+      ["neljä", ["four", "4"]],
+      ["viisi", ["five", "5"]],
+      ["kuusi", ["six", "6"]],
+      ["seitsemän", ["seven", "7"]],
+      ["kahdeksan", ["eight", "8"]],
+      ["yhdeksän", ["nine", "9"]],
+      ["kymmenen", ["ten", "10"]],
+      ["yksitoista", ["eleven", "11"]],
+      ["kaksitoista", ["twelve", "12"]],
+      ["kolmetoista", ["thirteen", "13"]],
+      ["neljätoista", ["fourteen", "14"]],
+      ["viisitoista", ["fifteen", "15"]],
+      ["kuusitoista", ["sixteen", "16"]],
+      ["seitsemäntoista", ["seventeen", "17"]],
+      ["kahdeksantoista", ["eighteen", "18"]],
+      ["yhdeksäntoista", ["nineteen", "19"]],
+      ["kaksikymmentä", ["twenty", "20"]]
+    ]
+  }
