@@ -89,7 +89,7 @@ body {
   margin-top: 11px !important;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1200px) {
   .nav-elements ul,
   .nav-elements-right ul {
     flex-direction: column;
