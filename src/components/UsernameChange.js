@@ -18,9 +18,10 @@ function UploadUserName() {
   const db = getDatabase();
   const [username, setusername] = useState("");
   const auth = getAuth();
+  const userId = auth.currentUser.uid;
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      set(ref(db, `users/${user.uid}`), {
+      set(ref(db, "/users/" + userId), {
         username: username,
       });
       console.log(user.uid);

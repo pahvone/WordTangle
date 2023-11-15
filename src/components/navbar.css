@@ -80,6 +80,15 @@ body {
   align-items: center;
   margin-left: auto;
 }
+
+.react-toggle-track-x {
+  margin-top: 11px !important;
+  margin-right: 5px !important;
+}
+.react-toggle-track-check {
+  margin-top: 11px !important;
+}
+
 @media screen and (max-width: 1024px) {
   .nav-elements ul,
   .nav-elements-right ul {
@@ -123,6 +132,14 @@ body {
     display: block;
     cursor: pointer;
     padding-right: 5%;
+  }
+
+  .react-toggle-track-x {
+    margin-top: 11px !important;
+    margin-right: 5px !important;
+  }
+  .react-toggle-track-check {
+    margin-top: 11px !important;
   }
 
   .menu-toggle:before {

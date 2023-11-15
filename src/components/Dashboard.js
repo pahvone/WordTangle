@@ -10,7 +10,6 @@ const auth = getAuth();
 const user = auth.currentUser;
 const dbRef = ref(getDatabase(fb));
 const db = getDatabase();
-const userId = auth.currentUser.uid;
 
 const Button = ({ text, onClick }) => {
   return (
@@ -21,6 +20,7 @@ const Button = ({ text, onClick }) => {
 };
 
 function GetUserData() {
+  let userId = auth.currentUser.uid;
   get(child(dbRef, "/users/" + userId))
     .then((snapshot) => {
       if (snapshot.exists()) {
