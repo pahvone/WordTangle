@@ -9,7 +9,7 @@ import Settings from "./components/Settings";
 import Forums from "./components/Forums";
 import About from "./components/About";
 import UsernameChange from "./components/UsernameChange";
-import LessonPath from "./components/LessonPath"
+import LessonPath from "./components/LessonPath";
 import LessonPage from "./components/LessonPage";
 
 const App = () => {

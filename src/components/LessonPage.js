@@ -3,12 +3,11 @@ import NavBar from "./NavBar";
 import VocabQuiz from "./VocabQuiz";
 
 const LessonPage = () => {
-
   return (
     <div>
       <NavBar />
       <div>
-       <VocabQuiz/>
+        <VocabQuiz />
       </div>
     </div>
   );
