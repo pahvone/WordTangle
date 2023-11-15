@@ -9,7 +9,7 @@ import Settings from "./components/Settings";
 import Forums from "./components/Forums";
 import About from "./components/About";
 import UsernameChange from "./components/UsernameChange";
-import VocabLesson from './components/VocabLesson';
+import VocabLesson from "./components/VocabLesson";
 
 const App = () => {
   return (
@@ -23,7 +23,7 @@ const App = () => {
         <Route path="/Forums" element={<Forums />} />
         <Route path="/About" element={<About />} />
         <Route path="/UsernameChange" element={<UsernameChange />} />
-        <Route path="/VocabLesson" element={<VocabLesson/>}/>
+        <Route path="/VocabLesson" element={<VocabLesson />} />
       </Routes>
     </>
   );

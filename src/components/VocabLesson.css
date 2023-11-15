@@ -1,44 +1,41 @@
 .wordcontainer {
-        padding: 10px;
-        background: #e0e0e0;
-        border: none;
-        border-radius: 2px;
-        font-size: 16px;
-        text-align: center;
-    }
-
-
+  padding: 10px;
+  background: #e0e0e0;
+  border: none;
+  border-radius: 2px;
+  font-size: 16px;
+  text-align: center;
+}
 
 .choice-button {
-        background-color: #50FFC0;
-        color: #000000;
-        padding: 15px 100px;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 20px;
-        width: 100px;
-        transition: background-color 0.3s ease;
-        text-align: center;
-      
-        &:hover {
-          background-color: rgb(51, 168, 123)
-        }
-      }
+  background-color: #50ffc0;
+  color: #000000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  width: 100px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+
+  &:hover {
+    background-color: rgb(51, 168, 123);
+  }
+}
 
 .skip-button {
-        background-color: #8E59FF;
-        color: #000000;
-        padding: 15px 100px;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 20px;
-        text-align: center;
-        transition: background-color 0.3s ease;
-      
-        &:hover {
-          background-color: rgb(142, 89, 255)
-        }
-      }
-      
+  background-color: #8e59ff;
+  color: #000000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgb(142, 89, 255);
+  }
+}
