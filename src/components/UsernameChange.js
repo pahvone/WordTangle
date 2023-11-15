@@ -6,6 +6,9 @@ import "./UsernameChange.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 
+const db = getDatabase();
+const auth = getAuth();
+
 const Button = ({ text, onClick }) => {
   return (
     <button className="styled-button" onClick={onClick}>
@@ -14,27 +17,24 @@ const Button = ({ text, onClick }) => {
   );
 };
 
-function UploadUserName() {
-  const db = getDatabase();
-  const [username, setusername] = useState("");
-  const auth = getAuth();
-  const userId = auth.currentUser.uid;
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      set(ref(db, "/users/" + userId), {
-        username: username,
-      });
-      console.log(user.uid);
-      redirect("/Dashboard");
-    } else {
-      // User is signed out
-      // ...
-    }
-  });
-}
-
 const Usernamechange = () => {
   const [username, setusername] = useState("");
+
+  function UploadUserName() {
+    const userId = auth.currentUser.uid;
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        set(ref(db, "/users/" + userId), {
+          username: username,
+        });
+        console.log(user.uid);
+      } else {
+        // User is signed out
+        // ...
+      }
+      redirect("/Dashboard");
+    });
+  }
   return (
     <div>
       <NavBar />
