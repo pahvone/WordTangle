@@ -84,7 +84,7 @@ const Login = () => {
   const handleAlternateLoginButtonClick = () => {
     LoginToFirebaseGoogle();
   };
-  //TODO: lisää vertailu että onko käyttäjätunnus vai säpo(?) (atm hardcoded email only)
+  
   return (
     <div className="responsive-container">
       <img className="app-logo" src={logo} alt="Word Tangle Logo" />
