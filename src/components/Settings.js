@@ -3,7 +3,7 @@ import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import "./Settings.css";
 import { useNavigate } from "react-router-dom";
-import { child, get, getDatabase, ref,remove } from "firebase/database";
+import { child, get, getDatabase, ref, remove } from "firebase/database";
 import { getAuth, deleteUser } from "firebase/auth";
 import fb from "../firebase";
 
@@ -59,14 +59,16 @@ const Settings = () => {
   }
 
   function DeleteUserData() {
-      let userId = auth.currentUser.uid;
-      console.log(auth.currentUser.uid)
-      deleteUser(user).then(() => {
-          remove(child(dbRef, "/users/" + userId))
-          redirect("/");
-          console.log("User Succesfully Deleted!")
-      }).catch((error) => {
-          console.error(error);
+    let userId = auth.currentUser.uid;
+    console.log(auth.currentUser.uid);
+    deleteUser(user)
+      .then(() => {
+        remove(child(dbRef, "/users/" + userId));
+        redirect("/");
+        console.log("User Succesfully Deleted!");
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 
