@@ -50,11 +50,49 @@
   cursor: pointer;
   font-size: 20px;
   transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
 
   &:hover {
-    background-color: rgb(51 168 123);
+    background-color: #33a87bff;
   }
 }
+
+.styled-warning-button {
+  background-color: #f3ff50;
+  color: #000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  &:hover {
+    background-color: #a6ae38ff;
+  }
+}
+
+.styled-critical-warning-button {
+  background-color: #fe0000;
+  color: #000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  &:hover {
+    background-color: #b40000;
+  }
+}
+
+
 
 .button-icon {
   background: transparent;

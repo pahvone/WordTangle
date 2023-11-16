@@ -1,15 +1,7 @@
 import React from "react";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import NavBar from "./NavBar";
-import { getDatabase, ref, child, get } from "firebase/database";
-import { getAuth } from "firebase/auth";
-import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
-
-const auth = getAuth();
-const user = auth.currentUser;
-const dbRef = ref(getDatabase(fb));
-const db = getDatabase();
 
 const Button = ({ text, onClick }) => {
   return (
@@ -18,22 +10,6 @@ const Button = ({ text, onClick }) => {
     </button>
   );
 };
-
-function GetUserData() {
-  let userId = auth.currentUser.uid;
-  get(child(dbRef, "/users/" + userId))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val().username);
-        // functionality: snapshot.val().insertvaluetobefetchedhere
-      } else {
-        console.log("No data available");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
 
 const DashBoard = () => {
   return (
@@ -45,7 +21,6 @@ const DashBoard = () => {
           src={nonstackedlogo}
           alt="Word Tangle Logo"
         />
-        {<Button text="Get User Data" onClick={GetUserData} />}
       </div>
     </div>
   );
