@@ -75,7 +75,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans&display=swap");
 
-
 .dashboardlogo-container {
   width: 60%;
   height: auto;
@@ -92,7 +91,7 @@
   padding-top: 20px;
   padding-left: 5%;
 }
-.boxcontainer{
+.boxcontainer {
   flex-direction: row;
   padding-left: 10px;
 }
@@ -108,7 +107,7 @@
   white-space: nowrap;
   color: var(--textcolor);
 }
-.greycontainer{
+.greycontainer {
   padding-top: 20px;
   padding-left: 20px;
   padding-right: 20px;
@@ -116,15 +115,15 @@
   border-radius: 10px;
   min-width: 35em;
   flex-direction: column;
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
 }
-.title{
+.title {
   font-family: "Fira Mono", monospace;
   color: #000;
   font-size: 30px;
   font-weight: bolder;
 }
-.dashline{
+.dashline {
   border-top: 1px dashed #000;
   width: 100%;
   transform: translateY(-50%);
@@ -137,38 +136,38 @@
   font-size: 25px;
   padding-bottom: 10px;
 }
-.activity{
+.activity {
   display: flex;
-  background-color: #FBFF50;
+  background-color: #fbff50;
   padding: 3px;
   padding-left: 5px;
   margin-bottom: 5px;
   border-radius: 5px;
   justify-content: space-between;
 }
-.dailytask{
+.dailytask {
   display: flex;
-  background-color: #50FFC0;
+  background-color: #50ffc0;
   padding: 3px;
   padding-left: 5px;
   margin-bottom: 5px;
   border-radius: 5px;
   justify-content: space-between;
 }
-.xp{
+.xp {
   font-weight: 600;
 }
-.xpbar{
+.xpbar {
   text-align: right;
   font-size: 25px;
   padding-top: 10px;
 }
-.XPgained{
+.XPgained {
   font-size: 10;
 }
-.leaderlist{
+.leaderlist {
   display: flex;
-  background-color: #DDDDDD;
+  background-color: #dddddd;
   padding: 3px;
   padding-left: 5px;
   margin-bottom: 5px;
