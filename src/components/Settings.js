@@ -4,13 +4,17 @@ import logo from "../img/WTlogo_stacked_white_bordered.png";
 import "./Settings.css";
 import { useNavigate } from "react-router-dom";
 import { child, get, getDatabase, ref, remove } from "firebase/database";
-import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import fb from "../firebase";
 
 const dbRef = ref(getDatabase(fb));
 const db = getDatabase();
 const Settings = () => {
-  
   const auth = getAuth();
   const user = auth.currentUser;
   const [password, setpassword] = useState("");
@@ -65,23 +69,24 @@ const Settings = () => {
     console.log(auth.currentUser.uid);
     const credential = EmailAuthProvider.credential(
       auth.currentUser.email,
-      document.getElementById("passwordID").value
+      document.getElementById("passwordID").value,
     );
     //reauthenticate the user to facilitate removal of account
-    reauthenticateWithCredential(auth.currentUser, credential). then(() => {
-      deleteUser(user)
+    reauthenticateWithCredential(auth.currentUser, credential)
       .then(() => {
-        remove(child(dbRef, "/users/" + userId));
-        redirect("/");
-        console.log("User Succesfully Deleted!");
+        deleteUser(user)
+          .then(() => {
+            remove(child(dbRef, "/users/" + userId));
+            redirect("/");
+            console.log("User Succesfully Deleted!");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       })
       .catch((error) => {
         console.error(error);
       });
-    }).catch((error) => {
-      console.error(error);
-    })
-    
   }
 
   return (
@@ -99,11 +104,13 @@ const Settings = () => {
         <WarningButton text="Sign Out" onClick={GetUserData} />
         <br />
         <span className="slogan">Enter password to delete account</span>
-        <input className="textfield"
+        <input
+          className="textfield"
           type="password"
           id="passwordID"
           value={password}
-          onChange={(e) => setpassword(e.target.value)}/>
+          onChange={(e) => setpassword(e.target.value)}
+        />
         <CriticalWarningButton text="Delete Account" onClick={DeleteUserData} />
       </div>
     </div>
