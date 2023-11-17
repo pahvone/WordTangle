@@ -41,7 +41,7 @@ const Usernamechange = () => {
       <NavBar />
       <div className="responsive-container">
         <img className="app-logo" src={logo} alt="Word Tangle Logo" />
-        <span className="slogan">Username</span>
+        <span className="slogan">Nickname</span>
         <p />
         <input
           className="textfield"
@@ -50,7 +50,7 @@ const Usernamechange = () => {
           value={username}
           onChange={(e) => setusername(e.target.value)}
         />
-        <Button text="Update Username" onClick={UploadUserName} />
+        <Button text="Update Nickname" onClick={UploadUserName} />
       </div>
     </div>
   );

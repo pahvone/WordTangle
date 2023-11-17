@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import google from "../img/google_logo.png";
-import { getDatabase, ref, set } from "firebase/database";
 import { useState } from "react";
 import {
   getAuth,
@@ -84,7 +83,7 @@ const Login = () => {
   const handleAlternateLoginButtonClick = () => {
     LoginToFirebaseGoogle();
   };
-  //TODO: lisää vertailu että onko käyttäjätunnus vai säpo(?) (atm hardcoded email only)
+
   return (
     <div className="responsive-container">
       <img className="app-logo" src={logo} alt="Word Tangle Logo" />

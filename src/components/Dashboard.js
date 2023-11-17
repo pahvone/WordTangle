@@ -1,15 +1,6 @@
 import React from "react";
-import logo from "../img/WTlogo_stacked_white_bordered.png";
 import NavBar from "./NavBar";
-import { getDatabase, ref, child, get } from "firebase/database";
-import { getAuth } from "firebase/auth";
-import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
-
-const auth = getAuth();
-const user = auth.currentUser;
-const dbRef = ref(getDatabase(fb));
-const db = getDatabase();
 
 const Button = ({ text, onClick }) => {
   return (
@@ -74,6 +65,7 @@ const DashBoard = () => {
           src={nonstackedlogo}
           alt="Word Tangle Logo"
         />
+
         <span className="dashboardslogan">Your #1 language learning app</span>
       </div>
 
