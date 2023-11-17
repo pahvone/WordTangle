@@ -3,6 +3,7 @@ import "./VocabLesson.css";
 import Lesson from "../vocab/Vocab";
 import VocabQuiz from "./VocabQuiz";
 import NavBar from "./NavBar";
+import Footer from "./Footter";
 
 class LangPath {}
 
@@ -40,6 +41,7 @@ const LessonPath = (_language) => {
   return (
     <div>
       <NavBar />
+      <div className="pagecontainer">
       <div className="container-fluid ">
         <div className="row justify-content-center align-items-center">
           <h1>{language}</h1>
@@ -48,6 +50,8 @@ const LessonPath = (_language) => {
           <div className="col-md-4">{lessonButtons}</div>
         </div>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 };

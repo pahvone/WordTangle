@@ -1,11 +1,13 @@
 import React from "react";
 import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
+import Footer from "./Footter";
 
 const Forums = () => {
   return (
     <div>
       <NavBar />
+      <div className="pagecontainer">
       <div className="responsive-container">
         <img className="app-logo" src={logo} alt="Word Tangle Logo" />
         <h3>
@@ -33,6 +35,8 @@ const Forums = () => {
           hendrerit.
         </h4>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 };

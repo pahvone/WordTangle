@@ -5,6 +5,7 @@ import { child, get, getDatabase, ref, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
+import Footer from "./Footter";
 
 const auth = getAuth();
 const user = auth.currentUser;
@@ -68,6 +69,7 @@ const DashBoard = () => {
   return (
     <div>
       <NavBar />
+      <div className="pagecontainer">
       <div className="dashboardlogo-container">
         <img
           className="app-logo-nonstacked"
@@ -175,6 +177,8 @@ const DashBoard = () => {
           </div>
         </div>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 };

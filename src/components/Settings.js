@@ -12,6 +12,7 @@ import {
   signOut,
 } from "firebase/auth";
 import fb from "../firebase";
+import Footer from "./Footter.js"
 
 const dbRef = ref(getDatabase(fb));
 const Settings = () => {
@@ -141,6 +142,7 @@ const Settings = () => {
   return (
     <div>
       <NavBar />
+      <div className="pagecontainer">
       <div className="responsive-container">
         <img className="app-logo" src={logo} alt="Word Tangle Logo" />
         <p />
@@ -167,6 +169,8 @@ const Settings = () => {
         </p>
         <CriticalWarningButton text="Delete Account" onClick={DeleteUserData} />
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 };
