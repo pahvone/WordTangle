@@ -24,6 +24,9 @@ const Settings = () => {
     redirect("/UsernameChange");
   }
 
+  function Passwordredirect() {
+    redirect("/PasswordChange");
+  }
   const Button = ({ text, onClick }) => {
     return (
       <button className="styled-button" onClick={onClick}>
@@ -97,7 +100,7 @@ const Settings = () => {
         <p />
         <Button text="Change Nickname" onClick={Usernameredirect} />
         <br />
-        <Button text="Reset Password" onClick={Usernameredirect} />
+        <Button text="Change Password" onClick={Passwordredirect} />
         <br />
         <Button text="Get User Data" onClick={GetUserData} />
         <br />

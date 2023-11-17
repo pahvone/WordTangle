@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import google from "../img/google_logo.png";
-import { getDatabase, ref, set } from "firebase/database";
 import { useState } from "react";
 import {
   getAuth,

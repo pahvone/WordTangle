@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../img/WTlogo_stacked_white_bordered.png";
 import NavBar from "./NavBar";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 
