@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "./NavBar";
+import "./Settings.css";
+import { child, get, getDatabase, ref, remove } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
+
+const auth = getAuth();
+const user = auth.currentUser;
+const dbRef = ref(getDatabase(fb));
+const db = getDatabase();
 
 const Button = ({ text, onClick }) => {
   return (

@@ -9,12 +9,11 @@ import {
   deleteUser,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  signOut
+  signOut,
 } from "firebase/auth";
 import fb from "../firebase";
 
 const dbRef = ref(getDatabase(fb));
-const db = getDatabase();
 const Settings = () => {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -107,7 +106,8 @@ const Settings = () => {
           console.error(error);
         });
     }
-    
+  }
+
   function SignOut() {
     signOut(auth)
       .then(() => {
@@ -117,7 +117,6 @@ const Settings = () => {
       .catch((error) => {
         console.error();
       });
-
   }
 
   const showTextbox = () => {
@@ -166,7 +165,6 @@ const Settings = () => {
             />
           )}
         </p>
-
         <CriticalWarningButton text="Delete Account" onClick={DeleteUserData} />
       </div>
     </div>
