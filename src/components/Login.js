@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import google from "../img/google_logo.png";
-import { getDatabase, ref, set } from "firebase/database";
 import { useState } from "react";
 import {
   getAuth,
@@ -60,7 +59,8 @@ const Login = () => {
         // The signed-in user info.
         const user = result.user;
         console.log("Login Successful!");
-        redirect("/Dashboard");
+        console.log(user.uid);
+        redirect("/UsernameChange");
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })
@@ -83,10 +83,10 @@ const Login = () => {
   const handleAlternateLoginButtonClick = () => {
     LoginToFirebaseGoogle();
   };
-  //TODO: lisää vertailu että onko käyttäjätunnus vai säpo(?) (atm hardcoded email only)
+
   return (
     <div className="responsive-container">
-      <img className="App-logo" src={logo} alt="Word Tangle Logo" />
+      <img className="app-logo" src={logo} alt="Word Tangle Logo" />
       <span className="slogan">Email</span>
       <p />
       <label htmlFor="email" />

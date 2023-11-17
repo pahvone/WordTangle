@@ -1,0 +1,154 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #fcfcfc;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5em;
+}
+
+.navbar {
+  height: 5em;
+  justify-content: flex-start;
+  background-color: #fbff50;
+}
+.navbar li {
+  list-style: none;
+  margin: 10px;
+}
+.navbar ul {
+  text-decoration: none;
+  white-space: nowrap;
+  display: flex;
+}
+
+.navbar ul a {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 20px;
+  text-decoration: none;
+  margin-right: 1em;
+  transition: 0.2s ease-in-out;
+}
+
+.navbar ul a:hover {
+  color: #575a1d;
+  font-size: 20.5px;
+}
+.nav-elements-right ul a.active,
+.nav-elements ul a.active {
+  color: #000;
+  font-weight: 500;
+  position: relative;
+}
+.nav-elements-right ul a.active::after,
+.nav-elements ul a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #574c4c;
+}
+
+.logo img {
+  align-items: flex;
+  width: 4em;
+  height: 4em;
+  background-color: #8e59ff;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.nav-item {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.nav-elements-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.react-toggle-track-x {
+  margin-top: 11px !important;
+  margin-right: 5px !important;
+}
+.react-toggle-track-check {
+  margin-top: 11px !important;
+}
+
+@media screen and (max-width: 1200px) {
+  .nav-elements ul,
+  .nav-elements-right ul {
+    flex-direction: column;
+  }
+
+  .nav-elements {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: fixed;
+    right: 0em;
+    top: 5em;
+    height: 100%;
+    width: 20em;
+    background-color: #e0e247;
+    transition: 0.3s ease-in-out;
+    box-shadow: inset 0px 20px 40px 10px rgba(0, 0, 0, 0.1);
+  }
+  .nav-elements-right {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: fixed;
+    right: 0em;
+    top: 20em;
+    height: 100%;
+    width: 20em;
+    transition: 0.3s ease-in-out;
+  }
+
+  .nav-elements.active,
+  .nav-elements-right.active {
+    display: flex;
+    transition: 0.3s ease-in-out;
+    right: 0em;
+  }
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+    padding-right: 5%;
+  }
+
+  .react-toggle-track-x {
+    margin-top: 11px !important;
+    margin-right: 5px !important;
+  }
+  .react-toggle-track-check {
+    margin-top: 11px !important;
+  }
+
+  .menu-toggle:before {
+    content: "\2630";
+    font-size: 30px;
+    color: #000;
+  }
+
+  .container {
+    position: relative;
+  }
+}
