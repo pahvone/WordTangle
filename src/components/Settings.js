@@ -9,7 +9,7 @@ import {
   deleteUser,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  signOut,
+  signOut
 } from "firebase/auth";
 import fb from "../firebase";
 
@@ -20,6 +20,19 @@ const Settings = () => {
   const user = auth.currentUser;
   const [password, setpassword] = useState("");
   const redirect = useNavigate();
+  const [googleVar, setGoogleVar] = useState(false);
+
+  auth.onAuthStateChanged(function (user) {
+    if (user) {
+      //check provider data
+      user.providerData.forEach(function (profile) {
+        const signInProvider = profile.providerId;
+        console.log("Sign-in provider: " + profile.providerId);
+      });
+    }
+  });
+
+  console.log("Auth provider: " + user.providerId);
 
   function Usernameredirect() {
     redirect("/UsernameChange");
@@ -68,31 +81,33 @@ const Settings = () => {
       });
   }
 
-  function DeleteUserData() {
+  function DeleteUserData(signInProvider) {
     let userId = auth.currentUser.uid;
     console.log(auth.currentUser.uid);
-    const credential = EmailAuthProvider.credential(
-      auth.currentUser.email,
-      document.getElementById("passwordID").value,
-    );
-    //reauthenticate the user to facilitate removal of account
-    reauthenticateWithCredential(auth.currentUser, credential)
-      .then(() => {
-        deleteUser(user)
-          .then(() => {
-            remove(child(dbRef, "/users/" + userId));
-            redirect("/");
-            console.log("User Succesfully Deleted!");
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
 
+    if (signInProvider != "google.com") {
+      const credential = EmailAuthProvider.credential(
+        auth.currentUser.email,
+        document.getElementById("passwordID").value,
+      );
+      //reauthenticate the user to facilitate removal of account
+      reauthenticateWithCredential(auth.currentUser, credential)
+        .then(() => {
+          deleteUser(user)
+            .then(() => {
+              remove(child(dbRef, "/users/" + userId));
+              redirect("/");
+              console.log("User Succesfully Deleted!");
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    
   function SignOut() {
     signOut(auth)
       .then(() => {
@@ -102,7 +117,27 @@ const Settings = () => {
       .catch((error) => {
         console.error();
       });
+
   }
+
+  const showTextbox = () => {
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        //check provider data
+        user.providerData.forEach(function (profile) {
+          const signInProvider = profile.providerId;
+          console.log("Sign-in provider in showbox: " + signInProvider);
+          if (signInProvider == "google.com") {
+            console.log("google found");
+            setGoogleVar(false);
+          } else {
+            console.log("no google found");
+            setGoogleVar(true);
+          }
+        });
+      }
+    });
+  };
 
   return (
     <div>
@@ -118,14 +153,20 @@ const Settings = () => {
         <br />
         <WarningButton text="Sign Out" onClick={SignOut} />
         <br />
-        <span className="slogan">Enter password to delete account</span>
-        <input
-          className="textfield"
-          type="password"
-          id="passwordID"
-          value={password}
-          onChange={(e) => setpassword(e.target.value)}
-        />
+        {showTextbox()}
+        <p>
+          {googleVar && (
+            <input
+              className="textfield"
+              type="password"
+              id="passwordID"
+              value={password}
+              placeholder="Enter password to delete account"
+              onChange={(e) => setpassword(e.target.value)}
+            />
+          )}
+        </p>
+
         <CriticalWarningButton text="Delete Account" onClick={DeleteUserData} />
       </div>
     </div>
