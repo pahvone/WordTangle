@@ -8,11 +8,11 @@ const LessonPage = () => {
     <div>
       <NavBar />
       <div className="pagecontainer">
-      <div>
-        <VocabQuiz />
+        <div>
+          <VocabQuiz />
+        </div>
       </div>
-    </div>
-    <Footer/>
+      <Footer />
     </div>
   );
 };

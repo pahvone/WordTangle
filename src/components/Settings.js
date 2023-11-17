@@ -12,7 +12,7 @@ import {
   signOut,
 } from "firebase/auth";
 import fb from "../firebase";
-import Footer from "./Footter.js"
+import Footer from "./Footter.js";
 
 const dbRef = ref(getDatabase(fb));
 const Settings = () => {
@@ -143,34 +143,37 @@ const Settings = () => {
     <div>
       <NavBar />
       <div className="pagecontainer">
-      <div className="responsive-container">
-        <img className="app-logo" src={logo} alt="Word Tangle Logo" />
-        <p />
-        <Button text="Change Nickname" onClick={Usernameredirect} />
-        <br />
-        <Button text="Change Password" onClick={Passwordredirect} />
-        <br />
-        <Button text="Get User Data" onClick={GetUserData} />
-        <br />
-        <WarningButton text="Sign Out" onClick={SignOut} />
-        <br />
-        {showTextbox()}
-        <p>
-          {googleVar && (
-            <input
-              className="textfield"
-              type="password"
-              id="passwordID"
-              value={password}
-              placeholder="Enter password to delete account"
-              onChange={(e) => setpassword(e.target.value)}
-            />
-          )}
-        </p>
-        <CriticalWarningButton text="Delete Account" onClick={DeleteUserData} />
+        <div className="responsive-container">
+          <img className="app-logo" src={logo} alt="Word Tangle Logo" />
+          <p />
+          <Button text="Change Nickname" onClick={Usernameredirect} />
+          <br />
+          <Button text="Change Password" onClick={Passwordredirect} />
+          <br />
+          <Button text="Get User Data" onClick={GetUserData} />
+          <br />
+          <WarningButton text="Sign Out" onClick={SignOut} />
+          <br />
+          {showTextbox()}
+          <p>
+            {googleVar && (
+              <input
+                className="textfield"
+                type="password"
+                id="passwordID"
+                value={password}
+                placeholder="Enter password to delete account"
+                onChange={(e) => setpassword(e.target.value)}
+              />
+            )}
+          </p>
+          <CriticalWarningButton
+            text="Delete Account"
+            onClick={DeleteUserData}
+          />
+        </div>
       </div>
-    </div>
-    <Footer/>
+      <Footer />
     </div>
   );
 };

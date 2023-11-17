@@ -42,16 +42,16 @@ const LessonPath = (_language) => {
     <div>
       <NavBar />
       <div className="pagecontainer">
-      <div className="container-fluid ">
-        <div className="row justify-content-center align-items-center">
-          <h1>{language}</h1>
-        </div>
-        <div className="row justify-content-center align-items-center">
-          <div className="col-md-4">{lessonButtons}</div>
+        <div className="container-fluid ">
+          <div className="row justify-content-center align-items-center">
+            <h1>{language}</h1>
+          </div>
+          <div className="row justify-content-center align-items-center">
+            <div className="col-md-4">{lessonButtons}</div>
+          </div>
         </div>
       </div>
-    </div>
-    <Footer/>
+      <Footer />
     </div>
   );
 };

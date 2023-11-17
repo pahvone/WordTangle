@@ -1,20 +1,17 @@
+.footterbottom {
+  background-color: #fbff50;
+  height: 5em;
+  margin-top: -5em;
+}
 
-  
-  .footterbottom {
-    background-color: #FBFF50;
-    height: 5em;
-    margin-top: -5em;
-  }
-  
-  
-  footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 7.6em;
-    background-image: url('../img/footerbg.png');
-    background-repeat: repeat-x;
-    background-size: auto;
-    width: 100%;
-    left: 0;
-  }
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 7.6em;
+  background-image: url("../img/footerbg.png");
+  background-repeat: repeat-x;
+  background-size: auto;
+  width: 100%;
+  left: 0;
+}

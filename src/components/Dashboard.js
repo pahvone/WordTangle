@@ -70,115 +70,115 @@ const DashBoard = () => {
     <div>
       <NavBar />
       <div className="pagecontainer">
-      <div className="dashboardlogo-container">
-        <img
-          className="app-logo-nonstacked"
-          src={nonstackedlogo}
-          alt="Word Tangle Logo"
-        />
+        <div className="dashboardlogo-container">
+          <img
+            className="app-logo-nonstacked"
+            src={nonstackedlogo}
+            alt="Word Tangle Logo"
+          />
 
-        <span className="dashboardslogan">Your #1 language learning app</span>
+          <span className="dashboardslogan">Your #1 language learning app</span>
+        </div>
+
+        <div className="dashboardelements">
+          <div className="boxcontainer">
+            <div className="greycontainer">
+              <div className="title">Hi User!</div>
+              <div className="dashline" />
+              <div className="latestactivity">Latest activity:</div>
+              <div className="activity">
+                {">"} Completed a quiz
+                <span className="xp">25XP</span>
+              </div>
+              <div className="activity">
+                {">"} Played a mini-game
+                <span className="xp">15XP</span>
+              </div>
+              <div className="activity">
+                {">"} Posted in the forums
+                <span className="xp">10XP</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="boxcontainer">
+            <div className="greycontainer">
+              <div className="title">DAILY TASKS</div>
+              <div className="dashline" />
+              <div className="dailytask">
+                {" "}
+                Completed a quiz
+                <span className="xp">10XP</span>
+              </div>
+              <div className="dailytask">
+                {" "}
+                Played a mini-game
+                <span className="xp">10XP</span>
+              </div>
+              <div className="dailytask">
+                {" "}
+                Browse the dictionary
+                <span className="xp">10XP</span>
+              </div>
+              <div className="xpbar">
+                <Progress_bar progress="40" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="dashboardelements">
+          <div className="boxcontainer">
+            <div className="greycontainer">
+              <div className="title">CONTINUE LEARNING</div>
+              <div className="dashline" />
+              <div className="latestactivity">Latest activity:</div>
+              <div className="activity">
+                {">"} Completed a quiz
+                <span className="xp">25XP</span>
+              </div>
+              <div className="activity">
+                {">"} Played a mini-game
+                <span className="xp">15XP</span>
+              </div>
+              <div className="activity">
+                {">"} Posted in the forums
+                <span className="xp">10XP</span>
+              </div>
+            </div>
+          </div>
+          <div className="boxcontainer">
+            <div className="greycontainer">
+              <div className="title">LEADERBOARDS</div>
+              <span className="XPgained">
+                {"("}XP gained during the last 7 days{")"}
+              </span>
+              <div className="dashline" />
+              <div className="leaderlist">
+                {" "}
+                1. Kyle
+                <span className="xp">25XP</span>
+              </div>
+              <div className="leaderlist">
+                {" "}
+                2. Eric
+                <span className="xp">15XP</span>
+              </div>
+              <div className="leaderlist">
+                {" "}
+                3. Stan
+                <span className="xp">10XP</span>
+              </div>
+              <div className="leaderlist">
+                {" "}
+                3. Juu
+                <span className="xp">10XP</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div className="dashboardelements">
-        <div className="boxcontainer">
-          <div className="greycontainer">
-            <div className="title">Hi User!</div>
-            <div className="dashline" />
-            <div className="latestactivity">Latest activity:</div>
-            <div className="activity">
-              {">"} Completed a quiz
-              <span className="xp">25XP</span>
-            </div>
-            <div className="activity">
-              {">"} Played a mini-game
-              <span className="xp">15XP</span>
-            </div>
-            <div className="activity">
-              {">"} Posted in the forums
-              <span className="xp">10XP</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="boxcontainer">
-          <div className="greycontainer">
-            <div className="title">DAILY TASKS</div>
-            <div className="dashline" />
-            <div className="dailytask">
-              {" "}
-              Completed a quiz
-              <span className="xp">10XP</span>
-            </div>
-            <div className="dailytask">
-              {" "}
-              Played a mini-game
-              <span className="xp">10XP</span>
-            </div>
-            <div className="dailytask">
-              {" "}
-              Browse the dictionary
-              <span className="xp">10XP</span>
-            </div>
-            <div className="xpbar">
-              <Progress_bar progress="40" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="dashboardelements">
-        <div className="boxcontainer">
-          <div className="greycontainer">
-            <div className="title">CONTINUE LEARNING</div>
-            <div className="dashline" />
-            <div className="latestactivity">Latest activity:</div>
-            <div className="activity">
-              {">"} Completed a quiz
-              <span className="xp">25XP</span>
-            </div>
-            <div className="activity">
-              {">"} Played a mini-game
-              <span className="xp">15XP</span>
-            </div>
-            <div className="activity">
-              {">"} Posted in the forums
-              <span className="xp">10XP</span>
-            </div>
-          </div>
-        </div>
-        <div className="boxcontainer">
-          <div className="greycontainer">
-            <div className="title">LEADERBOARDS</div>
-            <span className="XPgained">
-              {"("}XP gained during the last 7 days{")"}
-            </span>
-            <div className="dashline" />
-            <div className="leaderlist">
-              {" "}
-              1. Kyle
-              <span className="xp">25XP</span>
-            </div>
-            <div className="leaderlist">
-              {" "}
-              2. Eric
-              <span className="xp">15XP</span>
-            </div>
-            <div className="leaderlist">
-              {" "}
-              3. Stan
-              <span className="xp">10XP</span>
-            </div>
-            <div className="leaderlist">
-              {" "}
-              3. Juu
-              <span className="xp">10XP</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <Footer/>
+      <Footer />
     </div>
   );
 };

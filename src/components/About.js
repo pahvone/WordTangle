@@ -9,14 +9,14 @@ const About = () => {
     <div>
       <NavBar />
       <div className="pagecontainer">
-      <div className="responsive-container">
-        <h3>We are the coding goblins :-D</h3>
+        <div className="responsive-container">
+          <h3>We are the coding goblins :-D</h3>
+        </div>
+        <div className="responsive-container">
+          <img className="app-logo" src={CGlogo} alt="Code Goblins logo" />
+        </div>
       </div>
-      <div className="responsive-container">
-        <img className="app-logo" src={CGlogo} alt="Code Goblins logo" />
-      </div>
-    </div>
-    <Footer/>
+      <Footer />
     </div>
   );
 };
