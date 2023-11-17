@@ -4,30 +4,34 @@ import logo from "../img/WTlogo_stacked_white_bordered.png";
 import "./Settings.css";
 import { useNavigate } from "react-router-dom";
 import { child, get, getDatabase, ref, remove } from "firebase/database";
-import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import fb from "../firebase";
 
 const dbRef = ref(getDatabase(fb));
 const db = getDatabase();
 const Settings = () => {
-  
   const auth = getAuth();
   const user = auth.currentUser;
   const [password, setpassword] = useState("");
   const redirect = useNavigate();
   const [googleVar, setGoogleVar] = useState(false);
 
-  auth.onAuthStateChanged(function(user) {
+  auth.onAuthStateChanged(function (user) {
     if (user) {
       //check provider data
-      user.providerData.forEach(function(profile) {
+      user.providerData.forEach(function (profile) {
         const signInProvider = profile.providerId;
-        console.log('Sign-in provider: ' + profile.providerId);
+        console.log("Sign-in provider: " + profile.providerId);
       });
     }
-  })
+  });
 
-  console.log('Auth provider: ' + user.providerId);
+  console.log("Auth provider: " + user.providerId);
 
   function Usernameredirect() {
     redirect("/UsernameChange");
@@ -76,45 +80,48 @@ const Settings = () => {
   function DeleteUserData(signInProvider) {
     let userId = auth.currentUser.uid;
     console.log(auth.currentUser.uid);
-    if (signInProvider != "google.com") {const credential = EmailAuthProvider.credential(
-      auth.currentUser.email,
-      document.getElementById("passwordID").value
-    );
-    //reauthenticate the user to facilitate removal of account
-    reauthenticateWithCredential(auth.currentUser, credential). then(() => {
-      deleteUser(user)
-      .then(() => {
-        remove(child(dbRef, "/users/" + userId));
-        redirect("/");
-        console.log("User Succesfully Deleted!");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    }).catch((error) => {
-      console.error(error);
-    })}
-    
+    if (signInProvider != "google.com") {
+      const credential = EmailAuthProvider.credential(
+        auth.currentUser.email,
+        document.getElementById("passwordID").value,
+      );
+      //reauthenticate the user to facilitate removal of account
+      reauthenticateWithCredential(auth.currentUser, credential)
+        .then(() => {
+          deleteUser(user)
+            .then(() => {
+              remove(child(dbRef, "/users/" + userId));
+              redirect("/");
+              console.log("User Succesfully Deleted!");
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   }
 
   const showTextbox = () => {
-    auth.onAuthStateChanged(function(user) {
+    auth.onAuthStateChanged(function (user) {
       if (user) {
         //check provider data
-        user.providerData.forEach(function(profile) {
+        user.providerData.forEach(function (profile) {
           const signInProvider = profile.providerId;
-          console.log('Sign-in provider in showbox: ' + signInProvider);
+          console.log("Sign-in provider in showbox: " + signInProvider);
           if (signInProvider == "google.com") {
-            console.log('google found')
+            console.log("google found");
             setGoogleVar(false);
           } else {
-            console.log('no google found')
+            console.log("no google found");
             setGoogleVar(true);
           }
         });
       }
-    })
-  }
+    });
+  };
 
   return (
     <div>
@@ -131,16 +138,18 @@ const Settings = () => {
         <WarningButton text="Sign Out" onClick={GetUserData} />
         <br />
         {showTextbox()}
-        <p>{googleVar && 
-          <input
-          className="textfield"
-          type="password"
-          id="passwordID"
-          value={password}
-          placeholder="Enter password to delete account"
-          onChange={(e) => setpassword(e.target.value)}
-        />
-        }</p>
+        <p>
+          {googleVar && (
+            <input
+              className="textfield"
+              type="password"
+              id="passwordID"
+              value={password}
+              placeholder="Enter password to delete account"
+              onChange={(e) => setpassword(e.target.value)}
+            />
+          )}
+        </p>
         <CriticalWarningButton text="Delete Account" onClick={DeleteUserData} />
       </div>
     </div>

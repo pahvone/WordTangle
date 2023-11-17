@@ -84,7 +84,7 @@ const Login = () => {
   const handleAlternateLoginButtonClick = () => {
     LoginToFirebaseGoogle();
   };
-  
+
   return (
     <div className="responsive-container">
       <img className="app-logo" src={logo} alt="Word Tangle Logo" />
