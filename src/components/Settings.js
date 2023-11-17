@@ -9,6 +9,7 @@ import {
   deleteUser,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  signOut
 } from "firebase/auth";
 import fb from "../firebase";
 
@@ -37,6 +38,9 @@ const Settings = () => {
     redirect("/UsernameChange");
   }
 
+  function Passwordredirect() {
+    redirect("/PasswordChange");
+  }
   const Button = ({ text, onClick }) => {
     return (
       <button className="styled-button" onClick={onClick}>
@@ -80,6 +84,7 @@ const Settings = () => {
   function DeleteUserData(signInProvider) {
     let userId = auth.currentUser.uid;
     console.log(auth.currentUser.uid);
+
     if (signInProvider != "google.com") {
       const credential = EmailAuthProvider.credential(
         auth.currentUser.email,
@@ -102,6 +107,17 @@ const Settings = () => {
           console.error(error);
         });
     }
+    
+  function SignOut() {
+    signOut(auth)
+      .then(() => {
+        console.log("Successfully signed out!");
+        redirect("/");
+      })
+      .catch((error) => {
+        console.error();
+      });
+
   }
 
   const showTextbox = () => {
@@ -131,11 +147,11 @@ const Settings = () => {
         <p />
         <Button text="Change Nickname" onClick={Usernameredirect} />
         <br />
-        <Button text="Reset Password" onClick={Usernameredirect} />
+        <Button text="Change Password" onClick={Passwordredirect} />
         <br />
         <Button text="Get User Data" onClick={GetUserData} />
         <br />
-        <WarningButton text="Sign Out" onClick={GetUserData} />
+        <WarningButton text="Sign Out" onClick={SignOut} />
         <br />
         {showTextbox()}
         <p>
@@ -150,6 +166,7 @@ const Settings = () => {
             />
           )}
         </p>
+
         <CriticalWarningButton text="Delete Account" onClick={DeleteUserData} />
       </div>
     </div>
