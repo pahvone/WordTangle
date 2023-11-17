@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/pahvone/wordtangle/static/css/main.913a5305.css",
+    "main.js": "/pahvone/wordtangle/static/js/main.3ef494aa.js",
+    "static/js/787.a7359296.chunk.js": "/pahvone/wordtangle/static/js/787.a7359296.chunk.js",
+    "static/media/wtlogo_nonstacked.png": "/pahvone/wordtangle/static/media/wtlogo_nonstacked.baa150c47f222140739b.png",
+    "static/media/WTlogo_stacked_white_bordered.png": "/pahvone/wordtangle/static/media/WTlogo_stacked_white_bordered.d6f501cbf21bdb9e6c44.png",
+    "static/media/google_logo.png": "/pahvone/wordtangle/static/media/google_logo.e983fad4418e996c0caf.png",
+    "static/media/CodeGoblins.png": "/pahvone/wordtangle/static/media/CodeGoblins.3f84b7e61bd3ba90f208.png",
+    "static/media/footerbg.png": "/pahvone/wordtangle/static/media/footerbg.207e77fcbf918a50c10c.png",
+    "static/media/WTlogo_white_stroke.png": "/pahvone/wordtangle/static/media/WTlogo_white_stroke.b5d0a64237bfe3fda142.png",
+    "index.html": "/pahvone/wordtangle/index.html",
+    "main.913a5305.css.map": "/pahvone/wordtangle/static/css/main.913a5305.css.map",
+    "main.3ef494aa.js.map": "/pahvone/wordtangle/static/js/main.3ef494aa.js.map",
+    "787.a7359296.chunk.js.map": "/pahvone/wordtangle/static/js/787.a7359296.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.913a5305.css",
+    "static/js/main.3ef494aa.js"
+  ]
+}
