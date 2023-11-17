@@ -15,6 +15,19 @@ const Settings = () => {
   const user = auth.currentUser;
   const [password, setpassword] = useState("");
   const redirect = useNavigate();
+  const [googleVar, setGoogleVar] = useState(false);
+
+  auth.onAuthStateChanged(function(user) {
+    if (user) {
+      //check provider data
+      user.providerData.forEach(function(profile) {
+        const signInProvider = profile.providerId;
+        console.log('Sign-in provider: ' + profile.providerId);
+      });
+    }
+  })
+
+  console.log('Auth provider: ' + user.providerId);
 
   function Usernameredirect() {
     redirect("/UsernameChange");
@@ -60,10 +73,10 @@ const Settings = () => {
       });
   }
 
-  function DeleteUserData() {
+  function DeleteUserData(signInProvider) {
     let userId = auth.currentUser.uid;
     console.log(auth.currentUser.uid);
-    const credential = EmailAuthProvider.credential(
+    if (signInProvider != "google.com") {const credential = EmailAuthProvider.credential(
       auth.currentUser.email,
       document.getElementById("passwordID").value
     );
@@ -80,8 +93,27 @@ const Settings = () => {
       });
     }).catch((error) => {
       console.error(error);
-    })
+    })}
     
+  }
+
+  const showTextbox = () => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        //check provider data
+        user.providerData.forEach(function(profile) {
+          const signInProvider = profile.providerId;
+          console.log('Sign-in provider in showbox: ' + signInProvider);
+          if (signInProvider == "google.com") {
+            console.log('google found')
+            setGoogleVar(false);
+          } else {
+            console.log('no google found')
+            setGoogleVar(true);
+          }
+        });
+      }
+    })
   }
 
   return (
@@ -98,12 +130,17 @@ const Settings = () => {
         <br />
         <WarningButton text="Sign Out" onClick={GetUserData} />
         <br />
-        <span className="slogan">Enter password to delete account</span>
-        <input className="textfield"
+        {showTextbox()}
+        <p>{googleVar && 
+          <input
+          className="textfield"
           type="password"
           id="passwordID"
           value={password}
-          onChange={(e) => setpassword(e.target.value)}/>
+          placeholder="Enter password to delete account"
+          onChange={(e) => setpassword(e.target.value)}
+        />
+        }</p>
         <CriticalWarningButton text="Delete Account" onClick={DeleteUserData} />
       </div>
     </div>
