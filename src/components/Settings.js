@@ -9,6 +9,7 @@ import {
   deleteUser,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  signOut,
 } from "firebase/auth";
 import fb from "../firebase";
 
@@ -92,6 +93,17 @@ const Settings = () => {
       });
   }
 
+  function SignOut() {
+    signOut(auth)
+      .then(() => {
+        console.log("Successfully signed out!");
+        redirect("/");
+      })
+      .catch((error) => {
+        console.error();
+      });
+  }
+
   return (
     <div>
       <NavBar />
@@ -104,7 +116,7 @@ const Settings = () => {
         <br />
         <Button text="Get User Data" onClick={GetUserData} />
         <br />
-        <WarningButton text="Sign Out" onClick={GetUserData} />
+        <WarningButton text="Sign Out" onClick={SignOut} />
         <br />
         <span className="slogan">Enter password to delete account</span>
         <input
