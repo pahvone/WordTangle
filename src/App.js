@@ -17,20 +17,19 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/DashBoard" element={<Dashboard />} />
-        <Route path="/" element={<Welcome />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/Settings" element={<Settings />} />
-        <Route path="/Forums" element={<Forums />} />
-        <Route path="/About" element={<About />} />
-        <Route path="/UsernameChange" element={<UsernameChange />} />
-        <Route path="/PasswordChange" element={<PasswordChange />} />
-        <Route path="/LessonPath" element={<LessonPath />} />
-        <Route path="/LessonPage" element={<LessonPage />} />
-        <Route path="/" element={<Welcome />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="wordtangle/DashBoard" element={<Dashboard />} />
+        <Route path="wordtangle/" element={<Welcome />} />
+        <Route path="wordtangle/Login" element={<Login />} />
+        <Route path="wordtangle/SignUp" element={<SignUp />} />
+        <Route path="wordtangle/Settings" element={<Settings />} />
+        <Route path="wordtangle/Forums" element={<Forums />} />
+        <Route path="wordtangle/About" element={<About />} />
+        <Route path="wordtangle/UsernameChange" element={<UsernameChange />} />
+        <Route path="wordtangle/PasswordChange" element={<PasswordChange />} />
+        <Route path="wordtangle/LessonPath" element={<LessonPath />} />
+        <Route path="wordtangle/LessonPage" element={<LessonPage />} />
+        <Route path="wordtangle/Login" element={<Login />} />
+        <Route path="wordtangle/Dashboard" element={<Dashboard />} />
       </Routes>
     </>
   );
