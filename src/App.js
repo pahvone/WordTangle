@@ -21,7 +21,6 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/DashBoard" element={<Dashboard />} />
         <Route path="/" element={<Welcome />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/SignUp" element={<SignUp />} />
@@ -32,7 +31,6 @@ const App = () => {
         <Route path="/PasswordChange" element={<PasswordChange />} />
         <Route path="/LessonPath" element={<LessonPath />} />
         <Route path="/LessonPage" element={<LessonPage />} />
-        <Route path="/Login" element={<Login />} />
         <Route path="/Dashboard" element={<Dashboard />} />
       </Routes>
     </>
