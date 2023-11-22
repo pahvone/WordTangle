@@ -15,25 +15,25 @@ const Navbar = () => {
     <nav className={`navbar ${menuActive ? "active" : ""}`}>
       <div className="container">
         <div className="logo">
-          <img src={logo} alt="Compact Word Tangle Logo" />
+          <img src={logo} alt="Compacter Word Tangle Logo" />
         </div>
 
         <div className="nav-elements">
           <ul>
             <li>
-              <NavLink to="/Dashboard">Dashboard</NavLink>
+              <NavLink data-testid='dashboard-main' to="/Dashboard">Dashboard</NavLink>
             </li>
             <li>
               <span className="merkki">{">> "}</span>
-              <NavLink to="/LessonPath">Learn</NavLink>
+              <NavLink data-testid='learn-main' to="/LessonPath">Learn</NavLink>
             </li>
             <li>
               <span className="merkki">{">> "}</span>
-              <NavLink to="/Forums">Forums</NavLink>
+              <NavLink data-testid='forums-main' to="/Forums">Forums</NavLink>
             </li>
             <li>
               <span className="merkki">{">> "}</span>
-              <NavLink to="/Settings">Settings</NavLink>
+              <NavLink data-testid='settings-main' to="/Settings">Settings</NavLink>
             </li>
           </ul>
         </div>
@@ -44,10 +44,10 @@ const Navbar = () => {
               <DarkMode />
             </li>
             <li>
-              <NavLink to="/About">ABOUT</NavLink>
+              <NavLink data-testid='about-main' to="/About">ABOUT</NavLink>
             </li>
             <li>
-              <NavLink to="/SignOut">SIGN OUT</NavLink>
+              <NavLink data-testid='signout-main' to="/SignOut">SIGN OUT</NavLink>
             </li>
           </ul>
         </div>

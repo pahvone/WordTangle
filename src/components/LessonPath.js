@@ -19,7 +19,7 @@ const LessonPath = (_language) => {
 
     var buttonElements = [];
 
-    console.log(les.lessonName);
+    // console.log(les.lessonName);
 
     buttonElements.push(
       <button
