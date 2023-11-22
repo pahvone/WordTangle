@@ -40,6 +40,7 @@
   background: none;
   border: none;
   padding: 0;
+  color: var(--textcolor);
   cursor: pointer;
 }
 

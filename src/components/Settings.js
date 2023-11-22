@@ -20,19 +20,25 @@ const Settings = () => {
   const user = auth.currentUser;
   const [password, setpassword] = useState("");
   const redirect = useNavigate();
-  const [googleVar, setGoogleVar] = useState(false);
+  const [googleVar, setGoogleVar] = useState(true);
 
   auth.onAuthStateChanged(function (user) {
     if (user) {
       //check provider data
       user.providerData.forEach(function (profile) {
-        const signInProvider = profile.providerId;
-        console.log("Sign-in provider: " + profile.providerId);
+        if(profile){
+          if(profile.providerId){
+            const signInProvider = profile.providerId;
+            console.log("Sign-in provider: " + profile.providerId);
+          }
+        }
       });
     }
   });
 
-  console.log("Auth provider: " + user.providerId);
+  if(user){
+    console.log("Auth provider: " + user.providerId);
+  }
 
   function Usernameredirect() {
     redirect("/UsernameChange");

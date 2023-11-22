@@ -15,7 +15,12 @@ const firebaseConfig = {
 };
 
 const fb = firebase.initializeApp(firebaseConfig);
-const analytics = firebase.analytics();
+// const analytics = firebase.analytics();
+/* Commented above because it wasnt used and because of the following warning
+Analytics: IndexedDB unavailable or restricted in this environment. 
+Wrap initialization of analytics in analytics.isSupported() to prevent initialization in unsupported environments. 
+Details: IndexedDB is not available in this environment. (analytics/indexeddb-unavailable).
+*/
 const auth = getAuth();
 
 export default fb;

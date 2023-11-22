@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./UsernameChange.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
+import fb from "../firebase";
 
 const db = getDatabase();
 const auth = getAuth();
@@ -41,12 +42,12 @@ const Usernamechange = () => {
       <NavBar />
       <div className="responsive-container">
         <img className="app-logo" src={logo} alt="Word Tangle Logo" />
-        <span className="slogan">Nickname</span>
-        <p />
+        <label htmlFor='username' className="slogan">Nickname</label>
+        <p style={{margin: '0px'}} />
         <input
           className="textfield"
           type="text"
-          id="usernameID"
+          id="username"
           value={username}
           onChange={(e) => setusername(e.target.value)}
         />

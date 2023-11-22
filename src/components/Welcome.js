@@ -9,7 +9,7 @@ const Welcome = () => {
     redirect("/Login");
   };
 
-  const HandleSignUpButtonClick = () => {
+  const handleSignUpButtonClick = () => {
     redirect("/signup");
   };
 
@@ -22,7 +22,7 @@ const Welcome = () => {
         Login
       </button>
       <p />
-      <button className="styled-button" onClick={HandleSignUpButtonClick}>
+      <button className="styled-button" onClick={handleSignUpButtonClick}>
         Sign Up
       </button>
       <p />
