@@ -87,8 +87,10 @@ const Login = () => {
   return (
     <div className="responsive-container">
       <img className="app-logo" src={logo} alt="Word Tangle Logo" />
-      <label htmlFor="email" className="slogan">Email</label>
-      <p style={{margin: '0px'}}/>
+      <label htmlFor="email" className="slogan">
+        Email
+      </label>
+      <p style={{ margin: "0px" }} />
       <input
         className="textfield"
         type="email"
@@ -97,8 +99,10 @@ const Login = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <p />
-      <label htmlFor="password" className="slogan">Password</label>
-      <p style={{margin: '0px'}}/>
+      <label htmlFor="password" className="slogan">
+        Password
+      </label>
+      <p style={{ margin: "0px" }} />
       <input
         className="textfield"
         type="password"

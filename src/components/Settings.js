@@ -26,8 +26,8 @@ const Settings = () => {
     if (user) {
       //check provider data
       user.providerData.forEach(function (profile) {
-        if(profile){
-          if(profile.providerId){
+        if (profile) {
+          if (profile.providerId) {
             const signInProvider = profile.providerId;
             console.log("Sign-in provider: " + profile.providerId);
           }
@@ -36,7 +36,7 @@ const Settings = () => {
     }
   });
 
-  if(user){
+  if (user) {
     console.log("Auth provider: " + user.providerId);
   }
 

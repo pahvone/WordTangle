@@ -42,8 +42,10 @@ const Usernamechange = () => {
       <NavBar />
       <div className="responsive-container">
         <img className="app-logo" src={logo} alt="Word Tangle Logo" />
-        <label htmlFor='username' className="slogan">Nickname</label>
-        <p style={{margin: '0px'}} />
+        <label htmlFor="username" className="slogan">
+          Nickname
+        </label>
+        <p style={{ margin: "0px" }} />
         <input
           className="textfield"
           type="text"

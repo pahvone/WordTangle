@@ -35,11 +35,13 @@ const PasswordChange = () => {
       <NavBar />
       <div className="responsive-container">
         <img className="app-logo" src={logo} alt="Word Tangle Logo" />
-        <label htmlFor='password' className="slogan">New Password</label>
-        <p style={{margin: '0px'}}/>
+        <label htmlFor="password" className="slogan">
+          New Password
+        </label>
+        <p style={{ margin: "0px" }} />
         <input
           className="textfield"
-          role='textbox'
+          role="textbox"
           type="password"
           id="password"
           value={password}
