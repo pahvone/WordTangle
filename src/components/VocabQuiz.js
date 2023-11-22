@@ -298,27 +298,29 @@ const VocabLesson = (_lesson) => {
 
       return (
         <div className="quizelements">
-        <div className="container-fluid ">
-          <h1 className="lessontitle" align="center">{lesson.lessonName}</h1>
+          <div className="container-fluid ">
+            <h1 className="lessontitle" align="center">
+              {lesson.lessonName}
+            </h1>
 
-          {quizWord()}
-          <div className="row justify-content-center align-items-center">
-            <div className="quiztext col-md-4">{result}</div>
-          </div>
-          <div className="row my-5 justify-content-center">
-            <div className="col-md-4">
-              {" "}
-              <button
-                className="btn skip-button w-100 text-center"
-                onClick={handleSwitchInputMode}
-              >
-                {inputMode === 0
-                  ? "Answer in writing"
-                  : "Multiple choice answers"}
-              </button>
+            {quizWord()}
+            <div className="row justify-content-center align-items-center">
+              <div className="quiztext col-md-4">{result}</div>
+            </div>
+            <div className="row my-5 justify-content-center">
+              <div className="col-md-4">
+                {" "}
+                <button
+                  className="btn skip-button w-100 text-center"
+                  onClick={handleSwitchInputMode}
+                >
+                  {inputMode === 0
+                    ? "Answer in writing"
+                    : "Multiple choice answers"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       );
     } else {

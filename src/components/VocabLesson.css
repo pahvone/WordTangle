@@ -16,7 +16,7 @@
 
 .quiztext {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-  "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   color: #000;
   font-size: 20px;
   color: var(--textcolor);
@@ -29,7 +29,6 @@
   border-radius: 2px;
   font-size: 16px;
   text-align: center;
-  
 }
 
 .choice-button {

@@ -83,8 +83,8 @@ const LessonPath = (_language) => {
       <div className="pagecontainer">
         <div className="dashboardelements">
           <div className="boxcontainer">
-
-            <div className="lessonstitle">LESSONS &gt;&gt;
+            <div className="lessonstitle">
+              LESSONS &gt;&gt;
               <span className="language-title"> {language}</span>
               <button className="btn" onClick={toggleDropdown}>
                 {" "}
