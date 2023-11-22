@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "./VocabLesson.css";
 import "../App.css";
 import Lesson from "../vocab/Vocab";
@@ -9,71 +10,97 @@ import LangPath from "./LangPath";
 const LessonPath = (_language) => {
   const [pathLessons, setPathLessons] = useState([]);
   const [lesson, setLesson] = useState({});
-  const [language, setLanguage] = useState("");
+  const [langPath, setLangPath] = useState(null);
+  const [lessonsLoaded, setLessonsLoaded] = useState(false)
   const [lessonButtons, setLessonButtons] = useState([]);
   const [beginnerButtons, setBeginnerButtons] = useState([]);
   const [intermediateButtons, setIntermediateButtons] = useState([]);
   const [advacedButtons, setAdvancedButtons] = useState([]);
   const [flagMenu, setFlagMenu] = useState(false);
 
+
+  const nav = useNavigate();
+
   const toggleDropdown = () => {
     setFlagMenu(!flagMenu);
   };
 
+  const startLesson = (_lang, _index) => {
+      const url = `/LessonPage`;
+      nav(url)
+  }
+
   const getPathLessons = () => {
-    var les = new Lesson("FI", "beginner", 0);
-    //setPathLessons([les]);
-
-    var buttonElements = [];
-
     var _beginnerButtons = [];
     var _intermediateButtons = [];
     var _advancedButtons = [];
 
-    _beginnerButtons.push(
-      <button
-        key="lessonbutton-complete"
-        className="lessonbutton-complete text-center"
-        onClick={() => (window.location = "/LessonPage")}
-      >
-        {" "}
-        {les.lessonName}{" "}
-      </button>,
-    );
+    //console.log(langPath.lessons["intermediate"].length);
 
-    _intermediateButtons.push(
-      <button
-        key="lessonbutton-incomplete"
-        className="lessonbutton-incomplete text-center"
-        onClick={() => (window.location = "/LessonPage")}
-      >
-        {" "}
-        {les.lessonName}{" "}
-      </button>,
-    );
+    //Beginner lessons//
+    var lessons = langPath.lessons["beginner"]
 
-    _advancedButtons.push(
-      <button
-        key="lessonbutton-disabled"
-        className="lessonbutton-disabled text-center"
-        onClick={() => (window.location = "/LessonPage")}
-      >
-        {" "}
-        {les.lessonName}{" "}
-      </button>,
-    );
+    for(var i = 0; i < lessons.length; i++){
+      var lang = "jee"
+      var buttonKey = "lessonbutton" + "complete" + i //from state
+      _beginnerButtons.push(
+        <button
+          key={buttonKey}
+          className="lessonbutton-complete text-center"
+          onClick={() => startLesson("jee", i)}
+        >
+          {" "}
+          {lessons[i].name}{" "}
+        </button>,
+      );
+    }
 
+    //Intermediate lessons//
+
+    lessons = langPath.lessons["intermediate"]
+
+    for (var i = 0; i < lessons.length; i++) {
+      _intermediateButtons.push(
+        <button
+          key="lessonbutton-incomplete"
+          className="lessonbutton-incomplete text-center"
+          onClick={() => (window.location = "/LessonPage")}
+        >
+          {" "}
+          {lessons[i].name}{" "}
+        </button>,
+      );
+    }
+
+    lessons = langPath.lessons["advanced"]
+
+    //Advanced lessons//
+
+    for (var i = 0; i < lessons.length; i++) {
+      _advancedButtons.push(
+        <button
+          key="lessonbutton-disabled"
+          className="lessonbutton-disabled text-center"
+          onClick={() => (window.location = "/LessonPage")}
+        >
+          {" "}
+          {lessons[i].name}{" "}
+        </button>,
+      );
+    }
+
+    
     setBeginnerButtons(_beginnerButtons);
     setIntermediateButtons(_intermediateButtons);
     setAdvancedButtons(_advancedButtons);
+
+    setLessonsLoaded(true)
   };
 
-  if (language.length === 0) {
-    let langPath = new LangPath("FI");
-    console.log(langPath);
-    setLanguage("Finnish"); //_language
-    getPathLessons();
+  if (langPath === null) {
+    setLangPath(new LangPath("FI"));
   }
+  else if(!lessonsLoaded) getPathLessons();
 
   return (
     <div>
@@ -83,7 +110,10 @@ const LessonPath = (_language) => {
           <div className="boxcontainer">
             <div className="lessonstitle">
               LESSONS &gt;&gt;
-              <span className="language-title"> {language}</span>
+              <span className="language-title"> {langPath === null
+                    ? "No language chosen"
+                    : langPath.langDesc}</span>
+
               <button className="btn" onClick={toggleDropdown}>
                 {" "}
                 <img src="https://flagsapi.com/FI/flat/64.png" />
