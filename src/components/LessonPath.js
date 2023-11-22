@@ -6,7 +6,7 @@ import VocabQuiz from "./VocabQuiz";
 import NavBar from "./NavBar";
 import Footer from "./Footter";
 
-class LangPath { }
+class LangPath {}
 
 const LessonPath = (_language) => {
   const [pathLessons, setPathLessons] = useState([]);
@@ -56,7 +56,6 @@ const LessonPath = (_language) => {
     <div>
       <NavBar />
       <div className="pagecontainer">
-
         <div className="dashboardelements">
           <div className="boxcontainer">
 
@@ -67,7 +66,6 @@ const LessonPath = (_language) => {
               <div >{beginnerButtons}</div>
             </div>
           </div>
-
         </div>
 
         <div className="dashboardelements">
