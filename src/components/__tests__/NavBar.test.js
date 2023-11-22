@@ -17,7 +17,7 @@ describe("navbar", () => {
   describe("dashboard link", () => {
     test("renders correctly", () => {
       render(<Navbar />);
-      const textElement = screen.getByTestId('dashboard-main');
+      const textElement = screen.getByTestId("dashboard-main");
       expect(textElement).toBeInTheDocument();
     });
     // test('routes correctly', () => {
@@ -34,61 +34,61 @@ describe("navbar", () => {
   describe("learn link", () => {
     test("main renders correctly", () => {
       render(<Navbar />);
-      const textElement = screen.getByTestId('learn-main');
+      const textElement = screen.getByTestId("learn-main");
       expect(textElement).toBeInTheDocument();
     });
     test("check hamburger menu exists too", () => {
       render(<Navbar />);
-      const listOfElements = screen.getAllByText(/learn/i)
-      expect(listOfElements).toHaveLength(2)
-    })
+      const listOfElements = screen.getAllByText(/learn/i);
+      expect(listOfElements).toHaveLength(2);
+    });
   });
   describe("forums link", () => {
     test("main renders correctly", () => {
       render(<Navbar />);
-      const textElement = screen.getByTestId('forums-main');
+      const textElement = screen.getByTestId("forums-main");
       expect(textElement).toBeInTheDocument();
     });
     test("check hamburger menu exists too", () => {
       render(<Navbar />);
-      const listOfElements = screen.getAllByText(/forums/i)
-      expect(listOfElements).toHaveLength(2)
-    })
+      const listOfElements = screen.getAllByText(/forums/i);
+      expect(listOfElements).toHaveLength(2);
+    });
   });
   describe("settings link", () => {
     test("main renders correctly", () => {
       render(<Navbar />);
-      const textElement = screen.getByTestId('settings-main');
+      const textElement = screen.getByTestId("settings-main");
       expect(textElement).toBeInTheDocument();
     });
     test("check hamburger menu exists too", () => {
       render(<Navbar />);
-      const listOfElements = screen.getAllByText(/settings/i)
-      expect(listOfElements).toHaveLength(2)
-    })
+      const listOfElements = screen.getAllByText(/settings/i);
+      expect(listOfElements).toHaveLength(2);
+    });
   });
   describe("about link", () => {
     test("main renders correctly", () => {
       render(<Navbar />);
-      const textElement = screen.getByTestId('about-main');
+      const textElement = screen.getByTestId("about-main");
       expect(textElement).toBeInTheDocument();
     });
     test("check hamburger menu exists too", () => {
       render(<Navbar />);
-      const listOfElements = screen.getAllByText(/about/i)
-      expect(listOfElements).toHaveLength(2)
-    })
+      const listOfElements = screen.getAllByText(/about/i);
+      expect(listOfElements).toHaveLength(2);
+    });
   });
   describe("sign out link", () => {
     test("main renders correctly", () => {
       render(<Navbar />);
-      const textElement = screen.getByTestId('signout-main');
+      const textElement = screen.getByTestId("signout-main");
       expect(textElement).toBeInTheDocument();
     });
     test("check hamburger menu exists too", () => {
       render(<Navbar />);
-      const listOfElements = screen.getAllByText(/sign out/i)
-      expect(listOfElements).toHaveLength(2)
-    })
+      const listOfElements = screen.getAllByText(/sign out/i);
+      expect(listOfElements).toHaveLength(2);
+    });
   });
 });
