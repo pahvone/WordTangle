@@ -6,7 +6,6 @@ import NavBar from "./NavBar";
 import Footer from "./Footter";
 import LangPath from "./LangPath";
 
-
 const LessonPath = (_language) => {
   const [pathLessons, setPathLessons] = useState([]);
   const [lesson, setLesson] = useState({});
@@ -70,8 +69,8 @@ const LessonPath = (_language) => {
   };
 
   if (language.length === 0) {
-    let langPath = new LangPath("FI")
-    console.log(langPath)
+    let langPath = new LangPath("FI");
+    console.log(langPath);
     setLanguage("Finnish"); //_language
     getPathLessons();
   }
