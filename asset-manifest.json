@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/wordtangle/static/css/main.23bcdbc5.css",
-    "main.js": "/wordtangle/static/js/main.9f175eb2.js",
+    "main.css": "/wordtangle/static/css/main.acf11241.css",
+    "main.js": "/wordtangle/static/js/main.50fbc4bf.js",
     "static/js/787.a7359296.chunk.js": "/wordtangle/static/js/787.a7359296.chunk.js",
     "static/media/wtlogo_nonstacked.png": "/wordtangle/static/media/wtlogo_nonstacked.baa150c47f222140739b.png",
     "static/media/WTlogo_stacked_white_bordered.png": "/wordtangle/static/media/WTlogo_stacked_white_bordered.d6f501cbf21bdb9e6c44.png",
@@ -10,12 +10,12 @@
     "static/media/footerbg.png": "/wordtangle/static/media/footerbg.207e77fcbf918a50c10c.png",
     "static/media/WTlogo_white_stroke.png": "/wordtangle/static/media/WTlogo_white_stroke.b5d0a64237bfe3fda142.png",
     "index.html": "/wordtangle/index.html",
-    "main.23bcdbc5.css.map": "/wordtangle/static/css/main.23bcdbc5.css.map",
-    "main.9f175eb2.js.map": "/wordtangle/static/js/main.9f175eb2.js.map",
+    "main.acf11241.css.map": "/wordtangle/static/css/main.acf11241.css.map",
+    "main.50fbc4bf.js.map": "/wordtangle/static/js/main.50fbc4bf.js.map",
     "787.a7359296.chunk.js.map": "/wordtangle/static/js/787.a7359296.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.23bcdbc5.css",
-    "static/js/main.9f175eb2.js"
+    "static/css/main.acf11241.css",
+    "static/js/main.50fbc4bf.js"
   ]
 }
