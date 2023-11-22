@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./UsernameChange.css";
 import { getAuth, updatePassword } from "firebase/auth";
+import fb from "../firebase";
 
 const auth = getAuth();
 
@@ -14,7 +15,6 @@ const Button = ({ text, onClick }) => {
     </button>
   );
 };
-
 const PasswordChange = () => {
   const redirect = useNavigate();
   const [password, setpassword] = useState("");
@@ -35,12 +35,15 @@ const PasswordChange = () => {
       <NavBar />
       <div className="responsive-container">
         <img className="app-logo" src={logo} alt="Word Tangle Logo" />
-        <span className="slogan">New Password</span>
-        <p />
+        <label htmlFor="password" className="slogan">
+          New Password
+        </label>
+        <p style={{ margin: "0px" }} />
         <input
           className="textfield"
+          role="textbox"
           type="password"
-          id="usernameID"
+          id="password"
           value={password}
           onChange={(e) => setpassword(e.target.value)}
         />

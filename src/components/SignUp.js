@@ -73,32 +73,39 @@ const SignUp = () => {
   return (
     <div className="responsive-container">
       <img className="app-logo" src={logo} alt="Word Tangle Logo" />
-      <span className="slogan">Username</span>
-      <p />
+      <label className="slogan" htmlFor="username">
+        Username
+      </label>
+      <p style={{ margin: "0px" }} />
       <input
         className="textfield"
         type="text"
-        id="usernameID"
+        id="username"
         value={username}
         onChange={(e) => setusername(e.target.value)}
       />
       <p />
-      <span className="slogan">Email</span>
-      <p />
+      <label htmlFor="email" className="slogan">
+        Email
+      </label>
+      <p style={{ margin: "0px" }} />
       <input
         className="textfield"
         type="text"
-        id="emailID"
+        id="email"
         value={email}
         onChange={(e) => setemail(e.target.value)}
       />
       <p />
-      <span className="slogan">Password</span>
-      <p />
+      <label htmlFor="password" className="slogan">
+        Password
+      </label>
+      <p style={{ margin: "0px" }} />
       <input
         className="textfield"
+        role="textbox"
         type="password"
-        id="passwordID"
+        id="password"
         value={password}
         onChange={(e) => setpassword(e.target.value)}
       />
