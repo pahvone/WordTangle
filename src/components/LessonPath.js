@@ -84,7 +84,7 @@ const LessonPath = (_language) => {
         <div className="dashboardelements">
           <div className="boxcontainer">
 
-            <div className="title">LESSONS &gt;&gt;
+            <div className="lessonstitle">LESSONS &gt;&gt;
               <span className="language-title"> {language}</span>
               <button className="btn" onClick={toggleDropdown}>  <img src="https://flagsapi.com/FI/flat/64.png" /></button>
 

@@ -217,7 +217,7 @@ const VocabLesson = (_lesson) => {
     return (
       <div>
         <div className="row justify-content-center align-items-center">
-          <div className="col-2">
+          <div className="quiztext col-2">
             {qIndex + 1} / {lesson.wordList.length}
           </div>
           <div className="col-md-5 wordcontainer">{qWord}</div>
@@ -297,12 +297,13 @@ const VocabLesson = (_lesson) => {
       //console.log("quizIndex " + qIndex + " word " + lesson.wordList[qIndex])
 
       return (
+        <div className="quizelements">
         <div className="container-fluid ">
-          <h1 align="center">{lesson.lessonName}</h1>
+          <h1 className="lessontitle" align="center">{lesson.lessonName}</h1>
 
           {quizWord()}
           <div className="row justify-content-center align-items-center">
-            <div className="col-md-4">{result}</div>
+            <div className="quiztext col-md-4">{result}</div>
           </div>
           <div className="row my-5 justify-content-center">
             <div className="col-md-4">
@@ -317,6 +318,7 @@ const VocabLesson = (_lesson) => {
               </button>
             </div>
           </div>
+        </div>
         </div>
       );
     } else {

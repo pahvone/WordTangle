@@ -1,3 +1,27 @@
+.quizelements {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  padding-top: 20px;
+  padding-left: 5%;
+}
+
+.lessontitle {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 30px;
+  font-weight: bolder;
+  color: var(--textcolor);
+}
+
+.quiztext {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+  "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: #000;
+  font-size: 20px;
+  color: var(--textcolor);
+}
+
 .wordcontainer {
   padding: 10px;
   background: #e0e0e0;
@@ -5,6 +29,7 @@
   border-radius: 2px;
   font-size: 16px;
   text-align: center;
+  
 }
 
 .choice-button {

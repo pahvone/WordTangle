@@ -218,6 +218,16 @@
   border-radius: 5px;
   justify-content: space-between;
 }
+
+/* Learn VVV */
+
+.lessonstitle {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 30px;
+  font-weight: bolder;
+  color: var(--textcolor);
+}
 .difficulty-title {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
@@ -286,3 +296,4 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   padding: 10px;
 }
+
