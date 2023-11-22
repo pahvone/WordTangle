@@ -16,7 +16,7 @@ export default class Lesson {
       }
       return;
     }
-    console.log(vocabList.lessons[difficulty])
+    console.log(vocabList.lessons[difficulty]);
     this.lessonName = vocabList.lessons[difficulty][index].name;
     var vocab = vocabList.lessons[difficulty][index].vocab;
 
