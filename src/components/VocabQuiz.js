@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 
-const VocabLesson = ({lang, diff, index}) => {
+const VocabLesson = ({ lang, diff, index }) => {
   const [qIndex, setIndex] = useState(0);
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
@@ -155,7 +155,6 @@ const VocabLesson = ({lang, diff, index}) => {
 
   //Randomizes the order of the entries in the quiz
   const createRandomizedQuizOrder = () => {
-
     for (var i = 0; i < lesson.wordList.length; i++) {
       const j = Math.floor(Math.random() * (i + 1));
       [lesson.wordList[i], lesson.wordList[j]] = [
@@ -294,11 +293,9 @@ const VocabLesson = ({lang, diff, index}) => {
 
   if (qState === 0 && lesson === null) {
     setLesson(new Lesson(lang, "beginner", index)); // < get index from LessonPath
-
   } else if (qState === 0 && lesson != null) {
     createRandomizedQuizOrder();
-  } 
-  else if (qState === 1) {
+  } else if (qState === 1) {
     if (!endQuiz()) {
       //console.log("quizIndex " + qIndex + " word " + lesson.wordList[qIndex])
 
@@ -341,7 +338,9 @@ const VocabLesson = ({lang, diff, index}) => {
             <div className="col-md-4">
               <button
                 className="btn choice-button w-100 text-center"
-                onClick={() => {nav("/LessonPath")}}
+                onClick={() => {
+                  nav("/LessonPath");
+                }}
               >
                 Back to lesson path
               </button>

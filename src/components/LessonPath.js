@@ -25,7 +25,14 @@ const LessonPath = (_language) => {
   };
 
   const startLesson = (_index, _diff) => {
-    nav(`/LessonPage?lang=` + langPath.lang + "&diff=" + _diff + "&index=" + _index);
+    nav(
+      `/LessonPage?lang=` +
+        langPath.lang +
+        "&diff=" +
+        _diff +
+        "&index=" +
+        _index,
+    );
   };
 
   const getPathLessons = () => {
@@ -67,8 +74,6 @@ const LessonPath = (_language) => {
         </button>,
       );
     }
-
-    
 
     //Advanced lessons//
     lessons = langPath.lessons["advanced"];
