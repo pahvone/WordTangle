@@ -24,9 +24,8 @@ const LessonPath = (_language) => {
     setFlagMenu(!flagMenu);
   };
 
-  const startLesson = (_lang, _index) => {
-    const url = `/LessonPage`;
-    nav(url);
+  const startLesson = (_index, _diff) => {
+    nav(`/LessonPage?lang=` + langPath.lang + "&diff=" + _diff + "&index=" + _index);
   };
 
   const getPathLessons = () => {
@@ -39,14 +38,13 @@ const LessonPath = (_language) => {
     //Beginner lessons//
     var lessons = langPath.lessons["beginner"];
 
-    for (var i = 0; i < lessons.length; i++) {
-      var lang = "jee";
+    for (let i = 0; i < lessons.length; i++) {
       var buttonKey = "lessonbutton" + "complete" + i; //from state
       _beginnerButtons.push(
         <button
           key={buttonKey}
           className="lessonbutton-complete text-center"
-          onClick={() => startLesson("jee", i)}
+          onClick={() => startLesson(i, "beginner")}
         >
           {" "}
           {lessons[i].name}{" "}
@@ -55,15 +53,14 @@ const LessonPath = (_language) => {
     }
 
     //Intermediate lessons//
-
     lessons = langPath.lessons["intermediate"];
 
-    for (var i = 0; i < lessons.length; i++) {
+    for (let i = 0; i < lessons.length; i++) {
       _intermediateButtons.push(
         <button
           key="lessonbutton-incomplete"
           className="lessonbutton-incomplete text-center"
-          onClick={() => (window.location = "/LessonPage")}
+          onClick={() => startLesson(i, "intermediate")}
         >
           {" "}
           {lessons[i].name}{" "}
@@ -71,16 +68,17 @@ const LessonPath = (_language) => {
       );
     }
 
-    lessons = langPath.lessons["advanced"];
+    
 
     //Advanced lessons//
+    lessons = langPath.lessons["advanced"];
 
-    for (var i = 0; i < lessons.length; i++) {
+    for (let i = 0; i < lessons.length; i++) {
       _advancedButtons.push(
         <button
           key="lessonbutton-disabled"
           className="lessonbutton-disabled text-center"
-          onClick={() => (window.location = "/LessonPage")}
+          onClick={() => startLesson(i, "advanced")}
         >
           {" "}
           {lessons[i].name}{" "}

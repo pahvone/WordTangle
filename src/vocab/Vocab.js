@@ -7,7 +7,7 @@ export default class Lesson {
   wordList = [];
   translationList = [];
 
-  constructor(lang, difficulty, index) {
+  constructor(lang, diff, index) {
     try {
       var vocabList = require("./" + lang + ".json");
     } catch (error) {
@@ -16,11 +16,10 @@ export default class Lesson {
       }
       return;
     }
-    //console.log(vocabList.lessons[difficulty]);
-    this.lessonName = vocabList.lessons[difficulty][index].name;
-    var vocab = vocabList.lessons[difficulty][index].vocab;
+    this.lessonName = vocabList.lessons[diff][index].name;
+    var vocab = vocabList.lessons[diff][index].vocab;
 
-    for (var i = 0; i < vocab.length; i++) {
+    for (let i = 0; i < vocab.length; i++) {
       this.wordList.push(vocab[i][0]);
       this.translationList.push(vocab[i][1]);
     }

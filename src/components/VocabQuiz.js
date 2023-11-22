@@ -1,8 +1,9 @@
 import React, { useState, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 
-const VocabLesson = (_lessonIndex) => {
+const VocabLesson = ({lang, diff, index}) => {
   const [qIndex, setIndex] = useState(0);
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
@@ -14,6 +15,8 @@ const VocabLesson = (_lessonIndex) => {
   const textInputRef = useRef(null);
 
   const choiceElements = [];
+
+  const nav = useNavigate();
 
   const endQuiz = () => {
     if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length)
@@ -152,6 +155,7 @@ const VocabLesson = (_lessonIndex) => {
 
   //Randomizes the order of the entries in the quiz
   const createRandomizedQuizOrder = () => {
+
     for (var i = 0; i < lesson.wordList.length; i++) {
       const j = Math.floor(Math.random() * (i + 1));
       [lesson.wordList[i], lesson.wordList[j]] = [
@@ -289,10 +293,12 @@ const VocabLesson = (_lessonIndex) => {
   //Quiz state machine
 
   if (qState === 0 && lesson === null) {
-    setLesson(new Lesson("FI", "beginner", 0)); // < get index from LessonPath
+    setLesson(new Lesson(lang, "beginner", index)); // < get index from LessonPath
+
   } else if (qState === 0 && lesson != null) {
     createRandomizedQuizOrder();
-  } else if (qState === 1) {
+  } 
+  else if (qState === 1) {
     if (!endQuiz()) {
       //console.log("quizIndex " + qIndex + " word " + lesson.wordList[qIndex])
 
@@ -327,7 +333,7 @@ const VocabLesson = (_lessonIndex) => {
       return (
         <div className="container-fluid ">
           <div className="row justify-content-center align-items-center">
-            <div className="col-md-4">
+            <div className="quiztext col-md-4">
               You got {correctCount} out of {lesson.wordList.length} correct
             </div>
           </div>
@@ -335,7 +341,7 @@ const VocabLesson = (_lessonIndex) => {
             <div className="col-md-4">
               <button
                 className="btn choice-button w-100 text-center"
-                onClick={() => {}}
+                onClick={() => {nav("/LessonPath")}}
               >
                 Back to lesson path
               </button>
