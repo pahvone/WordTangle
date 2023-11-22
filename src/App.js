@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
@@ -29,8 +29,8 @@ const App = () => {
         <Route path="/UsernameChange" element={<UsernameChange />} />
         <Route path="/PasswordChange" element={<PasswordChange />} />
         <Route path="/LessonPath" element={<LessonPath />} />
-        <Route path="/LessonPage:lang/:id" element={<LessonPage/>} />
-        <Route path="/LessonPage" element={<LessonPage/>} /> {/*debug*/}
+        <Route path="/LessonPage:lang/:id" element={<LessonPage />} />
+        <Route path="/LessonPage" element={<LessonPage />} /> {/*debug*/}
         <Route path="/Dashboard" element={<Dashboard />} />
       </Routes>
     </>

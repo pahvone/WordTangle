@@ -11,13 +11,12 @@ const LessonPath = (_language) => {
   const [pathLessons, setPathLessons] = useState([]);
   const [lesson, setLesson] = useState({});
   const [langPath, setLangPath] = useState(null);
-  const [lessonsLoaded, setLessonsLoaded] = useState(false)
+  const [lessonsLoaded, setLessonsLoaded] = useState(false);
   const [lessonButtons, setLessonButtons] = useState([]);
   const [beginnerButtons, setBeginnerButtons] = useState([]);
   const [intermediateButtons, setIntermediateButtons] = useState([]);
   const [advacedButtons, setAdvancedButtons] = useState([]);
   const [flagMenu, setFlagMenu] = useState(false);
-
 
   const nav = useNavigate();
 
@@ -26,9 +25,9 @@ const LessonPath = (_language) => {
   };
 
   const startLesson = (_lang, _index) => {
-      const url = `/LessonPage`;
-      nav(url)
-  }
+    const url = `/LessonPage`;
+    nav(url);
+  };
 
   const getPathLessons = () => {
     var _beginnerButtons = [];
@@ -38,11 +37,11 @@ const LessonPath = (_language) => {
     //console.log(langPath.lessons["intermediate"].length);
 
     //Beginner lessons//
-    var lessons = langPath.lessons["beginner"]
+    var lessons = langPath.lessons["beginner"];
 
-    for(var i = 0; i < lessons.length; i++){
-      var lang = "jee"
-      var buttonKey = "lessonbutton" + "complete" + i //from state
+    for (var i = 0; i < lessons.length; i++) {
+      var lang = "jee";
+      var buttonKey = "lessonbutton" + "complete" + i; //from state
       _beginnerButtons.push(
         <button
           key={buttonKey}
@@ -57,7 +56,7 @@ const LessonPath = (_language) => {
 
     //Intermediate lessons//
 
-    lessons = langPath.lessons["intermediate"]
+    lessons = langPath.lessons["intermediate"];
 
     for (var i = 0; i < lessons.length; i++) {
       _intermediateButtons.push(
@@ -72,7 +71,7 @@ const LessonPath = (_language) => {
       );
     }
 
-    lessons = langPath.lessons["advanced"]
+    lessons = langPath.lessons["advanced"];
 
     //Advanced lessons//
 
@@ -89,18 +88,16 @@ const LessonPath = (_language) => {
       );
     }
 
-    
     setBeginnerButtons(_beginnerButtons);
     setIntermediateButtons(_intermediateButtons);
     setAdvancedButtons(_advancedButtons);
 
-    setLessonsLoaded(true)
+    setLessonsLoaded(true);
   };
 
   if (langPath === null) {
     setLangPath(new LangPath("FI"));
-  }
-  else if(!lessonsLoaded) getPathLessons();
+  } else if (!lessonsLoaded) getPathLessons();
 
   return (
     <div>
@@ -110,10 +107,10 @@ const LessonPath = (_language) => {
           <div className="boxcontainer">
             <div className="lessonstitle">
               LESSONS &gt;&gt;
-              <span className="language-title"> {langPath === null
-                    ? "No language chosen"
-                    : langPath.langDesc}</span>
-
+              <span className="language-title">
+                {" "}
+                {langPath === null ? "No language chosen" : langPath.langDesc}
+              </span>
               <button className="btn" onClick={toggleDropdown}>
                 {" "}
                 <img src="https://flagsapi.com/FI/flat/64.png" />

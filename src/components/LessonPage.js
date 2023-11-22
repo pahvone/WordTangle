@@ -11,7 +11,7 @@ const LessonPage = () => {
       <NavBar />
       <div className="pagecontainer">
         <div>
-          <VocabQuiz/>
+          <VocabQuiz />
         </div>
       </div>
       <Footer />
