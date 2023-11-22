@@ -2,11 +2,10 @@ import React, { useState, useRef, useCallback } from "react";
 import "./VocabLesson.css";
 import "../App.css";
 import Lesson from "../vocab/Vocab";
-import VocabQuiz from "./VocabQuiz";
 import NavBar from "./NavBar";
 import Footer from "./Footter";
+import LangPath from "./LangPath";
 
-class LangPath {}
 
 const LessonPath = (_language) => {
   const [pathLessons, setPathLessons] = useState([]);
@@ -23,7 +22,7 @@ const LessonPath = (_language) => {
   };
 
   const getPathLessons = () => {
-    var les = new Lesson("FIN", 1);
+    var les = new Lesson("FI", 0);
     //setPathLessons([les]);
 
     var buttonElements = [];
@@ -31,8 +30,6 @@ const LessonPath = (_language) => {
     var _beginnerButtons = [];
     var _intermediateButtons = [];
     var _advancedButtons = [];
-
-    console.log(les.lessonName);
 
     _beginnerButtons.push(
       <button
@@ -73,6 +70,8 @@ const LessonPath = (_language) => {
   };
 
   if (language.length === 0) {
+    let langPath = new LangPath("FI")
+    console.log(langPath)
     setLanguage("Finnish"); //_language
     getPathLessons();
   }
@@ -133,9 +132,8 @@ const LessonPath = (_language) => {
             </div>
           </div>
         </div>
-
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };

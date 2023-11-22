@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react";
 import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 
-const VocabLesson = (_lesson) => {
+const VocabLesson = (_lessonIndex) => {
   const [qIndex, setIndex] = useState(0);
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
@@ -289,7 +289,7 @@ const VocabLesson = (_lesson) => {
   //Quiz state machine
 
   if (qState === 0 && lesson === null) {
-    setLesson(new Lesson("FIN", 1));
+    setLesson(new Lesson("FI", 0)); // < get index from LessonPath
   } else if (qState === 0 && lesson != null) {
     createRandomizedQuizOrder();
   } else if (qState === 1) {

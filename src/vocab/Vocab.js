@@ -1,4 +1,4 @@
-import "../vocab/FIN_1.json";
+import "../vocab/FI.json";
 
 export default class Lesson {
   fileName = "";
@@ -8,20 +8,20 @@ export default class Lesson {
   translationList = [];
 
   constructor(lang, index) {
-    this.fileName = lang + "_" + index;
     try {
-      var vocabList = require("./" + this.fileName + ".json");
+      var vocabList = require("./" + lang + ".json");
     } catch (error) {
       if (error.code === "MODULE_NOT_FOUND") {
         console.error("Lesson not found");
       }
       return;
     }
-    this.lessonName = vocabList.name;
+    this.lessonName = vocabList.lessons[index].name;
+    var vocab = vocabList.lessons[index].vocab;
 
-    for (var i = 0; i < vocabList.vocab.length; i++) {
-      this.wordList.push(vocabList.vocab[i][0]);
-      this.translationList.push(vocabList.vocab[i][1]);
+    for (var i = 0; i < vocab.length; i++) {
+      this.wordList.push(vocab[i][0]);
+      this.translationList.push(vocab[i][1]);
     }
   }
 }
