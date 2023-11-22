@@ -225,6 +225,12 @@
   font-weight: bold;
   padding-bottom: 10px;
 }
+.language-title {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+}
 .lessonbutton-incomplete {
   background-color: #fbff50;
   border: none;
@@ -263,4 +269,20 @@
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 0;
+}
+.flag-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.flag-dropdown-content {
+  position: absolute;
+  top: 100%; /* Position the dropdown below the button */
+  left: 0;
+  z-index: 1; /* Ensure the dropdown is displayed above other elements */
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 10px;
 }

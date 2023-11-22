@@ -16,7 +16,11 @@ const LessonPath = (_language) => {
   const [beginnerButtons, setBeginnerButtons] = useState([]);
   const [intermediateButtons, setIntermediateButtons] = useState([]);
   const [advacedButtons, setAdvancedButtons] = useState([]);
+  const [flagMenu, setFlagMenu] = useState(false);
 
+  const toggleDropdown = () => {
+    setFlagMenu(!flagMenu);
+  };
 
   const getPathLessons = () => {
     var les = new Lesson("FIN", 1);
@@ -59,7 +63,22 @@ const LessonPath = (_language) => {
         <div className="dashboardelements">
           <div className="boxcontainer">
 
-            <div className="title">LESSONS &gt;&gt; {language}  </div>
+            <div className="title">LESSONS &gt;&gt;
+              <span className="language-title"> {language}</span>
+              <button className="btn" onClick={toggleDropdown}>  <img src="https://flagsapi.com/FI/flat/64.png" /></button>
+
+              <div className="flag-dropdown-container">
+
+
+                {flagMenu && (
+                  <div className="flag-dropdown-content">
+                    <p><img src="https://flagsapi.com/BE/flat/64.png" /></p>
+                    <p><img src="https://flagsapi.com/GR/flat/64.png" /></p>
+                    <p><img src="https://flagsapi.com/ES/flat/64.png" /></p>
+                  </div>
+                )}
+              </div>
+            </div>
             <div className="greycontainer">
               <div className="difficulty-title">Beginner</div>
               <div className="dashline" />
