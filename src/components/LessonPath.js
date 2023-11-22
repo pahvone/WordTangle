@@ -83,19 +83,25 @@ const LessonPath = (_language) => {
       <div className="pagecontainer">
         <div className="dashboardelements">
           <div className="boxcontainer">
-
-            <div className="title">LESSONS &gt;&gt;
+            <div className="title">
+              LESSONS &gt;&gt;
               <span className="language-title"> {language}</span>
-              <button className="btn" onClick={toggleDropdown}>  <img src="https://flagsapi.com/FI/flat/64.png" /></button>
-
+              <button className="btn" onClick={toggleDropdown}>
+                {" "}
+                <img src="https://flagsapi.com/FI/flat/64.png" />
+              </button>
               <div className="flag-dropdown-container">
-
-
                 {flagMenu && (
                   <div className="flag-dropdown-content">
-                    <p><img src="https://flagsapi.com/BE/flat/64.png" /></p>
-                    <p><img src="https://flagsapi.com/GR/flat/64.png" /></p>
-                    <p><img src="https://flagsapi.com/ES/flat/64.png" /></p>
+                    <p>
+                      <img src="https://flagsapi.com/BE/flat/64.png" />
+                    </p>
+                    <p>
+                      <img src="https://flagsapi.com/GR/flat/64.png" />
+                    </p>
+                    <p>
+                      <img src="https://flagsapi.com/ES/flat/64.png" />
+                    </p>
                   </div>
                 )}
               </div>
