@@ -17,34 +17,54 @@ const LessonPath = (_language) => {
   const [intermediateButtons, setIntermediateButtons] = useState([]);
   const [advacedButtons, setAdvancedButtons] = useState([]);
 
-
   const getPathLessons = () => {
     var les = new Lesson("FIN", 1);
     //setPathLessons([les]);
 
-    var buttonElements = []
+    var buttonElements = [];
 
-    var _beginnerButtons = []
-    var _intermediateButtons = []
-    var _advancedButtons = []
+    var _beginnerButtons = [];
+    var _intermediateButtons = [];
+    var _advancedButtons = [];
 
     console.log(les.lessonName);
 
     _beginnerButtons.push(
-      <button key="lessonbutton-complete" className="lessonbutton-complete text-center" onClick={() => (window.location = "/LessonPage")}> {les.lessonName} </button>
+      <button
+        key="lessonbutton-complete"
+        className="lessonbutton-complete text-center"
+        onClick={() => (window.location = "/LessonPage")}
+      >
+        {" "}
+        {les.lessonName}{" "}
+      </button>,
     );
 
     _intermediateButtons.push(
-      <button key="lessonbutton-incomplete" className="lessonbutton-incomplete text-center" onClick={() => (window.location = "/LessonPage")}> {les.lessonName} </button>
+      <button
+        key="lessonbutton-incomplete"
+        className="lessonbutton-incomplete text-center"
+        onClick={() => (window.location = "/LessonPage")}
+      >
+        {" "}
+        {les.lessonName}{" "}
+      </button>,
     );
 
     _advancedButtons.push(
-      <button key="lessonbutton-disabled" className="lessonbutton-disabled text-center" onClick={() => (window.location = "/LessonPage")}> {les.lessonName} </button>
+      <button
+        key="lessonbutton-disabled"
+        className="lessonbutton-disabled text-center"
+        onClick={() => (window.location = "/LessonPage")}
+      >
+        {" "}
+        {les.lessonName}{" "}
+      </button>,
     );
 
-    setBeginnerButtons(_beginnerButtons)
-    setIntermediateButtons(_intermediateButtons)
-    setAdvancedButtons(_advancedButtons)
+    setBeginnerButtons(_beginnerButtons);
+    setIntermediateButtons(_intermediateButtons);
+    setAdvancedButtons(_advancedButtons);
   };
 
   if (language.length === 0) {
@@ -58,12 +78,11 @@ const LessonPath = (_language) => {
       <div className="pagecontainer">
         <div className="dashboardelements">
           <div className="boxcontainer">
-
-            <div className="title">LESSONS &gt;&gt; {language}  </div>
+            <div className="title">LESSONS &gt;&gt; {language} </div>
             <div className="greycontainer">
               <div className="difficulty-title">Beginner</div>
               <div className="dashline" />
-              <div >{beginnerButtons}</div>
+              <div>{beginnerButtons}</div>
             </div>
           </div>
         </div>
@@ -73,7 +92,7 @@ const LessonPath = (_language) => {
             <div className="greycontainer">
               <div className="difficulty-title">Intermediate</div>
               <div className="dashline" />
-              <div >{intermediateButtons}</div>
+              <div>{intermediateButtons}</div>
             </div>
           </div>
         </div>
@@ -83,7 +102,7 @@ const LessonPath = (_language) => {
             <div className="greycontainer">
               <div className="difficulty-title">Advanced</div>
               <div className="dashline" />
-              <div >{advacedButtons}</div>
+              <div>{advacedButtons}</div>
             </div>
           </div>
         </div>
