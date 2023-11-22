@@ -1,7 +1,8 @@
 {
     "lang" : "FI",
     "langDesc" : "Finnish",
-    "lessons": [
+    "lessons": {
+    "beginner": [
       {
         "name": "Numbers 1",
         "vocab": [
@@ -63,43 +64,45 @@
             ["kysyä", ["to ask"]],
             ["vastata", ["to answer"]]
           ]
-    },
-    {
-      "name" : "Animals",
-      "vocab": [
-        ["koira", ["dog"]],
-        ["kissa", ["cat"]],
-        ["lintu", ["bird"]],
-        ["kala", ["fish"]],
-        ["hevonen", ["horse"]],
-        ["lehmä", ["cow"]],
-        ["sika", ["pig"]],
-        ["lammas", ["sheep"]],
-        ["apina", ["monkey"]],
-        ["norsu", ["elephant"]],
-        ["tiikeri", ["tiger"]],
-        ["karhu", ["bear"]],
-        ["susi", ["wolf"]],
-        ["käärme", ["snake"]],
-        ["kilpikonna", ["turtle"]],
-        ["krokotiili", ["crocodile"]],
-        ["jänis", ["rabbit"]],
-        ["sammakko", ["frog"]],
-        ["kotka", ["eagle"]],
-        ["pingviini", ["penguin"]],
-        ["käki", ["cuckoo"]],
-        ["lepakko", ["bat"]],
-        ["hirvi", ["moose"]],
-        ["kettu", ["fox"]],
-        ["pöllö", ["owl"]],
-        ["haukka", ["hawk"]],
-        ["joutsen", ["swan"]],
-        ["muurahainen", ["ant"]],
-        ["perhonen", ["butterfly"]],
-        ["mato", ["worm"]],
-        ["kimalainen", ["bee"]]
-      ]
+        },
+        {
+          "name" : "Animals",
+          "vocab": [
+            ["koira", ["dog"]],
+            ["kissa", ["cat"]],
+            ["lintu", ["bird"]],
+            ["kala", ["fish"]],
+            ["hevonen", ["horse"]],
+            ["lehmä", ["cow"]],
+            ["sika", ["pig"]],
+            ["lammas", ["sheep"]],
+            ["apina", ["monkey"]],
+            ["norsu", ["elephant"]],
+            ["tiikeri", ["tiger"]],
+            ["karhu", ["bear"]],
+            ["susi", ["wolf"]],
+            ["käärme", ["snake"]],
+            ["kilpikonna", ["turtle"]],
+            ["krokotiili", ["crocodile"]],
+            ["jänis", ["rabbit"]],
+            ["sammakko", ["frog"]],
+            ["kotka", ["eagle"]],
+            ["pingviini", ["penguin"]],
+            ["käki", ["cuckoo"]],
+            ["lepakko", ["bat"]],
+            ["hirvi", ["moose"]],
+            ["kettu", ["fox"]],
+            ["pöllö", ["owl"]],
+            ["haukka", ["hawk"]],
+            ["joutsen", ["swan"]],
+            ["muurahainen", ["ant"]],
+            ["perhonen", ["butterfly"]],
+            ["mato", ["worm"]],
+            ["kimalainen", ["bee"]]
+          ]
+        }]
+        ,
+        "intermediate": [],
+        "advanced": []
     }
-    ]
-    
   }

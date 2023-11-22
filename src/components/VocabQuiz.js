@@ -289,7 +289,7 @@ const VocabLesson = (_lessonIndex) => {
   //Quiz state machine
 
   if (qState === 0 && lesson === null) {
-    setLesson(new Lesson("FI", 0)); // < get index from LessonPath
+    setLesson(new Lesson("FI", "beginner", 0)); // < get index from LessonPath
   } else if (qState === 0 && lesson != null) {
     createRandomizedQuizOrder();
   } else if (qState === 1) {

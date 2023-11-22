@@ -22,7 +22,7 @@ const LessonPath = (_language) => {
   };
 
   const getPathLessons = () => {
-    var les = new Lesson("FI", 0);
+    var les = new Lesson("FI", "beginner", 0);
     //setPathLessons([les]);
 
     var buttonElements = [];
