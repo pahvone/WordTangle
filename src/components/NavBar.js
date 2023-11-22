@@ -24,13 +24,16 @@ const Navbar = () => {
               <NavLink to="/Dashboard">Dashboard</NavLink>
             </li>
             <li>
-            <span className="merkki">{">> "}</span><NavLink to="/LessonPath">Learn</NavLink>
+              <span className="merkki">{">> "}</span>
+              <NavLink to="/LessonPath">Learn</NavLink>
             </li>
             <li>
-              <span className="merkki">{">> "}</span><NavLink to="/Forums">Forums</NavLink>
+              <span className="merkki">{">> "}</span>
+              <NavLink to="/Forums">Forums</NavLink>
             </li>
             <li>
-            <span className="merkki">{">> "}</span><NavLink to="/Settings">Settings</NavLink>
+              <span className="merkki">{">> "}</span>
+              <NavLink to="/Settings">Settings</NavLink>
             </li>
           </ul>
         </div>
@@ -52,26 +55,26 @@ const Navbar = () => {
           <div className="bar"></div>
           <div className="bar"></div>
           <div className="bar"></div>
-      </div>
         </div>
-        <div className="hamburgermenucontainer">
-          <div className={`hamburgermenu ${menuActive ? "active" : ""}`}>
+      </div>
+      <div className="hamburgermenucontainer">
+        <div className={`hamburgermenu ${menuActive ? "active" : ""}`}>
           <ul>
             <li>
-            <NavLink to="/Dashboard">Dashboard</NavLink>
+              <NavLink to="/Dashboard">Dashboard</NavLink>
             </li>
             <li>
-            <NavLink to="/LessonPath">Learn</NavLink>
+              <NavLink to="/LessonPath">Learn</NavLink>
             </li>
             <li>
               <NavLink to="/Forums">Forums</NavLink>
             </li>
             <li>
-            <NavLink to="/Settings">Settings</NavLink>
+              <NavLink to="/Settings">Settings</NavLink>
             </li>
-            <div className="spacer"/>
+            <div className="spacer" />
             <li>
-              <DarkMode/>
+              <DarkMode />
             </li>
             <li>
               <NavLink to="/About">ABOUT</NavLink>
@@ -80,8 +83,8 @@ const Navbar = () => {
               <NavLink to="/SignOut">SIGN OUT</NavLink>
             </li>
           </ul>
-          </div>
-          </div>
+        </div>
+      </div>
     </nav>
   );
 };

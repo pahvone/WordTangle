@@ -8,7 +8,6 @@ body {
 }
 
 .container {
-
   width: 100%;
   justify-content: space-between;
   align-items: flex-end;
@@ -62,7 +61,7 @@ body {
   height: 2px;
   background-color: #000;
 }
-.merkki{
+.merkki {
   font-family: "Fira Mono", monospace;
   color: #000;
   font-size: 20px;
@@ -84,23 +83,20 @@ body {
   margin-right: 10px;
   white-space: nowrap;
 }
-.nav-elements{
+.nav-elements {
   display: flex;
   align-items: center;
- 
 }
 .nav-elements-right {
   display: flex;
   align-items: center;
   margin-left: auto;
-
 }
 .hamburgermenu {
   display: none;
 }
 
 @media screen and (max-width: 1024px) {
-
   .hamburgermenucontainer {
     position: absolute;
     top: 5em;
@@ -110,20 +106,19 @@ body {
     height: auto;
     overflow-y: auto;
   }
-  .hamburgermenu ul{
+  .hamburgermenu ul {
     flex-direction: column;
     padding: 5%;
   }
-  .hamburgermenu li{
+  .hamburgermenu li {
     padding: 5px;
   }
 
-  .hamburgermenu.active{
+  .hamburgermenu.active {
     display: flex;
     background-color: #e0e247;
     justify-content: center;
     box-shadow: inset 0px 00px 20px 10px rgba(0, 0, 0, 0.1);
-
   }
   .menu-toggle {
     display: block;
@@ -169,6 +164,6 @@ body {
   margin-right: 5px;
   transition: 0.2s ease-in-out;
 }
-.spacer{
+.spacer {
   padding-bottom: 3em;
 }
