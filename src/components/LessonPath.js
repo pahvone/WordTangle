@@ -7,7 +7,7 @@ import Footer from "./Footter";
 import LangPath from "./LangPath";
 
 const LessonPath = (_language) => {
-  const [langPathSelected, setLangPathSelected] = useState(null)
+  const [langPathSelected, setLangPathSelected] = useState(null);
   const [langPath, setLangPath] = useState(null);
   const [lessonsLoaded, setLessonsLoaded] = useState(false);
   const [beginnerButtons, setBeginnerButtons] = useState([]);
@@ -16,8 +16,8 @@ const LessonPath = (_language) => {
   const [flagMenu, setFlagMenu] = useState(false);
 
   const nav = useNavigate();
-  const flagsAPI = "https://flagsapi.com/"
-  const flagStyle = "/flat/64.png"
+  const flagsAPI = "https://flagsapi.com/";
+  const flagStyle = "/flat/64.png";
 
   const toggleDropdown = () => {
     setFlagMenu(!flagMenu);
@@ -39,7 +39,7 @@ const LessonPath = (_language) => {
     var _intermediateButtons = [];
     var _advancedButtons = [];
 
-    console.log(langPath)
+    console.log(langPath);
     //Beginner lessons//
     var lessons = langPath.lessons["beginner"];
 
@@ -97,97 +97,101 @@ const LessonPath = (_language) => {
   };
 
   if (langPath === null) {
-    if(langPathSelected === null)
-    {
-    // get current langpath from database
-    // setLangPath(new LangPath("FI"));
-    // setLangPathSelected(true)
-    }
-    else if(langPathSelected === false){
-      
+    if (langPathSelected === null) {
+      // get current langpath from database
+      // setLangPath(new LangPath("FI"));
+      // setLangPathSelected(true)
+    } else if (langPathSelected === false) {
     }
 
     // if no langpath in db
     // setLangPathSelected(false)
-
   } else if (!lessonsLoaded) getPathLessons();
-
 
   const lessonContainers = () => {
     return (
       <>
-          <div className="lessoncontainer">
-            <div className="greycontainer">
-              <div className="difficulty-title">Beginner</div>
-              <div className="dashline" />
-              <div>{beginnerButtons}</div>
-            </div>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Beginner</div>
+            <div className="dashline" />
+            <div>{beginnerButtons}</div>
           </div>
+        </div>
 
-          <div className="lessoncontainer">
-            <div className="greycontainer">
-              <div className="difficulty-title">Intermediate</div>
-              <div className="dashline" />
-              <div>{intermediateButtons}</div>
-            </div>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Intermediate</div>
+            <div className="dashline" />
+            <div>{intermediateButtons}</div>
           </div>
+        </div>
 
-          <div className="lessoncontainer">
-            <div className="greycontainer">
-              <div className="difficulty-title">Advanced</div>
-              <div className="dashline" />
-              <div>{advancedButtons}</div>
-            </div>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Advanced</div>
+            <div className="dashline" />
+            <div>{advancedButtons}</div>
           </div>
+        </div>
       </>
     );
-  }
+  };
   const setLang = (lang) => {
     setLangPath(new LangPath(lang));
-    setLangPathSelected(true)
-  }
+    setLangPathSelected(true);
+  };
 
   const getLangFlags = () => {
     //get these from some db
-    let langs = ["FI", "ES"]
+    let langs = ["FI", "ES"];
 
-    let langFlags = []
+    let langFlags = [];
 
-    for(let i = 0; i < langs.length; i++){
+    for (let i = 0; i < langs.length; i++) {
       langFlags.push(
-        <button key={"lang" + i} className="btn" onClick={() => setLang(langs[i])}>
-        <img src={flagsAPI + langs[i] + flagStyle} />
-        </button>
-      )
+        <button
+          key={"lang" + i}
+          className="btn"
+          onClick={() => setLang(langs[i])}
+        >
+          <img src={flagsAPI + langs[i] + flagStyle} />
+        </button>,
+      );
     }
 
-    return langFlags
-  }
+    return langFlags;
+  };
 
   const langDropDown = () => {
     //get these from some db
-    let langs = ["FI", "ES"]
+    let langs = ["FI", "ES"];
 
-    let langFlags = []
+    let langFlags = [];
 
-    var exclude = 0
+    var exclude = 0;
 
-    for(let i = 0; i < langs.length; i++){
-      if(langPath.lang === langs[i]) {
+    for (let i = 0; i < langs.length; i++) {
+      if (langPath.lang === langs[i]) {
         exclude = i;
         break;
       }
     }
 
-    for(let i = 0; i < langs.length; i++){
-      console.log(langs[i])
-      if(i != exclude){
-      langFlags.push(
-        <p key={"dropdownflag" + i}>
-          <button key={"lang" + i} className="btn" onClick={() => setLang(langs[i])}>
-            <img src={flagsAPI + langs[i] + flagStyle} />
-          </button>
-        </p>)
+    for (let i = 0; i < langs.length; i++) {
+      console.log(langs[i]);
+      if (i != exclude) {
+        langFlags.push(
+          <p key={"dropdownflag" + i}>
+            <button
+              key={"lang" + i}
+              className="btn"
+              onClick={() => setLang(langs[i])}
+            >
+              <img src={flagsAPI + langs[i] + flagStyle} />
+            </button>
+          </p>,
+        );
       }
     }
     return (
@@ -198,30 +202,27 @@ const LessonPath = (_language) => {
         </button>
 
         <div className="flag-dropdown-container">
-          {flagMenu && (
-            <div className="flag-dropdown-content">
-              {langFlags}
-            </div>
-          )}
+          {flagMenu && <div className="flag-dropdown-content">{langFlags}</div>}
         </div>
       </>
     );
-  }
+  };
 
   const languageSelection = () => {
-    return(
-      
+    return (
       <div className="lessoncontainer">
-      <div className="greycontainer">
-        <div className="difficulty-title">Please choose a language</div>
-        <div className="dashline" />
-        <div>Start learning new languages now!!!!!!! <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCqiP3Z1VUfzab1N2SpD1IJhzfkyuN3TjmT8jyseqS&s"/></div>
-        <div>{getLangFlags()}</div>
+        <div className="greycontainer">
+          <div className="difficulty-title">Please choose a language</div>
+          <div className="dashline" />
+          <div>
+            Start learning new languages now!!!!!!!{" "}
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCqiP3Z1VUfzab1N2SpD1IJhzfkyuN3TjmT8jyseqS&s" />
+          </div>
+          <div>{getLangFlags()}</div>
+        </div>
       </div>
-    </div>
     );
-  }
-
+  };
 
   return (
     <div>
@@ -235,8 +236,7 @@ const LessonPath = (_language) => {
                 {" "}
                 {langPath === null ? "No language chosen" : langPath.langDesc}
               </span>
-              {langPath === null ? "" :
-                langDropDown()}
+              {langPath === null ? "" : langDropDown()}
             </div>
           </div>
         </div>
@@ -244,7 +244,6 @@ const LessonPath = (_language) => {
         <div className="lessonselements">
           {langPathSelected ? lessonContainers() : languageSelection()}
         </div>
-
       </div>
       <Footer />
     </div>
