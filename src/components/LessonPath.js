@@ -12,12 +12,16 @@ const LessonPath = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
   const [langPath, setLangPath] = useState(null);
   const [lessonsLoaded, setLessonsLoaded] = useState(false);
-  const [beginnerButtons, setBeginnerButtons] = useState([]);
-  const [intermediateButtons, setIntermediateButtons] = useState([]);
-  const [advancedButtons, setAdvancedButtons] = useState([]);
+
+  const [lessonButtons, setLessonButtons] = useState({
+    beginner: [],
+    intermediate: [],
+    advanced: []
+  });
+
   const [flagMenu, setFlagMenu] = useState(false);
-  const [currentLang, setCurrentLang] = useState("");
   const [userLangs, setUserLangs] = useState({});
+  const [loaded, setLoaded] = useState(false)
 
   const db = getDatabase();
   const auth = getAuth();
@@ -25,6 +29,12 @@ const LessonPath = (_language) => {
   const redirect = useNavigate();
   const flagsAPI = "https://flagsapi.com/";
   const flagStyle = "/flat/64.png";
+
+  const LessonButton = ({ key, className, onClick, text }) => (
+    <button key={key} className={className} onClick={onClick}>
+      {text}
+    </button>
+  );
 
   const toggleDropdown = () => {
     setFlagMenu(!flagMenu);
@@ -41,65 +51,28 @@ const LessonPath = (_language) => {
     );
   };
 
+  const createLessonButtons = (lessons, difficulty, onClick) => {
+    return lessons.map((lesson, index) => (
+      <LessonButton
+        key={`lessonbutton-${difficulty}-${index}`}
+        className={`lessonbutton-${difficulty.toLowerCase()}`}
+        onClick={() => onClick(index, difficulty.toLowerCase())}
+        text={lesson.name}
+      />
+    ));
+  };
+
   const getPathLessons = () => {
-    var _beginnerButtons = [];
-    var _intermediateButtons = [];
-    var _advancedButtons = [];
 
-    //Beginner lessons//
-    var lessons = langPath.lessons["beginner"];
-
-    for (let i = 0; i < lessons.length; i++) {
-      var buttonKey = "lessonbutton" + "complete" + i; //from state
-      _beginnerButtons.push(
-        <button
-          key={buttonKey}
-          className="lessonbutton-complete text-center"
-          onClick={() => startLesson(i, "beginner")}
-        >
-          {" "}
-          {lessons[i].name}{" "}
-        </button>,
-      );
-    }
-
-    //Intermediate lessons//
-    lessons = langPath.lessons["intermediate"];
-
-    for (let i = 0; i < lessons.length; i++) {
-      _intermediateButtons.push(
-        <button
-          key="lessonbutton-incomplete"
-          className="lessonbutton-incomplete text-center"
-          onClick={() => startLesson(i, "intermediate")}
-        >
-          {" "}
-          {lessons[i].name}{" "}
-        </button>,
-      );
-    }
-
-    //Advanced lessons//
-    lessons = langPath.lessons["advanced"];
-
-    for (let i = 0; i < lessons.length; i++) {
-      _advancedButtons.push(
-        <button
-          key="lessonbutton-disabled"
-          className="lessonbutton-disabled text-center"
-          onClick={() => startLesson(i, "advanced")}
-        >
-          {" "}
-          {lessons[i].name}{" "}
-        </button>,
-      );
-    }
-
-    setBeginnerButtons(_beginnerButtons);
-    setIntermediateButtons(_intermediateButtons);
-    setAdvancedButtons(_advancedButtons);
+    setLessonButtons({
+      ...lessonButtons,
+      beginner: createLessonButtons(langPath.lessons["beginner"], "complete", startLesson),
+      intermediate: createLessonButtons(langPath.lessons["intermediate"], "incomplete", startLesson),
+      advanced: createLessonButtons(langPath.lessons["advanced"], "disabled", startLesson)
+    });
 
     setLessonsLoaded(true);
+    setLoaded(true)
   };
 
   const getCurrentLangPath = () => {
@@ -113,7 +86,11 @@ const LessonPath = (_language) => {
             return null;
           } else {
             setLangPath(new LangPath(snapshot.val().currentLang));
-            setLangPathSelected(true);
+            console.log(snapshot.val().currentLang)
+            if(snapshot.val().currentLang !== undefined) {
+              console.log("älä")
+              setLangPathSelected(true);
+            }
             return snapshot.val().currentLang;
           }
         });
@@ -132,12 +109,14 @@ const LessonPath = (_language) => {
             let currLang = getCurrentLangPath();
             if (currLang === undefined) {
               console.log("User is learning no languages");
+              setLoaded(true)
             } else {
               setLangPath(new LangPath(currLang));
               setLangPathSelected(true);
             }
           } else if (langPathSelected === false) {
             console.log("Lang path not selected");
+         
           }
 
           // if no langpath in db
@@ -145,28 +124,16 @@ const LessonPath = (_language) => {
         }
       }
     });
-
-    /*
-
-      if (langPath === null) {
-        if (langPathSelected === null) {
-          // get current langpath from database
-    
-           getCurrentLangPath()
-          // setLangPath(new LangPath("FI"));
-          // setLangPathSelected(true)
-        } else if (langPathSelected === false) {
-        }
-    
-        // if no langpath in db
-        // setLangPathSelected(false)
-      } else if (!lessonsLoaded) getPathLessons();
-      */
   }, []);
 
   if (langPathSelected && !lessonsLoaded) {
     getPathLessons();
   }
+  else {
+
+    console.log("langpathselected " + langPathSelected)
+  }
+
 
   const lessonContainers = () => {
     return (
@@ -175,7 +142,7 @@ const LessonPath = (_language) => {
           <div className="greycontainer">
             <div className="difficulty-title">Beginner</div>
             <div className="dashline" />
-            <div>{beginnerButtons}</div>
+            <div>{lessonButtons.beginner}</div>
           </div>
         </div>
 
@@ -183,7 +150,7 @@ const LessonPath = (_language) => {
           <div className="greycontainer">
             <div className="difficulty-title">Intermediate</div>
             <div className="dashline" />
-            <div>{intermediateButtons}</div>
+            <div>{lessonButtons.intermediate}</div>
           </div>
         </div>
 
@@ -191,7 +158,7 @@ const LessonPath = (_language) => {
           <div className="greycontainer">
             <div className="difficulty-title">Advanced</div>
             <div className="dashline" />
-            <div>{advancedButtons}</div>
+            <div>{lessonButtons.advanced}</div>
           </div>
         </div>
       </>
@@ -229,13 +196,9 @@ const LessonPath = (_language) => {
       setLangPathSelected(true);
     });
 
-    toggleDropdown();
+    if(flagMenu) toggleDropdown();
     setLessonsLoaded(false);
   };
-
-  function UpdateLangPath() {
-    const user = auth.currentUser;
-  }
 
   const getLangFlags = () => {
     //get these from some db
@@ -302,7 +265,24 @@ const LessonPath = (_language) => {
     );
   };
 
+  const lessonsTitle = () => {
+    if(loaded)
+    {
+      return(
+        <div className="lessonstitle">
+              LESSONS &gt;&gt;
+              <span className="language-title">
+                {" "}
+                {langPathSelected === false ? "No language chosen" : langPath.langDesc}
+              </span>
+              {langPathSelected === false ? "" : langDropDown()}
+            </div>
+      );
+    }
+  }
+
   const languageSelection = () => {
+    if(loaded){
     return (
       <div className="lessoncontainer">
         <div className="greycontainer">
@@ -316,6 +296,7 @@ const LessonPath = (_language) => {
         </div>
       </div>
     );
+    }
   };
 
   return (
@@ -324,14 +305,7 @@ const LessonPath = (_language) => {
       <div className="pagecontainer">
         <div className="dashboardelements">
           <div className="boxcontainer">
-            <div className="lessonstitle">
-              LESSONS &gt;&gt;
-              <span className="language-title">
-                {" "}
-                {langPath === null ? "No language chosen" : langPath.langDesc}
-              </span>
-              {langPath === null ? "" : langDropDown()}
-            </div>
+            {lessonsTitle()}
           </div>
         </div>
 
