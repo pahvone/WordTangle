@@ -68,7 +68,6 @@ const LessonPath = (_language) => {
     const userId = auth.currentUser.uid;
     onAuthStateChanged(auth, (user) => {
       get(ref(db, "/users/" + userId)).then((snapshot) => {
-
         if (
           snapshot.val().langs === undefined ||
           snapshot.val().langs[snapshot.val().currentLang] === undefined
