@@ -65,39 +65,37 @@ const LessonPath = (_language) => {
   const getPathLessons = () => {
     const userId = auth.currentUser.uid;
     onAuthStateChanged(auth, (user) => {
-    get(ref(db, "/users/" + userId)).then((snapshot) => {
-      //setUserProg(snapshot.val().langs[0].lessonProg)
-      //console.log(snapshot.val().langs[0].lessonProg.beginner)
+      get(ref(db, "/users/" + userId)).then((snapshot) => {
+        //setUserProg(snapshot.val().langs[0].lessonProg)
+        //console.log(snapshot.val().langs[0].lessonProg.beginner)
 
-      if(snapshot.val().langs === undefined) return;
-      setLessonButtons({
-        ...lessonButtons,
-        beginner: createLessonButtons(
-          langPath.lessons["beginner"],
-          "complete",
-          startLesson,
-          snapshot.val().langs[0].lessonProg.beginner
-        ),
-        intermediate: createLessonButtons(
-          langPath.lessons["intermediate"],
-          "incomplete",
-          startLesson,
-          snapshot.val().langs[0].lessonProg.intermediate
-        ),
-        advanced: createLessonButtons(
-          langPath.lessons["advanced"],
-          "disabled",
-          startLesson,
-          snapshot.val().langs[0].lessonProg.advanced
-        ),
+        if (snapshot.val().langs === undefined) return;
+        setLessonButtons({
+          ...lessonButtons,
+          beginner: createLessonButtons(
+            langPath.lessons["beginner"],
+            "complete",
+            startLesson,
+            snapshot.val().langs[0].lessonProg.beginner,
+          ),
+          intermediate: createLessonButtons(
+            langPath.lessons["intermediate"],
+            "incomplete",
+            startLesson,
+            snapshot.val().langs[0].lessonProg.intermediate,
+          ),
+          advanced: createLessonButtons(
+            langPath.lessons["advanced"],
+            "disabled",
+            startLesson,
+            snapshot.val().langs[0].lessonProg.advanced,
+          ),
+        });
+
+        setLessonsLoaded(true);
+        setLoaded(true);
       });
-  
-      setLessonsLoaded(true);
-      setLoaded(true);
-    })
-  })
-
-    
+    });
   };
 
   const getCurrentLangPath = () => {
@@ -191,10 +189,10 @@ const LessonPath = (_language) => {
           if (!snapshot.val().langs) {
             console.log("No langs in db, creating");
             setUserProg([0]);
-            
+
             setLangPath(new LangPath(lang));
             let _userProg = new UserProg(lang);
-            setUserProg(_userProg)
+            setUserProg(_userProg);
             setLangPathSelected(true);
 
             update(ref(db, "/users/" + userId), {
@@ -202,7 +200,6 @@ const LessonPath = (_language) => {
               currentLang: lang,
             });
           } else {
-            
             //setUserProg(snapshot.val().langs);
             //console.log(snapshot.val().langs[0].lessonProg)
 
