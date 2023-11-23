@@ -6,7 +6,7 @@ import "./VocabLesson.css";
 import "../App.css";
 import NavBar from "./NavBar";
 import Footer from "./Footter";
-import {LangPath, UserLangs} from "./LangPath";
+import { LangPath, UserLangs } from "./LangPath";
 
 const LessonPath = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
@@ -16,12 +16,12 @@ const LessonPath = (_language) => {
   const [intermediateButtons, setIntermediateButtons] = useState([]);
   const [advancedButtons, setAdvancedButtons] = useState([]);
   const [flagMenu, setFlagMenu] = useState(false);
-  const [currentLang, setCurrentLang] = useState("")
-  const [userLangs, setUserLangs] = useState({})
+  const [currentLang, setCurrentLang] = useState("");
+  const [userLangs, setUserLangs] = useState({});
 
   const db = getDatabase();
   const auth = getAuth();
-  
+
   const redirect = useNavigate();
   const flagsAPI = "https://flagsapi.com/";
   const flagStyle = "/flat/64.png";
@@ -102,36 +102,27 @@ const LessonPath = (_language) => {
     setLessonsLoaded(true);
   };
 
-
-
   const getCurrentLangPath = () => {
     const userId = auth.currentUser.uid;
-    
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if(!snapshot.val().langs) {
+          if (!snapshot.val().langs) {
             //for some reason this fails, mby db conn is not ready on the first round
             return null;
-          }
-          else {
-            setLangPath(new LangPath(snapshot.val().currentLang))
-            setLangPathSelected(true)
+          } else {
+            setLangPath(new LangPath(snapshot.val().currentLang));
+            setLangPathSelected(true);
             return snapshot.val().currentLang;
           }
-        })
+        });
       }
-      
     });
-    
-  }
-
-
+  };
 
   useEffect(() => {
-
     const connectedRef = ref(db, ".info/connected");
-
 
     onValue(connectedRef, (snap) => {
       if (snap.val() === true) {
@@ -139,19 +130,18 @@ const LessonPath = (_language) => {
           if (langPathSelected === null) {
             // get current langpath from database
             let currLang = getCurrentLangPath();
-            if(currLang === undefined){
-              console.log("User is learning no languages")
-            }
-            else {
-              setLangPath(new LangPath(currLang))
-              setLangPathSelected(true)
+            if (currLang === undefined) {
+              console.log("User is learning no languages");
+            } else {
+              setLangPath(new LangPath(currLang));
+              setLangPathSelected(true);
             }
           } else if (langPathSelected === false) {
-            console.log("Lang path not selected")
+            console.log("Lang path not selected");
           }
 
           // if no langpath in db
-          setLangPathSelected(false)
+          setLangPathSelected(false);
         }
       }
     });
@@ -172,14 +162,11 @@ const LessonPath = (_language) => {
         // setLangPathSelected(false)
       } else if (!lessonsLoaded) getPathLessons();
       */
-
   }, []);
 
   if (langPathSelected && !lessonsLoaded) {
     getPathLessons();
   }
-
-
 
   const lessonContainers = () => {
     return (
@@ -215,44 +202,39 @@ const LessonPath = (_language) => {
     const userId = auth.currentUser.uid;
 
     onAuthStateChanged(auth, (user) => {
+      //check if langpath in db, if not, create
+      if (user) {
+        get(ref(db, "/users/" + userId)).then((snapshot) => {
+          if (!snapshot.val().langs) {
+            console.log("No langs in db, creating");
+            setUserLangs([0]);
+            let path = new UserLangs(lang);
+            setLangPath(new LangPath(lang));
+            setLangPathSelected(true);
 
-    //check if langpath in db, if not, create
-    if (user) {
-      get(ref(db, "/users/" + userId)).then((snapshot) => {
-      
-        if(!snapshot.val().langs){
-          console.log("No langs in db, creating")
-          setUserLangs([0])
-          let path = new UserLangs(lang)
-          setLangPath(new LangPath(lang));
-          setLangPathSelected(true)
-          
-          update(ref(db, "/users/" + userId), {
-            langs: [path],
-            currentLang: lang
-          });
-        }
-        else {
-          setUserLangs(snapshot.val().langs)
-          setLangPath(new LangPath(lang));
-          update(ref(db, "/users/" + userId), {
-            currentLang: lang
-          });
-        }
-      })
-      
-    }
-    setLangPath(new LangPath(lang));
-    setLangPathSelected(true);
+            update(ref(db, "/users/" + userId), {
+              langs: [path],
+              currentLang: lang,
+            });
+          } else {
+            setUserLangs(snapshot.val().langs);
+            setLangPath(new LangPath(lang));
+            update(ref(db, "/users/" + userId), {
+              currentLang: lang,
+            });
+          }
+        });
+      }
+      setLangPath(new LangPath(lang));
+      setLangPathSelected(true);
     });
 
-    toggleDropdown()
+    toggleDropdown();
     setLessonsLoaded(false);
-  }
+  };
 
   function UpdateLangPath() {
     const user = auth.currentUser;
-
   }
 
   const getLangFlags = () => {
