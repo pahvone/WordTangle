@@ -1,9 +1,11 @@
 import React, { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 
-const VocabLesson = ({ lang, diff, index }) => {
+const VocabQuiz = ({ lang, diff, index }) => {
   const [qIndex, setIndex] = useState(0);
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
@@ -18,9 +20,39 @@ const VocabLesson = ({ lang, diff, index }) => {
 
   const nav = useNavigate();
 
+  const db = getDatabase();
+  const auth = getAuth();
+
   const endQuiz = () => {
+    
     if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length) {
       //update result to database
+      var percentage = Math.round((correctCount / lesson.wordList.length) * 100)
+
+      const userId = auth.currentUser.uid;
+      
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+
+            var currLang = snapshot.val().currentLang;
+            console.log(snapshot.val().langs[currLang].lessonProg[diff][index])
+            var langs = snapshot.val().langs;
+            langs[currLang].lessonProg[diff][index] = percentage
+
+
+            update(ref(db, "/users/" + userId), {
+              langs : langs
+            });
+          })
+
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+
+            console.log(snapshot.val().langs["FI"].lessonProg[diff][index])
+          })
+        }
+      });
+
       return true;
     } else return false;
   };
@@ -353,4 +385,4 @@ const VocabLesson = ({ lang, diff, index }) => {
   }
 };
 
-export default VocabLesson;
+export default VocabQuiz;
