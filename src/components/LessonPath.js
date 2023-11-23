@@ -6,7 +6,7 @@ import "./VocabLesson.css";
 import "../App.css";
 import NavBar from "./NavBar";
 import Footer from "./Footter";
-import { LangPath, UserLangs } from "./LangPath";
+import { LangPath, UserProg } from "./LangPath";
 
 const LessonPath = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
@@ -20,7 +20,7 @@ const LessonPath = (_language) => {
   });
 
   const [flagMenu, setFlagMenu] = useState(false);
-  const [userLangs, setUserLangs] = useState({});
+  const [userProg, setUserProg] = useState({});
   const [loaded, setLoaded] = useState(false);
 
   const db = getDatabase();
@@ -30,8 +30,8 @@ const LessonPath = (_language) => {
   const flagsAPI = "https://flagsapi.com/";
   const flagStyle = "/flat/64.png";
 
-  const LessonButton = ({ key, className, onClick, text }) => (
-    <button key={key} className={className} onClick={onClick}>
+  const LessonButton = ({ className, onClick, text }) => (
+    <button className={className} onClick={onClick}>
       {text}
     </button>
   );
@@ -51,39 +51,53 @@ const LessonPath = (_language) => {
     );
   };
 
-  const createLessonButtons = (lessons, difficulty, onClick) => {
+  const createLessonButtons = (lessons, difficulty, onClick, text) => {
     return lessons.map((lesson, index) => (
       <LessonButton
         key={`lessonbutton-${difficulty}-${index}`}
         className={`lessonbutton-${difficulty.toLowerCase()}`}
         onClick={() => onClick(index, difficulty.toLowerCase())}
-        text={lesson.name}
+        text={lesson.name + " (" + text[index] + "%)"}
       />
     ));
   };
 
   const getPathLessons = () => {
-    setLessonButtons({
-      ...lessonButtons,
-      beginner: createLessonButtons(
-        langPath.lessons["beginner"],
-        "complete",
-        startLesson,
-      ),
-      intermediate: createLessonButtons(
-        langPath.lessons["intermediate"],
-        "incomplete",
-        startLesson,
-      ),
-      advanced: createLessonButtons(
-        langPath.lessons["advanced"],
-        "disabled",
-        startLesson,
-      ),
-    });
+    const userId = auth.currentUser.uid;
+    onAuthStateChanged(auth, (user) => {
+    get(ref(db, "/users/" + userId)).then((snapshot) => {
+      //setUserProg(snapshot.val().langs[0].lessonProg)
+      //console.log(snapshot.val().langs[0].lessonProg.beginner)
 
-    setLessonsLoaded(true);
-    setLoaded(true);
+      if(snapshot.val().langs === undefined) return;
+      setLessonButtons({
+        ...lessonButtons,
+        beginner: createLessonButtons(
+          langPath.lessons["beginner"],
+          "complete",
+          startLesson,
+          snapshot.val().langs[0].lessonProg.beginner
+        ),
+        intermediate: createLessonButtons(
+          langPath.lessons["intermediate"],
+          "incomplete",
+          startLesson,
+          snapshot.val().langs[0].lessonProg.intermediate
+        ),
+        advanced: createLessonButtons(
+          langPath.lessons["advanced"],
+          "disabled",
+          startLesson,
+          snapshot.val().langs[0].lessonProg.advanced
+        ),
+      });
+  
+      setLessonsLoaded(true);
+      setLoaded(true);
+    })
+  })
+
+    
   };
 
   const getCurrentLangPath = () => {
@@ -97,9 +111,7 @@ const LessonPath = (_language) => {
             return null;
           } else {
             setLangPath(new LangPath(snapshot.val().currentLang));
-            console.log(snapshot.val().currentLang);
             if (snapshot.val().currentLang !== undefined) {
-              console.log("älä");
               setLangPathSelected(true);
             }
             return snapshot.val().currentLang;
@@ -138,8 +150,6 @@ const LessonPath = (_language) => {
 
   if (langPathSelected && !lessonsLoaded) {
     getPathLessons();
-  } else {
-    console.log("langpathselected " + langPathSelected);
   }
 
   const lessonContainers = () => {
@@ -176,22 +186,26 @@ const LessonPath = (_language) => {
     const userId = auth.currentUser.uid;
 
     onAuthStateChanged(auth, (user) => {
-      //check if langpath in db, if not, create
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
           if (!snapshot.val().langs) {
             console.log("No langs in db, creating");
-            setUserLangs([0]);
-            let path = new UserLangs(lang);
+            setUserProg([0]);
+            
             setLangPath(new LangPath(lang));
+            let _userProg = new UserProg(lang);
+            setUserProg(_userProg)
             setLangPathSelected(true);
 
             update(ref(db, "/users/" + userId), {
-              langs: [path],
+              langs: [_userProg],
               currentLang: lang,
             });
           } else {
-            setUserLangs(snapshot.val().langs);
+            
+            //setUserProg(snapshot.val().langs);
+            //console.log(snapshot.val().langs[0].lessonProg)
+
             setLangPath(new LangPath(lang));
             update(ref(db, "/users/" + userId), {
               currentLang: lang,

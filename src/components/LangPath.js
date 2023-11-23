@@ -19,12 +19,27 @@ export class LangPath {
   }
 }
 
-export class UserLangs {
+export class UserProg {
   lang = "";
-  lessonProg = [[]]; //["100%", "56%", "60%"], ["30%", "10%", "0%"], ["0%", "0%", "0%"]
+  lessonProg = { 
+    beginner: [],
+    intermediate: [],
+    advanced: []
+  };
 
-  constructor(lang) {
+  constructor(lang, langPath) {
     this.lang = lang;
+    var langPath = new LangPath(lang)
+
+    for(var i = 0; i < langPath.lessons["beginner"].length; i++){
+      this.lessonProg.beginner.push(0)
+    }
+    for(var i = 0; i < langPath.lessons["intermediate"].length; i++){
+      this.lessonProg.intermediate.push(0)
+    }
+    for(var i = 0; i < langPath.lessons["advanced"].length; i++){
+      this.lessonProg.advanced.push(0)
+    }
   }
 }
 
