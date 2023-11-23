@@ -134,6 +134,23 @@
   padding-top: 20px;
   padding-left: 5%;
 }
+
+.lessonselements {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 80%;
+  padding-top: 20px;
+  padding-left: 5%;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.lessoncontainer {
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
 .boxcontainer {
   flex-direction: row;
   padding-left: 10px;

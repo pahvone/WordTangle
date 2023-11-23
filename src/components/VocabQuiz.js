@@ -19,8 +19,11 @@ const VocabLesson = ({ lang, diff, index }) => {
   const nav = useNavigate();
 
   const endQuiz = () => {
-    if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length)
+    if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length){
+      //update result to database
       return true;
+    }
+      
     else return false;
   };
 

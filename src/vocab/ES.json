@@ -1,0 +1,45 @@
+{
+    "lang" : "ES",
+    "langDesc" : "Spanish",
+    "lessons": {
+    "beginner": [
+      {
+        "name": "Numbers 1",
+        "vocab": [
+          ["uno", ["one", "1"]],
+          ["dos", ["two", "2"]],
+          ["tres", ["three", "3"]],
+          ["cuatro", ["four", "4"]],
+          ["cinco", ["five", "5"]],
+          ["seis", ["six", "6"]],
+          ["siete", ["seven", "7"]],
+          ["ocho", ["eight", "8"]],
+          ["nueve", ["nine", "9"]],
+          ["diez", ["ten", "10"]],
+          ["once", ["eleven", "11"]],
+          ["doce", ["twelve", "12"]],
+          ["trece", ["thirteen", "13"]],
+          ["catorce", ["fourteen", "14"]],
+          ["quince", ["fifteen", "15"]],
+          ["dieciséis", ["sixteen", "16"]],
+          ["diecisiete", ["seventeen", "17"]],
+          ["dieciocho", ["eighteen", "18"]],
+          ["diecinueve", ["nineteen", "19"]],
+          ["veinte", ["twenty", "20"]]
+        ]
+      }]
+        ,
+        "intermediate": [
+          {
+            "name": "Name",
+            "vocab": []
+          }
+        ],
+        "advanced": [
+          {
+            "name": "Name",
+            "vocab": []
+          }
+        ]
+    }
+  }
