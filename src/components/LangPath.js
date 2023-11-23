@@ -1,4 +1,4 @@
-class LangPath {
+export class LangPath {
   langJSON = null;
   lang = "";
   langDesc = "";
@@ -17,6 +17,15 @@ class LangPath {
       return;
     }
   }
+}
+
+export class UserLangs {
+    lang = ""
+    lessonProg = [[]] //["100%", "56%", "60%"], ["30%", "10%", "0%"], ["0%", "0%", "0%"]
+
+    constructor(lang){
+      this.lang = lang;
+    }
 }
 
 export default LangPath;
