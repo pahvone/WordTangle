@@ -16,12 +16,12 @@ const LessonPath = (_language) => {
   const [lessonButtons, setLessonButtons] = useState({
     beginner: [],
     intermediate: [],
-    advanced: []
+    advanced: [],
   });
 
   const [flagMenu, setFlagMenu] = useState(false);
   const [userLangs, setUserLangs] = useState({});
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
 
   const db = getDatabase();
   const auth = getAuth();
@@ -63,16 +63,27 @@ const LessonPath = (_language) => {
   };
 
   const getPathLessons = () => {
-
     setLessonButtons({
       ...lessonButtons,
-      beginner: createLessonButtons(langPath.lessons["beginner"], "complete", startLesson),
-      intermediate: createLessonButtons(langPath.lessons["intermediate"], "incomplete", startLesson),
-      advanced: createLessonButtons(langPath.lessons["advanced"], "disabled", startLesson)
+      beginner: createLessonButtons(
+        langPath.lessons["beginner"],
+        "complete",
+        startLesson,
+      ),
+      intermediate: createLessonButtons(
+        langPath.lessons["intermediate"],
+        "incomplete",
+        startLesson,
+      ),
+      advanced: createLessonButtons(
+        langPath.lessons["advanced"],
+        "disabled",
+        startLesson,
+      ),
     });
 
     setLessonsLoaded(true);
-    setLoaded(true)
+    setLoaded(true);
   };
 
   const getCurrentLangPath = () => {
@@ -86,9 +97,9 @@ const LessonPath = (_language) => {
             return null;
           } else {
             setLangPath(new LangPath(snapshot.val().currentLang));
-            console.log(snapshot.val().currentLang)
-            if(snapshot.val().currentLang !== undefined) {
-              console.log("älä")
+            console.log(snapshot.val().currentLang);
+            if (snapshot.val().currentLang !== undefined) {
+              console.log("älä");
               setLangPathSelected(true);
             }
             return snapshot.val().currentLang;
@@ -109,14 +120,13 @@ const LessonPath = (_language) => {
             let currLang = getCurrentLangPath();
             if (currLang === undefined) {
               console.log("User is learning no languages");
-              setLoaded(true)
+              setLoaded(true);
             } else {
               setLangPath(new LangPath(currLang));
               setLangPathSelected(true);
             }
           } else if (langPathSelected === false) {
             console.log("Lang path not selected");
-         
           }
 
           // if no langpath in db
@@ -128,12 +138,9 @@ const LessonPath = (_language) => {
 
   if (langPathSelected && !lessonsLoaded) {
     getPathLessons();
+  } else {
+    console.log("langpathselected " + langPathSelected);
   }
-  else {
-
-    console.log("langpathselected " + langPathSelected)
-  }
-
 
   const lessonContainers = () => {
     return (
@@ -196,7 +203,7 @@ const LessonPath = (_language) => {
       setLangPathSelected(true);
     });
 
-    if(flagMenu) toggleDropdown();
+    if (flagMenu) toggleDropdown();
     setLessonsLoaded(false);
   };
 
@@ -266,36 +273,37 @@ const LessonPath = (_language) => {
   };
 
   const lessonsTitle = () => {
-    if(loaded)
-    {
-      return(
+    if (loaded) {
+      return (
         <div className="lessonstitle">
-              LESSONS &gt;&gt;
-              <span className="language-title">
-                {" "}
-                {langPathSelected === false ? "No language chosen" : langPath.langDesc}
-              </span>
-              {langPathSelected === false ? "" : langDropDown()}
-            </div>
+          LESSONS &gt;&gt;
+          <span className="language-title">
+            {" "}
+            {langPathSelected === false
+              ? "No language chosen"
+              : langPath.langDesc}
+          </span>
+          {langPathSelected === false ? "" : langDropDown()}
+        </div>
       );
     }
-  }
+  };
 
   const languageSelection = () => {
-    if(loaded){
-    return (
-      <div className="lessoncontainer">
-        <div className="greycontainer">
-          <div className="difficulty-title">Please choose a language</div>
-          <div className="dashline" />
-          <div>
-            Start learning new languages now!!!!!!!{" "}
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCqiP3Z1VUfzab1N2SpD1IJhzfkyuN3TjmT8jyseqS&s" />
+    if (loaded) {
+      return (
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Please choose a language</div>
+            <div className="dashline" />
+            <div>
+              Start learning new languages now!!!!!!!{" "}
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCqiP3Z1VUfzab1N2SpD1IJhzfkyuN3TjmT8jyseqS&s" />
+            </div>
+            <div>{getLangFlags()}</div>
           </div>
-          <div>{getLangFlags()}</div>
         </div>
-      </div>
-    );
+      );
     }
   };
 
@@ -304,9 +312,7 @@ const LessonPath = (_language) => {
       <NavBar />
       <div className="pagecontainer">
         <div className="dashboardelements">
-          <div className="boxcontainer">
-            {lessonsTitle()}
-          </div>
+          <div className="boxcontainer">{lessonsTitle()}</div>
         </div>
 
         <div className="lessonselements">
