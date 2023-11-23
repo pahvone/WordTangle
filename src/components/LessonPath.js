@@ -77,6 +77,8 @@ const LessonPath = (_language) => {
           snapshot.val().langs[snapshot.val().currentLang] === undefined
         )
           return;
+        if (snapshot.val().langs === undefined ||
+        snapshot.val().langs[snapshot.val().currentLang] === undefined) return;
         setLessonButtons({
           ...lessonButtons,
           beginner: createLessonButtons(
@@ -213,6 +215,12 @@ const LessonPath = (_language) => {
             };
 
             console.log(langs[lang].lessonProg);
+                  lessonProg : {
+                    beginner: [],
+                    intermediate: [],
+                    advanced: [],
+                  },
+              };
             langs[lang].lessonProg = _userProg.lessonProg;
 
             setUserProg(_userProg);
@@ -223,8 +231,6 @@ const LessonPath = (_language) => {
               currentLang: lang,
             });
           } else {
-            //setUserProg(snapshot.val().langs);
-            //console.log(snapshot.val().langs[0].lessonProg)
             setUserProg([0]);
 
             setLangPath(new LangPath(lang));
@@ -247,6 +253,18 @@ const LessonPath = (_language) => {
 
             console.log(langs[lang].lessonProg);
             langs[lang].lessonProg = _userProg.lessonProg;
+            if(!langs[lang]){
+            _userProg = new UserProg(lang);
+            
+            langs[lang] = {
+              lessonProg : {
+                beginner: [],
+                intermediate: [],
+                advanced: [],
+              },
+          };
+        }
+        langs[lang].lessonProg = _userProg.lessonProg;
 
             setUserProg(_userProg);
             setLangPathSelected(true);
