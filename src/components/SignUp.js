@@ -22,15 +22,27 @@ const SignUp = () => {
     const auth = getAuth();
     const db = getDatabase();
 
-    createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
         const userId = userCredential.user.uid;
+        const user = userCredential.user;
 
         set(ref(db, `users/${userId}`), {
           username: username,
         });
-      },
-    );
+        console.log("Registering Succesful!");
+        console.log(username);
+        redirect("/Login");
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/weak-password":
+            alert(
+              "Your Password Is Too Weak! Your password should be at least 6 Characters!",
+            );
+            break;
+        }
+      });
   }
 
   function RegisterToFirebaseGoogle() {
@@ -43,13 +55,13 @@ const SignUp = () => {
         // The signed-in user info.
         const user = result.user;
         console.log("Registering Succesful!");
+        console.log(username);
+        redirect("/Login");
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })
       .catch((error) => {
-        // Handle Errors here.
-        console.log(error.code);
-        console.log(error.message);
+        alert("error.code");
         // The email of the user's account used.
         const email = error.customData.email;
         // The AuthCredential type that was used.
@@ -61,8 +73,6 @@ const SignUp = () => {
   const redirect = useNavigate();
   const HandleSignUpButtonClick = () => {
     writeUserData();
-    console.log(username);
-    redirect("/Login");
   };
 
   const HandleAlternateSignUpButtonClick = () => {
