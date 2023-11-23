@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import google from "../img/google_logo.png";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import { useState } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -27,7 +27,7 @@ const SignUp = () => {
         const userId = userCredential.user.uid;
         const user = userCredential.user;
 
-        set(ref(db, `users/${userId}`), {
+        update(ref(db, `users/${userId}`), {
           username: username,
         });
         console.log("Registering Succesful!");
