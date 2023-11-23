@@ -24,32 +24,30 @@ const VocabQuiz = ({ lang, diff, index }) => {
   const auth = getAuth();
 
   const endQuiz = () => {
-    
     if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length) {
       //update result to database
-      var percentage = Math.round((correctCount / lesson.wordList.length) * 100)
+      var percentage = Math.round(
+        (correctCount / lesson.wordList.length) * 100,
+      );
 
       const userId = auth.currentUser.uid;
-      
+
       onAuthStateChanged(auth, (user) => {
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
-
             var currLang = snapshot.val().currentLang;
-            console.log(snapshot.val().langs[currLang].lessonProg[diff][index])
+            console.log(snapshot.val().langs[currLang].lessonProg[diff][index]);
             var langs = snapshot.val().langs;
-            langs[currLang].lessonProg[diff][index] = percentage
-
+            langs[currLang].lessonProg[diff][index] = percentage;
 
             update(ref(db, "/users/" + userId), {
-              langs : langs
+              langs: langs,
             });
-          })
+          });
 
           get(ref(db, "/users/" + userId)).then((snapshot) => {
-
-            console.log(snapshot.val().langs["FI"].lessonProg[diff][index])
-          })
+            console.log(snapshot.val().langs["FI"].lessonProg[diff][index]);
+          });
         }
       });
 

@@ -1,5 +1,3 @@
-
-
 export class LangPath {
   langJSON = null;
   lang = "";

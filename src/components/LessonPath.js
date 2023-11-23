@@ -8,7 +8,6 @@ import NavBar from "./NavBar";
 import Footer from "./Footter";
 import { LangPath, UserProg } from "./LangPath";
 
-
 const LessonPath = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
   const [langPath, setLangPath] = useState(null);
@@ -53,7 +52,6 @@ const LessonPath = (_language) => {
   };
 
   const createLessonButtons = (lessons, difficulty, onClick, text) => {
-
     //get percentages from db, change button style accordingly
 
     return lessons.map((lesson, index) => (
@@ -72,29 +70,35 @@ const LessonPath = (_language) => {
       get(ref(db, "/users/" + userId)).then((snapshot) => {
         //setUserProg(snapshot.val().langs[0].lessonProg)
         //console.log(snapshot.val().langs[0].lessonProg.beginner)
-        console.log(snapshot.val().currentLang)
-        
-        if (snapshot.val().langs === undefined ||
-        snapshot.val().langs[snapshot.val().currentLang] === undefined) return;
+        console.log(snapshot.val().currentLang);
+
+        if (
+          snapshot.val().langs === undefined ||
+          snapshot.val().langs[snapshot.val().currentLang] === undefined
+        )
+          return;
         setLessonButtons({
           ...lessonButtons,
           beginner: createLessonButtons(
             langPath.lessons["beginner"],
             "beginner",
             startLesson,
-            snapshot.val().langs[snapshot.val().currentLang].lessonProg.beginner,
+            snapshot.val().langs[snapshot.val().currentLang].lessonProg
+              .beginner,
           ),
           intermediate: createLessonButtons(
             langPath.lessons["intermediate"],
             "intermediate",
             startLesson,
-            snapshot.val().langs[snapshot.val().currentLang].lessonProg.intermediate,
+            snapshot.val().langs[snapshot.val().currentLang].lessonProg
+              .intermediate,
           ),
           advanced: createLessonButtons(
             langPath.lessons["advanced"],
             "advanced",
             startLesson,
-            snapshot.val().langs[snapshot.val().currentLang].lessonProg.advanced,
+            snapshot.val().langs[snapshot.val().currentLang].lessonProg
+              .advanced,
           ),
         });
 
@@ -198,17 +202,17 @@ const LessonPath = (_language) => {
 
             setLangPath(new LangPath(lang));
             let _userProg = new UserProg(lang);
-            let langs = {}
-            
-            langs[lang] = {
-                  lessonProg : {
-                    beginner: [],
-                    intermediate: [],
-                    advanced: [],
-                  },
-              };
+            let langs = {};
 
-            console.log(langs[lang].lessonProg)
+            langs[lang] = {
+              lessonProg: {
+                beginner: [],
+                intermediate: [],
+                advanced: [],
+              },
+            };
+
+            console.log(langs[lang].lessonProg);
             langs[lang].lessonProg = _userProg.lessonProg;
 
             setUserProg(_userProg);
@@ -224,34 +228,34 @@ const LessonPath = (_language) => {
             setUserProg([0]);
 
             setLangPath(new LangPath(lang));
-            
-            let langs = snapshot.val().langs
-            let _userProg = new UserProg(lang)
+
+            let langs = snapshot.val().langs;
+            let _userProg = new UserProg(lang);
             _userProg.lessonProg = langs[lang].lessonProg;
 
-            if(!langs[lang]){
-            _userProg = new UserProg(lang);
-            
-            langs[lang] = {
-              lessonProg : {
-                beginner: [],
-                intermediate: [],
-                advanced: [],
-              },
-          };
-        }
+            if (!langs[lang]) {
+              _userProg = new UserProg(lang);
 
-        console.log(langs[lang].lessonProg)
-        langs[lang].lessonProg = _userProg.lessonProg;
+              langs[lang] = {
+                lessonProg: {
+                  beginner: [],
+                  intermediate: [],
+                  advanced: [],
+                },
+              };
+            }
 
-        setUserProg(_userProg);
-        setLangPathSelected(true);
+            console.log(langs[lang].lessonProg);
+            langs[lang].lessonProg = _userProg.lessonProg;
 
-        update(ref(db, "/users/" + userId), {
-          langs: langs,
-          currentLang: lang,
-        });
-            
+            setUserProg(_userProg);
+            setLangPathSelected(true);
+
+            update(ref(db, "/users/" + userId), {
+              langs: langs,
+              currentLang: lang,
+            });
+
             /*
             langs.push([lang] = {
               lessonProg : {
