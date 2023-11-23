@@ -41,12 +41,10 @@ const SignUp = () => {
               "Your Password Is Too Weak! Your password should be at least 6 Characters!",
             );
             break;
-          
-            case "auth/invalid-email":
-              alert(
-                "The given email is invalid.",
-              );
-              break;
+
+          case "auth/invalid-email":
+            alert("The given email is invalid.");
+            break;
         }
       });
   }
