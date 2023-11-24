@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import google from "../img/google_logo.png";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import { useState } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -22,16 +22,46 @@ const SignUp = () => {
     const auth = getAuth();
     const db = getDatabase();
 
-    createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
         const userId = userCredential.user.uid;
+        const user = userCredential.user;
 
-        set(ref(db, `users/${userId}`), {
+        update(ref(db, `users/${userId}`), {
           username: username,
         });
-      },
-    );
+        console.log("Registering Succesful!");
+        console.log(username);
+        redirect("/Login");
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/weak-password":
+            alert(
+              "Your Password Is Too Weak! Your password should be at least 6 Characters!",
+            );
+            break;
+
+          case "auth/invalid-email":
+            alert("The given email is invalid.");
+            break;
+
+          case "auth/email-already-in-use":
+            alert("The given email is already in use.");
+            break;
+
+          case "auth/too-many-requests":
+            alert(
+              "You have done too many requests to the server! Please wait a moment.",
+            );
+        }
+        // alert(error.code); Uncomment me if error code is not listed in the cases above.
+      });
   }
+
+  const RedirectToDashboard = () => {
+    redirect("/");
+  };
 
   function RegisterToFirebaseGoogle() {
     const auth = getAuth();
@@ -43,13 +73,13 @@ const SignUp = () => {
         // The signed-in user info.
         const user = result.user;
         console.log("Registering Succesful!");
+        console.log(username);
+        redirect("/Login");
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       })
       .catch((error) => {
-        // Handle Errors here.
-        console.log(error.code);
-        console.log(error.message);
+        alert("error.code");
         // The email of the user's account used.
         const email = error.customData.email;
         // The AuthCredential type that was used.
@@ -61,8 +91,6 @@ const SignUp = () => {
   const redirect = useNavigate();
   const HandleSignUpButtonClick = () => {
     writeUserData();
-    console.log(username);
-    redirect("/Login");
   };
 
   const HandleAlternateSignUpButtonClick = () => {
@@ -72,7 +100,12 @@ const SignUp = () => {
 
   return (
     <div className="responsive-container">
-      <img className="app-logo" src={logo} alt="Word Tangle Logo" />
+      <img
+        className="app-logo"
+        src={logo}
+        alt="Word Tangle Logo"
+        onClick={RedirectToDashboard}
+      />
       <label className="slogan" htmlFor="username">
         Username
       </label>

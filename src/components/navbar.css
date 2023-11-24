@@ -42,8 +42,7 @@ body {
 }
 
 .navbar ul a:hover {
-  color: #575a1d;
-  font-size: 20.5px;
+  color: #8d922b;
 }
 .nav-elements-right ul a.active,
 .nav-elements ul a.active {

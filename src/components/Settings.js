@@ -99,18 +99,25 @@ const Settings = () => {
       //reauthenticate the user to facilitate removal of account
       reauthenticateWithCredential(auth.currentUser, credential)
         .then(() => {
-          deleteUser(user)
-            .then(() => {
-              remove(child(dbRef, "/users/" + userId));
-              redirect("/");
-              console.log("User Succesfully Deleted!");
-            })
-            .catch((error) => {
-              console.error(error);
-            });
+          deleteUser(user).then(() => {
+            remove(child(dbRef, "/users/" + userId));
+            redirect("/");
+            console.log("User Succesfully Deleted!");
+          });
         })
         .catch((error) => {
-          console.error(error);
+          switch (error.code) {
+            case "auth/invalid-login-credentials":
+              alert(
+                "The password in the confirmation field is wrong! You should type in your current password to confirm the account deletion.",
+              );
+              break;
+            case "auth/too-many-requests":
+              alert(
+                "You have done too many requests to the server! Please wait a moment.",
+              );
+          }
+          // alert(error.code); uncomment for catching un-documented errors.
         });
     }
   }
