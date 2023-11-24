@@ -43,8 +43,15 @@ const Login = () => {
         // ...
       })
       .catch((error) => {
-        console.log(error.code);
-        console.log(error.message);
+        switch (error.code) {
+          case "auth/invalid-email":
+            alert("The given email is invalid.");
+            break;
+          case "auth/invalid-login-credentials":
+            alert("The given email or password is invalid.");
+            break;
+        }
+        alert(error.code);
       });
   }
 
@@ -66,8 +73,7 @@ const Login = () => {
       })
       .catch((error) => {
         // Handle Errors here.
-        console.log(error.code);
-        console.log(error.message);
+        alert(error.code);
         // The email of the user's account used.
         const email = error.customData.email;
         // The AuthCredential type that was used.
@@ -84,9 +90,18 @@ const Login = () => {
     LoginToFirebaseGoogle();
   };
 
+  const RedirectToDashboard = () => {
+    redirect("/");
+  };
+
   return (
     <div className="responsive-container">
-      <img className="app-logo" src={logo} alt="Word Tangle Logo" />
+      <img
+        className="app-logo"
+        src={logo}
+        alt="Word Tangle Logo"
+        onClick={RedirectToDashboard}
+      />
       <label htmlFor="email" className="slogan">
         Email
       </label>
