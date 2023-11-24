@@ -19,7 +19,7 @@ export class LangPath {
   }
 }
 
-export class UserProg {
+export class UserLangs {
   lang = "";
   lessonProg = {
     beginner: [],
@@ -27,9 +27,8 @@ export class UserProg {
     advanced: [],
   };
 
-  constructor(lang, langPath) {
-    this.lang = lang;
-    var langPath = new LangPath(lang);
+  constructor(langPath) {
+    this.lang = langPath.lang;
 
     for (var i = 0; i < langPath.lessons["beginner"].length; i++) {
       this.lessonProg.beginner.push(0);

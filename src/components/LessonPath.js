@@ -6,12 +6,17 @@ import "./VocabLesson.css";
 import "../App.css";
 import NavBar from "./NavBar";
 import Footer from "./Footter";
-import { LangPath, UserProg } from "./LangPath";
+import { LangPath, UserLangs as UserLangs } from "./LangPath";
 
 const LessonPath = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
   const [langPath, setLangPath] = useState(null);
   const [lessonsLoaded, setLessonsLoaded] = useState(false);
+
+  const [langSelection, setLangSelection] = useState(false);
+
+  const [currentLang, setCurrentLang] = useState(null)
+  const [userLangs, setUserLangs] = useState(null)
 
   const [lessonButtons, setLessonButtons] = useState({
     beginner: [],
@@ -20,7 +25,6 @@ const LessonPath = (_language) => {
   });
 
   const [flagMenu, setFlagMenu] = useState(false);
-  const [userProg, setUserProg] = useState({});
   const [loaded, setLoaded] = useState(false);
 
   const db = getDatabase();
@@ -42,16 +46,11 @@ const LessonPath = (_language) => {
 
   const startLesson = (_index, _diff) => {
     redirect(
-      `/LessonPage?lang=` +
-        langPath.lang +
-        "&diff=" +
-        _diff +
-        "&index=" +
-        _index,
+      `/LessonPage?lang=${langPath.lang}&diff=${_diff}&index=${_index}`
     );
   };
 
-  const createLessonButtons = (lessons, difficulty, onClick, text) => {
+  const createLessonButtons = (lessons, difficulty, onClick, prog) => {
     //get percentages from db, change button style accordingly
 
     return lessons.map((lesson, index) => (
@@ -59,104 +58,70 @@ const LessonPath = (_language) => {
         key={`lessonbutton-${difficulty}-${index}`}
         className={`lessonbutton-incomplete`}
         onClick={() => onClick(index, difficulty.toLowerCase())}
-        text={lesson.name + " (" + text[index] + "%)"}
+        text={lesson.name + " (" + prog[index] + "%)"}
       />
     ));
   };
 
-  const getPathLessons = () => {
-    const userId = auth.currentUser.uid;
-    onAuthStateChanged(auth, (user) => {
-      get(ref(db, "/users/" + userId)).then((snapshot) => {
-        if (
-          snapshot.val().langs === undefined ||
-          snapshot.val().langs[snapshot.val().currentLang] === undefined
-        )
-          return;
-        setLessonButtons({
-          ...lessonButtons,
-          beginner: createLessonButtons(
-            langPath.lessons["beginner"],
-            "beginner",
-            startLesson,
-            snapshot.val().langs[snapshot.val().currentLang].lessonProg
-              .beginner,
-          ),
-          intermediate: createLessonButtons(
-            langPath.lessons["intermediate"],
-            "intermediate",
-            startLesson,
-            snapshot.val().langs[snapshot.val().currentLang].lessonProg
-              .intermediate,
-          ),
-          advanced: createLessonButtons(
-            langPath.lessons["advanced"],
-            "advanced",
-            startLesson,
-            snapshot.val().langs[snapshot.val().currentLang].lessonProg
-              .advanced,
-          ),
-        });
+  const generateLessonButtons = (lang) => {
+    let lessonProg = userLangs[lang].lessonProg
 
-        setLessonsLoaded(true);
-        setLoaded(true);
-      });
+    setLessonButtons({
+      ...lessonButtons,
+      beginner: createLessonButtons(
+        langPath.lessons["beginner"],
+        "beginner",
+        startLesson,
+        lessonProg.beginner,
+      ),
+      intermediate: createLessonButtons(
+        langPath.lessons["intermediate"],
+        "intermediate",
+        startLesson,
+        lessonProg.intermediate,
+      ),
+      advanced: createLessonButtons(
+        langPath.lessons["advanced"],
+        "advanced",
+        startLesson,
+        lessonProg.advanced,
+      ),
     });
-  };
 
-  const getCurrentLangPath = () => {
-    const userId = auth.currentUser.uid;
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if (!snapshot.val().langs) {
-            //for some reason this fails, mby db conn is not ready on the first round
-            return null;
-          } else {
-            setLangPath(new LangPath(snapshot.val().currentLang));
-            if (snapshot.val().currentLang !== undefined) {
-              setLangPathSelected(true);
-            }
-            return snapshot.val().currentLang;
-          }
-        });
-      }
-    });
+    setLessonsLoaded(true);
+    setLoaded(true);
   };
 
   useEffect(() => {
-    const connectedRef = ref(db, ".info/connected");
-
-    onValue(connectedRef, (snap) => {
-      if (snap.val() === true) {
-        if (langPath === null) {
-          if (langPathSelected === null) {
-            // get current langpath from database
-            let currLang = getCurrentLangPath();
-            if (currLang === undefined) {
-              console.log("User is learning no languages");
-              setLoaded(true);
-            } else {
-              setLangPath(new LangPath(currLang));
-              setLangPathSelected(true);
-            }
-          } else if (langPathSelected === false) {
-            console.log("Lang path not selected");
+    onAuthStateChanged(auth, (user) => {
+      const userId = auth.currentUser.uid;
+      if (user) {
+        get(ref(db, "/users/" + userId)).then((snapshot) => {
+          if (snapshot.val().langs === undefined) {
+            setLangPathSelected(false)
+            setLangSelection(true)
           }
-
-          // if no langpath in db
-          setLangPathSelected(false);
-        }
+          else {
+            initLangPath(snapshot.val())
+          }
+        })
       }
     });
   }, []);
 
-  if (langPathSelected && !lessonsLoaded) {
-    getPathLessons();
+  const initLangPath = (data) => {
+    setUserLangs(data.langs)
+    setLangPath(new LangPath(data.currentLang))
+    setCurrentLang(data.currentLang)
+    setLangPathSelected(true)
   }
 
-  const lessonContainers = () => {
+
+  if (langPathSelected && !lessonsLoaded && userLangs && userLangs[currentLang]) {
+    generateLessonButtons(currentLang);
+  }
+
+  const lessonContainers = (newLang) => {
     return (
       <>
         <div className="lessoncontainer">
@@ -186,21 +151,16 @@ const LessonPath = (_language) => {
     );
   };
 
-  const setLang = (lang) => {
+  const updateLangsToDB = (newLangPath) => {
     const userId = auth.currentUser.uid;
-
     onAuthStateChanged(auth, (user) => {
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
           if (!snapshot.val().langs) {
             console.log("No langs in db, creating");
-            setUserProg([0]);
 
-            setLangPath(new LangPath(lang));
-            let _userProg = new UserProg(lang);
             let langs = {};
-
-            langs[lang] = {
+            langs[newLangPath.lang] = {
               lessonProg: {
                 beginner: [],
                 intermediate: [],
@@ -208,65 +168,63 @@ const LessonPath = (_language) => {
               },
             };
 
-            langs[lang].lessonProg = _userProg.lessonProg;
-
-            setUserProg(_userProg);
-            setLangPathSelected(true);
+            langs[newLangPath.lang] = new UserLangs(newLangPath);
 
             update(ref(db, "/users/" + userId), {
               langs: langs,
-              currentLang: lang,
+              currentLang: newLangPath.lang,
             });
-          } else {
-            setUserProg([0]);
 
-            setLangPath(new LangPath(lang));
+            setUserLangs(langs)
+            
+          }else {
+            if(!snapshot.val().langs[newLangPath.lang]) {
+              console.log("Lang not currently in db, creating")
+              let langs = userLangs;
 
-            let langs = snapshot.val().langs;
-            let _userProg = new UserProg(lang);
-            _userProg.lessonProg = langs[lang].lessonProg;
-
-            if (!langs[lang]) {
-              _userProg = new UserProg(lang);
-
-              langs[lang] = {
+              langs[newLangPath.lang] = {
                 lessonProg: {
                   beginner: [],
                   intermediate: [],
                   advanced: [],
                 },
               };
-            }
 
-            langs[lang].lessonProg = _userProg.lessonProg;
-
-            setUserProg(_userProg);
-            setLangPathSelected(true);
-
+              langs[newLangPath.lang] = new UserLangs(newLangPath)
             update(ref(db, "/users/" + userId), {
               langs: langs,
-              currentLang: lang,
+              currentLang: newLangPath.lang,
             });
 
-            /*
-            langs.push([lang] = {
-              lessonProg : {
-                beginner: [],
-                intermediate: [],
-                advanced: [],
-              }})
-*/
 
-            setLangPath(new LangPath(lang));
-            update(ref(db, "/users/" + userId), {
-              currentLang: lang,
-            });
+            setUserLangs(langs)
+            }
+
+            else {
+              console.log("Lang in db, switching")
+              update(ref(db, "/users/" + userId), {
+                currentLang: newLangPath.lang,
+              });
+            }
           }
         });
       }
-      setLangPath(new LangPath(lang));
-      setLangPathSelected(true);
+
     });
+  }
+
+  const setLang = (lang) => {
+    console.log("Set lang to " + lang)
+
+    let newLangPath = new LangPath(lang);
+    setCurrentLang(lang)
+    setLangPath(newLangPath);
+
+    updateLangsToDB(newLangPath);
+    
+    setLangPathSelected(true)
+    setLangSelection(false)
+    setLoaded(true)
 
     if (flagMenu) toggleDropdown();
     setLessonsLoaded(false);
@@ -355,21 +313,21 @@ const LessonPath = (_language) => {
   };
 
   const languageSelection = () => {
-    if (loaded) {
+    if(!langSelection) return;
+
       return (
         <div className="lessoncontainer">
           <div className="greycontainer">
             <div className="difficulty-title">Please choose a language</div>
             <div className="dashline" />
-            <div>
+           {/* <div>
               Start learning new languages now!!!!!!!{" "}
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCqiP3Z1VUfzab1N2SpD1IJhzfkyuN3TjmT8jyseqS&s" />
-            </div>
+      </div> */}
             <div>{getLangFlags()}</div>
           </div>
         </div>
       );
-    }
   };
 
   return (
@@ -379,7 +337,6 @@ const LessonPath = (_language) => {
         <div className="dashboardelements">
           <div className="boxcontainer">{lessonsTitle()}</div>
         </div>
-
         <div className="lessonselements">
           {langPathSelected ? lessonContainers() : languageSelection()}
         </div>

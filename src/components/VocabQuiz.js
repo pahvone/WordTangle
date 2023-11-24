@@ -36,17 +36,15 @@ const VocabQuiz = ({ lang, diff, index }) => {
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
             var currLang = snapshot.val().currentLang;
-            console.log(snapshot.val().langs[currLang].lessonProg[diff][index]);
             var langs = snapshot.val().langs;
-            langs[currLang].lessonProg[diff][index] = percentage;
+
+            if(percentage > langs[currLang].lessonProg[diff][index]){
+              langs[currLang].lessonProg[diff][index] = percentage;
+            }
 
             update(ref(db, "/users/" + userId), {
               langs: langs,
             });
-          });
-
-          get(ref(db, "/users/" + userId)).then((snapshot) => {
-            console.log(snapshot.val().langs["FI"].lessonProg[diff][index]);
           });
         }
       });
