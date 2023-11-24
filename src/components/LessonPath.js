@@ -53,13 +53,22 @@ const LessonPath = (_language) => {
     let allComplete = true;
 
     if (difficulty === "intermediate") {
-      for (var i = 0; i < userLangs[currentLang].lessonProg["beginner"].length; i++) {
-        if (userLangs[currentLang].lessonProg["beginner"][i] !== 100) allComplete = false;
+      for (
+        var i = 0;
+        i < userLangs[currentLang].lessonProg["beginner"].length;
+        i++
+      ) {
+        if (userLangs[currentLang].lessonProg["beginner"][i] !== 100)
+          allComplete = false;
       }
-    }
-    else if (difficulty === "advanced") {
-      for (var i = 0; i < userLangs[currentLang].lessonProg["intermediate"].length; i++) {
-        if (userLangs[currentLang].lessonProg["intermediate"][i] !== 100) allComplete = false;
+    } else if (difficulty === "advanced") {
+      for (
+        var i = 0;
+        i < userLangs[currentLang].lessonProg["intermediate"].length;
+        i++
+      ) {
+        if (userLangs[currentLang].lessonProg["intermediate"][i] !== 100)
+          allComplete = false;
       }
     }
     return allComplete;
@@ -69,7 +78,13 @@ const LessonPath = (_language) => {
     return lessons.map((lesson, index) => (
       <LessonButton
         key={`lessonbutton-${difficulty}-${index}`}
-        className={`lessonbutton-${!allComplete(difficulty) ? 'disabled' : (prog[index] === 100 ? 'complete' : 'incomplete')}`}
+        className={`lessonbutton-${
+          !allComplete(difficulty)
+            ? "disabled"
+            : prog[index] === 100
+              ? "complete"
+              : "incomplete"
+        }`}
         onClick={() => onClick(index, difficulty.toLowerCase())}
         text={lesson.name + " (" + prog[index] + "%)"}
         disabled={!allComplete(difficulty)}
