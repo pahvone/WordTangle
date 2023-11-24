@@ -34,8 +34,8 @@ const LessonPath = (_language) => {
   const flagsAPI = "https://flagsapi.com/";
   const flagStyle = "/flat/64.png";
 
-  const LessonButton = ({ className, onClick, text }) => (
-    <button className={className} onClick={onClick}>
+  const LessonButton = ({ className, onClick, text, disabled }) => (
+    <button className={className} onClick={onClick} disabled={disabled}>
       {text}
     </button>
   );
@@ -48,15 +48,31 @@ const LessonPath = (_language) => {
     redirect(`/LessonPage?lang=${langPath.lang}&diff=${_diff}&index=${_index}`);
   };
 
-  const createLessonButtons = (lessons, difficulty, onClick, prog) => {
-    //get percentages from db, change button style accordingly
+  const allComplete = (difficulty) => {
+    if (difficulty === "beginner") return true;
+    let allComplete = true;
 
+    if (difficulty === "intermediate") {
+      for (var i = 0; i < userLangs[currentLang].lessonProg["beginner"].length; i++) {
+        if (userLangs[currentLang].lessonProg["beginner"][i] !== 100) allComplete = false;
+      }
+    }
+    else if (difficulty === "advanced") {
+      for (var i = 0; i < userLangs[currentLang].lessonProg["intermediate"].length; i++) {
+        if (userLangs[currentLang].lessonProg["intermediate"][i] !== 100) allComplete = false;
+      }
+    }
+    return allComplete;
+  };
+
+  const createLessonButtons = (lessons, difficulty, onClick, prog) => {
     return lessons.map((lesson, index) => (
       <LessonButton
         key={`lessonbutton-${difficulty}-${index}`}
-        className={`lessonbutton-incomplete`}
+        className={`lessonbutton-${!allComplete(difficulty) ? 'disabled' : (prog[index] === 100 ? 'complete' : 'incomplete')}`}
         onClick={() => onClick(index, difficulty.toLowerCase())}
         text={lesson.name + " (" + prog[index] + "%)"}
+        disabled={!allComplete(difficulty)}
       />
     ));
   };
