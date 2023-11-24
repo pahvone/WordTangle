@@ -38,7 +38,7 @@ const VocabQuiz = ({ lang, diff, index }) => {
             var currLang = snapshot.val().currentLang;
             var langs = snapshot.val().langs;
 
-            if(percentage > langs[currLang].lessonProg[diff][index]){
+            if (percentage > langs[currLang].lessonProg[diff][index]) {
               langs[currLang].lessonProg[diff][index] = percentage;
             }
 

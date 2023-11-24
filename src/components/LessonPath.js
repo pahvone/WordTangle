@@ -15,8 +15,8 @@ const LessonPath = (_language) => {
 
   const [langSelection, setLangSelection] = useState(false);
 
-  const [currentLang, setCurrentLang] = useState(null)
-  const [userLangs, setUserLangs] = useState(null)
+  const [currentLang, setCurrentLang] = useState(null);
+  const [userLangs, setUserLangs] = useState(null);
 
   const [lessonButtons, setLessonButtons] = useState({
     beginner: [],
@@ -45,9 +45,7 @@ const LessonPath = (_language) => {
   };
 
   const startLesson = (_index, _diff) => {
-    redirect(
-      `/LessonPage?lang=${langPath.lang}&diff=${_diff}&index=${_index}`
-    );
+    redirect(`/LessonPage?lang=${langPath.lang}&diff=${_diff}&index=${_index}`);
   };
 
   const createLessonButtons = (lessons, difficulty, onClick, prog) => {
@@ -64,7 +62,7 @@ const LessonPath = (_language) => {
   };
 
   const generateLessonButtons = (lang) => {
-    let lessonProg = userLangs[lang].lessonProg
+    let lessonProg = userLangs[lang].lessonProg;
 
     setLessonButtons({
       ...lessonButtons,
@@ -98,26 +96,29 @@ const LessonPath = (_language) => {
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
           if (snapshot.val().langs === undefined) {
-            setLangPathSelected(false)
-            setLangSelection(true)
+            setLangPathSelected(false);
+            setLangSelection(true);
+          } else {
+            initLangPath(snapshot.val());
           }
-          else {
-            initLangPath(snapshot.val())
-          }
-        })
+        });
       }
     });
   }, []);
 
   const initLangPath = (data) => {
-    setUserLangs(data.langs)
-    setLangPath(new LangPath(data.currentLang))
-    setCurrentLang(data.currentLang)
-    setLangPathSelected(true)
-  }
+    setUserLangs(data.langs);
+    setLangPath(new LangPath(data.currentLang));
+    setCurrentLang(data.currentLang);
+    setLangPathSelected(true);
+  };
 
-
-  if (langPathSelected && !lessonsLoaded && userLangs && userLangs[currentLang]) {
+  if (
+    langPathSelected &&
+    !lessonsLoaded &&
+    userLangs &&
+    userLangs[currentLang]
+  ) {
     generateLessonButtons(currentLang);
   }
 
@@ -175,11 +176,10 @@ const LessonPath = (_language) => {
               currentLang: newLangPath.lang,
             });
 
-            setUserLangs(langs)
-            
-          }else {
-            if(!snapshot.val().langs[newLangPath.lang]) {
-              console.log("Lang not currently in db, creating")
+            setUserLangs(langs);
+          } else {
+            if (!snapshot.val().langs[newLangPath.lang]) {
+              console.log("Lang not currently in db, creating");
               let langs = userLangs;
 
               langs[newLangPath.lang] = {
@@ -190,18 +190,15 @@ const LessonPath = (_language) => {
                 },
               };
 
-              langs[newLangPath.lang] = new UserLangs(newLangPath)
-            update(ref(db, "/users/" + userId), {
-              langs: langs,
-              currentLang: newLangPath.lang,
-            });
+              langs[newLangPath.lang] = new UserLangs(newLangPath);
+              update(ref(db, "/users/" + userId), {
+                langs: langs,
+                currentLang: newLangPath.lang,
+              });
 
-
-            setUserLangs(langs)
-            }
-
-            else {
-              console.log("Lang in db, switching")
+              setUserLangs(langs);
+            } else {
+              console.log("Lang in db, switching");
               update(ref(db, "/users/" + userId), {
                 currentLang: newLangPath.lang,
               });
@@ -209,22 +206,21 @@ const LessonPath = (_language) => {
           }
         });
       }
-
     });
-  }
+  };
 
   const setLang = (lang) => {
-    console.log("Set lang to " + lang)
+    console.log("Set lang to " + lang);
 
     let newLangPath = new LangPath(lang);
-    setCurrentLang(lang)
+    setCurrentLang(lang);
     setLangPath(newLangPath);
 
     updateLangsToDB(newLangPath);
-    
-    setLangPathSelected(true)
-    setLangSelection(false)
-    setLoaded(true)
+
+    setLangPathSelected(true);
+    setLangSelection(false);
+    setLoaded(true);
 
     if (flagMenu) toggleDropdown();
     setLessonsLoaded(false);
@@ -313,21 +309,21 @@ const LessonPath = (_language) => {
   };
 
   const languageSelection = () => {
-    if(!langSelection) return;
+    if (!langSelection) return;
 
-      return (
-        <div className="lessoncontainer">
-          <div className="greycontainer">
-            <div className="difficulty-title">Please choose a language</div>
-            <div className="dashline" />
-           {/* <div>
+    return (
+      <div className="lessoncontainer">
+        <div className="greycontainer">
+          <div className="difficulty-title">Please choose a language</div>
+          <div className="dashline" />
+          {/* <div>
               Start learning new languages now!!!!!!!{" "}
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCqiP3Z1VUfzab1N2SpD1IJhzfkyuN3TjmT8jyseqS&s" />
       </div> */}
-            <div>{getLangFlags()}</div>
-          </div>
+          <div>{getLangFlags()}</div>
         </div>
-      );
+      </div>
+    );
   };
 
   return (
