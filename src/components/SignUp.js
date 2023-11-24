@@ -49,6 +49,11 @@ const SignUp = () => {
           case "auth/email-already-in-use":
             alert("The given email is already in use.");
             break;
+
+          case "auth/too-many-requests":
+            alert(
+              "You have done too many requests to the server! Please wait a moment.",
+            );
         }
         // alert(error.code); Uncomment me if error code is not listed in the cases above.
       });

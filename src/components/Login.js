@@ -50,6 +50,10 @@ const Login = () => {
           case "auth/invalid-login-credentials":
             alert("The given email or password is invalid.");
             break;
+          case "auth/too-many-requests":
+            alert(
+              "You have done too many requests to the server! Please wait a moment.",
+            );
         }
         alert(error.code);
       });
