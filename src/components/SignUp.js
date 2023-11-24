@@ -45,9 +45,18 @@ const SignUp = () => {
           case "auth/invalid-email":
             alert("The given email is invalid.");
             break;
+
+          case "auth/email-already-in-use":
+            alert("The given email is already in use.");
+            break;
         }
+        // alert(error.code); Uncomment me if error code is not listed in the cases above.
       });
   }
+
+  const RedirectToDashboard = () => {
+    redirect("/");
+  };
 
   function RegisterToFirebaseGoogle() {
     const auth = getAuth();
@@ -86,7 +95,12 @@ const SignUp = () => {
 
   return (
     <div className="responsive-container">
-      <img className="app-logo" src={logo} alt="Word Tangle Logo" />
+      <img
+        className="app-logo"
+        src={logo}
+        alt="Word Tangle Logo"
+        onClick={RedirectToDashboard}
+      />
       <label className="slogan" htmlFor="username">
         Username
       </label>
