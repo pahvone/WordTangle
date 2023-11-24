@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import SignUp from "./components/SignUp";
+import SignOut from "./components/SignOut";
 import Login from "./components/Login";
 import Welcome from "./components/Welcome";
 import Settings from "./components/Settings";
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/LessonPath" element={<LessonPath />} />
         <Route path="/LessonPage" element={<LessonPage />} />
         <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/SignOut" element={<SignOut />} />
       </Routes>
     </>
   );
