@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./UsernameChange.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import fb from "../firebase";
 
 const db = getDatabase();
@@ -26,7 +26,7 @@ const Usernamechange = () => {
     const userId = auth.currentUser.uid;
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        set(ref(db, "/users/" + userId), {
+        update(ref(db, "/users/" + userId), {
           username: username,
         });
         console.log(user.uid);
