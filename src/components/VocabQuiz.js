@@ -1,8 +1,11 @@
 import React, { useState, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 
-const VocabLesson = (_lesson) => {
+const VocabQuiz = ({ lang, diff, index }) => {
   const [qIndex, setIndex] = useState(0);
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
@@ -15,10 +18,39 @@ const VocabLesson = (_lesson) => {
 
   const choiceElements = [];
 
+  const nav = useNavigate();
+
+  const db = getDatabase();
+  const auth = getAuth();
+
   const endQuiz = () => {
-    if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length)
+    if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length) {
+      //update result to database
+      var percentage = Math.round(
+        (correctCount / lesson.wordList.length) * 100,
+      );
+
+      const userId = auth.currentUser.uid;
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            var currLang = snapshot.val().currentLang;
+            var langs = snapshot.val().langs;
+
+            if (percentage > langs[currLang].lessonProg[diff][index]) {
+              langs[currLang].lessonProg[diff][index] = percentage;
+            }
+
+            update(ref(db, "/users/" + userId), {
+              langs: langs,
+            });
+          });
+        }
+      });
+
       return true;
-    else return false;
+    } else return false;
   };
 
   const handleSwitchInputMode = useCallback(() => {
@@ -217,7 +249,7 @@ const VocabLesson = (_lesson) => {
     return (
       <div>
         <div className="row justify-content-center align-items-center">
-          <div className="col-2">
+          <div className="quiztext col-2">
             {qIndex + 1} / {lesson.wordList.length}
           </div>
           <div className="col-md-5 wordcontainer">{qWord}</div>
@@ -289,7 +321,7 @@ const VocabLesson = (_lesson) => {
   //Quiz state machine
 
   if (qState === 0 && lesson === null) {
-    setLesson(new Lesson("FIN", 1));
+    setLesson(new Lesson(lang, "beginner", index)); // < get index from LessonPath
   } else if (qState === 0 && lesson != null) {
     createRandomizedQuizOrder();
   } else if (qState === 1) {
@@ -297,24 +329,28 @@ const VocabLesson = (_lesson) => {
       //console.log("quizIndex " + qIndex + " word " + lesson.wordList[qIndex])
 
       return (
-        <div className="container-fluid ">
-          <h1 align="center">{lesson.lessonName}</h1>
+        <div className="quizelements">
+          <div className="container-fluid ">
+            <h1 className="lessontitle" align="center">
+              {lesson.lessonName}
+            </h1>
 
-          {quizWord()}
-          <div className="row justify-content-center align-items-center">
-            <div className="col-md-4">{result}</div>
-          </div>
-          <div className="row my-5 justify-content-center">
-            <div className="col-md-4">
-              {" "}
-              <button
-                className="btn skip-button w-100 text-center"
-                onClick={handleSwitchInputMode}
-              >
-                {inputMode === 0
-                  ? "Answer in writing"
-                  : "Multiple choice answers"}
-              </button>
+            {quizWord()}
+            <div className="row justify-content-center align-items-center">
+              <div className="quiztext col-md-4">{result}</div>
+            </div>
+            <div className="row my-5 justify-content-center">
+              <div className="col-md-4">
+                {" "}
+                <button
+                  className="btn skip-button w-100 text-center"
+                  onClick={handleSwitchInputMode}
+                >
+                  {inputMode === 0
+                    ? "Answer in writing"
+                    : "Multiple choice answers"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -323,7 +359,7 @@ const VocabLesson = (_lesson) => {
       return (
         <div className="container-fluid ">
           <div className="row justify-content-center align-items-center">
-            <div className="col-md-4">
+            <div className="quiztext col-md-4">
               You got {correctCount} out of {lesson.wordList.length} correct
             </div>
           </div>
@@ -331,7 +367,9 @@ const VocabLesson = (_lesson) => {
             <div className="col-md-4">
               <button
                 className="btn choice-button w-100 text-center"
-                onClick={() => {}}
+                onClick={() => {
+                  nav("/LessonPath");
+                }}
               >
                 Back to lesson path
               </button>
@@ -343,4 +381,4 @@ const VocabLesson = (_lesson) => {
   }
 };
 
-export default VocabLesson;
+export default VocabQuiz;

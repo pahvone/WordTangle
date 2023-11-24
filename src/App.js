@@ -30,7 +30,8 @@ const App = () => {
         <Route path="/UsernameChange" element={<UsernameChange />} />
         <Route path="/PasswordChange" element={<PasswordChange />} />
         <Route path="/LessonPath" element={<LessonPath />} />
-        <Route path="/LessonPage" element={<LessonPage />} />
+        <Route path="/LessonPage:lang/:diff/:index" element={<LessonPage />} />
+        <Route path="/LessonPage" element={<LessonPage />} /> {/*debug*/}
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/SignOut" element={<SignOut />} />
       </Routes>
