@@ -20,16 +20,32 @@ const Button = ({ text, onClick }) => {
   );
 };
 
+function GetUserData() {
+  let userId = auth.currentUser.uid;
+  get(child(dbRef, "/users/" + userId))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val().username);
+        // functionality: snapshot.val().insertvaluetobefetchedhere
+      } else {
+        console.log("No data available");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 const Progress_bar = ({ progress }) => {
   const Parentdiv = {
     height: 35,
-    width: "75%",
+    width: 350,
     backgroundColor: "#DDDDDD",
     borderRadius: 40,
   };
 
   const Childdiv = {
-    height: "100%",
+    height: 35,
     width: `${progress}%`,
     backgroundColor: "#50FFC0",
     borderRadius: 40,
@@ -50,24 +66,6 @@ const Progress_bar = ({ progress }) => {
 };
 
 const DashBoard = () => {
-  const [userName, setuserName] = useState("");
-  function GetUserData() {
-    let userId = auth.currentUser.uid;
-    get(child(dbRef, "/users/" + userId))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log(snapshot.val().username);
-          setuserName(snapshot.val().username);
-          // functionality: snapshot.val().insertvaluetobefetchedhere
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-  GetUserData();
   return (
     <div>
       <NavBar />
@@ -85,7 +83,7 @@ const DashBoard = () => {
         <div className="dashboardelements">
           <div className="boxcontainer">
             <div className="greycontainer">
-              <div className="title">Hi {userName}</div>
+              <div className="title">Hi User!</div>
               <div className="dashline" />
               <div className="latestactivity">Latest activity:</div>
               <div className="activity">
@@ -122,8 +120,13 @@ const DashBoard = () => {
                 Browse the dictionary
                 <span className="xp">10XP</span>
               </div>
+              <div className="row">
               <div className="xpbar">
-                <Progress_bar progress="40" />
+                <Progress_bar progress="50" />
+              </div>
+              <span className="expiitext">
+                  LVL 10
+                  </span>
               </div>
             </div>
           </div>

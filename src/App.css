@@ -112,6 +112,11 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans&display=swap");
 
+@font-face {
+  font-family: 'mega boxs';
+  src: url('./components/fonts/mega boxs.otf');
+}
+
 .pagecontainer {
   min-width: 50em;
   min-height: 100vh;
@@ -134,23 +139,6 @@
   padding-top: 20px;
   padding-left: 5%;
 }
-
-.lessonselements {
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  width: 80%;
-  padding-top: 20px;
-  padding-left: 5%;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-}
-
-.lessoncontainer {
-  padding-left: 10px;
-  margin-bottom: 20px;
-}
-
 .boxcontainer {
   flex-direction: row;
   padding-left: 10px;
@@ -196,7 +184,6 @@
   font-size: 25px;
   padding-bottom: 10px;
 }
-
 .activity {
   display: flex;
   background-color: #fbff50;
@@ -218,10 +205,17 @@
 .xp {
   font-weight: 600;
 }
+
+.row{
+  flex-direction: row;
+}
+
 .xpbar {
   text-align: right;
   font-size: 25px;
-  padding-top: 10px;
+  padding-top: 25px;
+  padding-left: 15px;
+  padding-right: 20px;
 }
 .XPgained {
   font-size: 10;
@@ -236,80 +230,13 @@
   justify-content: space-between;
 }
 
-/* Learn VVV */
-
-.lessonstitle {
-  font-family: "Fira Mono", monospace;
-  color: #000;
-  font-size: 30px;
-  font-weight: bolder;
-  color: var(--textcolor);
-}
-.difficulty-title {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  font-size: 25px;
-  font-weight: bold;
-  padding-bottom: 10px;
-}
-.language-title {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  font-size: 25px;
-  font-weight: bold;
-}
-.lessonbutton-incomplete {
-  background-color: #fbff50;
-  border: none;
-  color: rgb(0, 0, 0);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 0;
-}
-.lessonbutton-complete {
-  background-color: #8e59ff;
-  border: none;
-  color: rgb(0, 0, 0);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 0;
-}
-.lessonbutton-disabled {
-  background-color: #535353;
-  border: none;
-  color: rgb(0, 0, 0);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 0;
-}
-.flag-dropdown-container {
-  position: relative;
-  display: inline-block;
-}
-
-.flag-dropdown-content {
-  position: absolute;
-  top: 100%; /* Position the dropdown below the button */
-  left: 0;
-  z-index: 1; /* Ensure the dropdown is displayed above other elements */
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  padding: 10px;
+.expiitext{
+  padding-top: 10px;
+  font-family: 'mega boxs';
+  font-size: 40px;
+  color:#f4f4f4;
+  text-shadow: -2px -2px 0 #000,  
+  2px -2px 0 #000,
+ -2px 2px 0 #000,
+  2px 2px 0 #000;
 }
