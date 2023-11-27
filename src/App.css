@@ -1,339 +1,340 @@
 /* Login, Welcome, Sign UP VVV */
 
 .app-logo {
-    width: 100%;
-    height: auto;
-  }
-  
-  .app-logo-nonstacked {
-    width: 75%;
-    height: auto;
-  }
-  
-  .slogan {
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-    font-size: 25px;
-    color: var(--textcolor);
-  }
-  
-  .textfield {
-    width: 50%;
-    padding: 10px;
-    background: #ececec;
-    border: none;
-    border-radius: 2px;
-    font-size: 16px;
-  }
-  
-  .responsive-container {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .forgotpassword-button {
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-    font-size: 25px;
-    background: none;
-    border: none;
-    padding: 0;
-    color: var(--textcolor);
-    cursor: pointer;
-  }
-  
-  .styled-button {
-    background-color: #50ffc0;
-    color: #000;
-    padding: 15px 100px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 20px;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  
-    &:hover {
-      background-color: #33a87bff;
-    }
-  }
-  
-  .styled-warning-button {
-    background-color: #f3ff50;
-    color: #000;
-    padding: 15px 100px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 20px;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  
-    &:hover {
-      background-color: #a6ae38ff;
-    }
-  }
-  
-  .styled-critical-warning-button {
-    background-color: #fe0000;
-    color: #000;
-    padding: 15px 100px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 20px;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  
-    &:hover {
-      background-color: #b40000;
-    }
-  }
-  
-  .button-icon {
-    background: transparent;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-  
-    img {
-      width: 50px;
-      height: 50px;
-      background: var(--background);
-    }
-  }
-  
-  /* DashBoard VVV */
-  
-  @import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans&display=swap");
-  
-  @font-face {
-    font-family: "mega boxs";
-    src: url("./components/fonts/mega boxs.otf");
-  }
+  width: 100%;
+  height: auto;
+}
 
-  .pagecontainer {
-    min-width: 50em;
-    min-height: 100vh;
-    margin-bottom: 1em;
-  }
-  
-  .dashboardlogo-container {
-    width: 60%;
-    height: auto;
-    max-width: 80em;
-    min-width: 50em;
-    padding-top: 30px;
-    padding-left: 5%;
-  }
-  
-  .dashboardelements {
-    display: flex;
-    flex-direction: row;
-    height: auto;
-    padding-top: 20px;
-    padding-left: 5%;
-  }
-  
-  .lessonselements {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    width: 80%;
-    padding-top: 20px;
-    padding-left: 5%;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .lessoncontainer {
-    padding-left: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .boxcontainer {
-    flex-direction: row;
-    padding-left: 10px;
-  }
-  
-  .dashboardslogan {
-    font-family: "Fira Mono", monospace;
-    color: #000;
-    font-size: 23px;
-    position: relative;
-    top: -1em;
-    padding-top: 5px;
-    padding-left: 6%;
-    white-space: nowrap;
-    color: var(--textcolor);
-  }
-  .greycontainer {
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 10px;
-    border-radius: 10px;
-    min-width: 35em;
-    flex-direction: column;
-    background-color: #f4f4f4;
-  }
-  .title {
-    font-family: "Fira Mono", monospace;
-    color: #000;
-    font-size: 30px;
-    font-weight: bolder;
-  }
-  .dashline {
-    border-top: 1px dashed #000;
-    width: 100%;
-    transform: translateY(-50%);
-    padding-bottom: 5px;
-  }
-  
-  .latestactivity {
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-    font-size: 25px;
-    padding-bottom: 10px;
-  }
-  
-  .activity {
-    display: flex;
-    background-color: #fbff50;
-    padding: 3px;
-    padding-left: 5px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    justify-content: space-between;
-  }
-  .dailytask {
-    display: flex;
-    background-color: #50ffc0;
-    padding: 3px;
-    padding-left: 5px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    justify-content: space-between;
-  }
-  .xp {
-    font-weight: 600;
-  }
+.app-logo-nonstacked {
+  width: 75%;
+  height: auto;
+}
 
-  .row{
-    flex-direction: row;
-  }
-  
-  .xpbar {
-    text-align: right;
-    font-size: 25px;
-    padding-top: 25px;
-    padding-left: 15px;
-    padding-right: 20px;
-  }
+.slogan {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 25px;
+  color: var(--textcolor);
+}
 
-  .XPgained {
-    font-size: 10;
-  }
-  .leaderlist {
-    display: flex;
-    background-color: #dddddd;
-    padding: 3px;
-    padding-left: 5px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    justify-content: space-between;
-  }
+.textfield {
+  width: 50%;
+  padding: 10px;
+  background: #ececec;
+  border: none;
+  border-radius: 2px;
+  font-size: 16px;
+}
 
-  .expiitext{
-    padding-top: 10px;
-    font-family: 'mega boxs';
-    font-size: 40px;
-    color: #f4f4f4;
-    text-shadow: -2px -2px 0 #000,  
+.responsive-container {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.forgotpassword-button {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 25px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--textcolor);
+  cursor: pointer;
+}
+
+.styled-button {
+  background-color: #50ffc0;
+  color: #000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  &:hover {
+    background-color: #33a87bff;
+  }
+}
+
+.styled-warning-button {
+  background-color: #f3ff50;
+  color: #000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  &:hover {
+    background-color: #a6ae38ff;
+  }
+}
+
+.styled-critical-warning-button {
+  background-color: #fe0000;
+  color: #000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  &:hover {
+    background-color: #b40000;
+  }
+}
+
+.button-icon {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+
+  img {
+    width: 50px;
+    height: 50px;
+    background: var(--background);
+  }
+}
+
+/* DashBoard VVV */
+
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans&display=swap");
+
+@font-face {
+  font-family: "mega boxs";
+  src: url("./components/fonts/mega boxs.otf");
+}
+
+.pagecontainer {
+  min-width: 50em;
+  min-height: 100vh;
+  margin-bottom: 1em;
+}
+
+.dashboardlogo-container {
+  width: 60%;
+  height: auto;
+  max-width: 80em;
+  min-width: 50em;
+  padding-top: 30px;
+  padding-left: 5%;
+}
+
+.dashboardelements {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  padding-top: 20px;
+  padding-left: 5%;
+}
+
+.lessonselements {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 80%;
+  padding-top: 20px;
+  padding-left: 5%;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.lessoncontainer {
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+.boxcontainer {
+  flex-direction: row;
+  padding-left: 10px;
+}
+
+.dashboardslogan {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 23px;
+  position: relative;
+  top: -1em;
+  padding-top: 5px;
+  padding-left: 6%;
+  white-space: nowrap;
+  color: var(--textcolor);
+}
+.greycontainer {
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  min-width: 35em;
+  flex-direction: column;
+  background-color: #f4f4f4;
+}
+.title {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 30px;
+  font-weight: bolder;
+}
+.dashline {
+  border-top: 1px dashed #000;
+  width: 100%;
+  transform: translateY(-50%);
+  padding-bottom: 5px;
+}
+
+.latestactivity {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 25px;
+  padding-bottom: 10px;
+}
+
+.activity {
+  display: flex;
+  background-color: #fbff50;
+  padding: 3px;
+  padding-left: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  justify-content: space-between;
+}
+.dailytask {
+  display: flex;
+  background-color: #50ffc0;
+  padding: 3px;
+  padding-left: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  justify-content: space-between;
+}
+.xp {
+  font-weight: 600;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.xpbar {
+  text-align: right;
+  font-size: 25px;
+  padding-top: 25px;
+  padding-left: 15px;
+  padding-right: 20px;
+}
+
+.XPgained {
+  font-size: 10;
+}
+.leaderlist {
+  display: flex;
+  background-color: #dddddd;
+  padding: 3px;
+  padding-left: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  justify-content: space-between;
+}
+
+.expiitext {
+  padding-top: 10px;
+  font-family: "mega boxs";
+  font-size: 40px;
+  color: #f4f4f4;
+  text-shadow:
+    -2px -2px 0 #000,
     2px -2px 0 #000,
-   -2px 2px 0 #000,
+    -2px 2px 0 #000,
     2px 2px 0 #000;
-  }
-  
-  /* Learn VVV */
-  
-  .lessonstitle {
-    font-family: "Fira Mono", monospace;
-    color: #000;
-    font-size: 30px;
-    font-weight: bolder;
-    color: var(--textcolor);
-  }
-  .difficulty-title {
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-    font-size: 25px;
-    font-weight: bold;
-    padding-bottom: 10px;
-  }
-  .language-title {
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-    font-size: 25px;
-    font-weight: bold;
-  }
-  .lessonbutton-incomplete {
-    background-color: #fbff50;
-    border: none;
-    color: rgb(0, 0, 0);
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 0;
-  }
-  .lessonbutton-complete {
-    background-color: #8e59ff;
-    border: none;
-    color: rgb(0, 0, 0);
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 0;
-  }
-  .lessonbutton-disabled {
-    background-color: #535353;
-    border: none;
-    color: rgb(0, 0, 0);
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 0;
-  }
-  .flag-dropdown-container {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .flag-dropdown-content {
-    position: absolute;
-    top: 100%; /* Position the dropdown below the button */
-    left: 0;
-    z-index: 1; /* Ensure the dropdown is displayed above other elements */
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-  
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-  }
+}
+
+/* Learn VVV */
+
+.lessonstitle {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 30px;
+  font-weight: bolder;
+  color: var(--textcolor);
+}
+.difficulty-title {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+.language-title {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+}
+.lessonbutton-incomplete {
+  background-color: #fbff50;
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 0;
+}
+.lessonbutton-complete {
+  background-color: #8e59ff;
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 0;
+}
+.lessonbutton-disabled {
+  background-color: #535353;
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 0;
+}
+.flag-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.flag-dropdown-content {
+  position: absolute;
+  top: 100%; /* Position the dropdown below the button */
+  left: 0;
+  z-index: 1; /* Ensure the dropdown is displayed above other elements */
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
