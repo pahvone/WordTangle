@@ -76,7 +76,24 @@ const Login = () => {
         // ...
       })
       .catch((error) => {
-        // Handle Errors here.
+        switch (error.code) {
+          case "auth/too-many-requests":
+            alert(
+              "You have done too many requests to the server! Please wait a moment.",
+            );
+
+          case "auth/cancelled-popup-request":
+            alert(
+              "You cancelled the popup request, please choose a Google account to log in with.",
+            );
+            break;
+
+          case "auth/popup-blocked":
+            alert(
+              "Please allow pop-up windows from your browser settings, as the google sign-in was blocked by this.",
+            );
+            break;
+        }
         alert(error.code);
         // The email of the user's account used.
         const email = error.customData.email;
