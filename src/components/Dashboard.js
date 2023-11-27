@@ -23,13 +23,13 @@ const Button = ({ text, onClick }) => {
 const Progress_bar = ({ progress }) => {
   const Parentdiv = {
     height: 35,
-    width: "75%",
+    width: 350,
     backgroundColor: "#DDDDDD",
     borderRadius: 40,
   };
 
   const Childdiv = {
-    height: "100%",
+    height: 35,
     width: `${progress}%`,
     backgroundColor: "#50FFC0",
     borderRadius: 40,
@@ -122,8 +122,11 @@ const DashBoard = () => {
                 Browse the dictionary
                 <span className="xp">10XP</span>
               </div>
-              <div className="xpbar">
-                <Progress_bar progress="40" />
+              <div className="row">
+                <div className="xpbar">
+                  <Progress_bar progress="50" />
+                </div>
+                <span className="expiitext">LVL 10</span>
               </div>
             </div>
           </div>
