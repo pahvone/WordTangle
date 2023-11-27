@@ -121,12 +121,10 @@ const DashBoard = () => {
                 <span className="xp">10XP</span>
               </div>
               <div className="row">
-              <div className="xpbar">
-                <Progress_bar progress="50" />
-              </div>
-              <span className="expiitext">
-                  LVL 10
-                  </span>
+                <div className="xpbar">
+                  <Progress_bar progress="50" />
+                </div>
+                <span className="expiitext">LVL 10</span>
               </div>
             </div>
           </div>
