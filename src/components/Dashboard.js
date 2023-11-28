@@ -18,6 +18,8 @@ const DashBoard = () => {
   const [userLangs, setUserLangs] = useState(null);
   const [langButtons, setLangButtons] = useState(null);
   const [activityElements, setActivityElements] = useState([]);
+  const [xp, setXP] = useState(0)
+  const [lvl, setLvl] = useState(1)
 
   let tracker = null;
 
@@ -31,7 +33,8 @@ const DashBoard = () => {
 
   //testi
 
-  const Progress_bar = ({ progress }) => {
+  const Progress_bar = () => {
+
     const Parentdiv = {
       height: 35,
       width: "75%",
@@ -41,10 +44,15 @@ const DashBoard = () => {
 
     const Childdiv = {
       height: "100%",
-      width: `${progress}%`,
+      width: `${xp  }%`,
       backgroundColor: "#50FFC0",
       borderRadius: 40,
     };
+
+    const lvlText = {
+      padding: 10,
+      color: "black",
+    }
 
     const progresstext = {
       padding: 10,
@@ -52,15 +60,21 @@ const DashBoard = () => {
     };
 
     return (
-      <div style={Parentdiv}>
-        <div style={Childdiv}>
-          <span style={progresstext}>{`${progress}%`}</span>
+      <>
+        <div className="" style={Parentdiv}>
+          <div style={Childdiv}>
+            <span style={progresstext}>{`${xp}`}</span>
+
+          </div>
         </div>
-      </div>
+      </>
     );
   };
 
-  const generateDailyTasks = () => {};
+  const generateDailyTasks = () => {
+
+
+  };
 
   const getDailyTasks = () => {
     return (
@@ -134,17 +148,27 @@ const DashBoard = () => {
     );
   };
 
+  const calcLvl = (activity) => {
+
+    console.log(activity)
+ 
+  }
+
   const getLatestActivity = async () => {
     const tracker = new ActivityTracker();
     const activity = await tracker.getLatestActivity();
-    activity.reverse();
+    const latest = activity.latest
+    latest.reverse();
 
+    setXP(activity.xp)
+    setLvl(activity.lvl)
+    
     let activityElements = [];
-    for (var i = 0; i < activity.length; i++) {
+    for (var i = 0; i < latest.length; i++) {
       activityElements.push(
         <div key={"act" + i} className="activity">
-          {">"} {activity[i]}
-          <span className="xp">{tracker.xpTable[activity[i]]} XP</span>
+          {">"} {latest[i]}
+          <span className="xp">{tracker.xpTable[latest[i]]} XP</span>
         </div>,
       );
     }
@@ -166,6 +190,8 @@ const DashBoard = () => {
         });
       }
     });
+
+    
   }, []);
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
@@ -199,8 +225,11 @@ const DashBoard = () => {
               <div className="title">DAILY TASKS</div>
               <div className="dashline" />
               {getDailyTasks()}
-              <div className="xpbar">
-                <Progress_bar progress="40" />
+              <div className="row align-items-center">
+              <div className="col-md-10 xpbar ">
+                <Progress_bar/>
+              </div>
+              <div className="col-md-2 lvltext">Level {lvl}</div>
               </div>
             </div>
           </div>
