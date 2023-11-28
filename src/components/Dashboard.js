@@ -60,10 +60,7 @@ const DashBoard = () => {
     );
   };
 
-  const generateDailyTasks = () => {
-
-
-  };
+  const generateDailyTasks = () => {};
 
   const getDailyTasks = () => {
     return (
