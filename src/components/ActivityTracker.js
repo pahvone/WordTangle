@@ -7,12 +7,12 @@ export default class ActivityTracker {
     forums: 60,
   };
 
-  calcXPTresh (lvl, _tresh) {
-    if(_tresh === undefined) _tresh = 100
-    var tresh = _tresh + (lvl * (_tresh * 0.05))
+  calcXPTresh(lvl, _tresh) {
+    if (_tresh === undefined) _tresh = 100;
+    var tresh = _tresh + lvl * (_tresh * 0.05);
     return tresh;
   }
-/*
+  /*
   calcXp (activity) {
     let xp = activity.xp;
     let lvl = activity.lvl;
@@ -54,8 +54,6 @@ export default class ActivityTracker {
     if(activity.xp > 100) lvl++ //TEST tresh VAL 100
     setXP(activity.xp)
     setLvl(lvl)*/
-
-
     //update to db
   }
 
@@ -83,13 +81,13 @@ export default class ActivityTracker {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
           activity = snapshot.val().activity;
           activity.xp += xpAmount;
-        let tresh = 100 //calc()
+          let tresh = 100; //calc()
 
-            if(activity.xp > tresh) {
-                console.log("over")
-                activity.lvl++
-                activity.xp = activity.xp - tresh
-            }
+          if (activity.xp > tresh) {
+            console.log("over");
+            activity.lvl++;
+            activity.xp = activity.xp - tresh;
+          }
 
           update(ref(db, "/users/" + userId), {
             activity: activity,
@@ -133,7 +131,7 @@ export default class ActivityTracker {
     let activity = {
       latest: [],
       xp: 0,
-      lvl: 1
+      lvl: 1,
     };
     onAuthStateChanged(auth, (user) => {
       if (user) {

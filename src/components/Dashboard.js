@@ -18,8 +18,8 @@ const DashBoard = () => {
   const [userLangs, setUserLangs] = useState(null);
   const [langButtons, setLangButtons] = useState(null);
   const [activityElements, setActivityElements] = useState([]);
-  const [xp, setXP] = useState(0)
-  const [lvl, setLvl] = useState(1)
+  const [xp, setXP] = useState(0);
+  const [lvl, setLvl] = useState(1);
 
   let tracker = null;
 
@@ -34,7 +34,6 @@ const DashBoard = () => {
   //testi
 
   const Progress_bar = () => {
-
     const Parentdiv = {
       height: 35,
       width: "75%",
@@ -44,7 +43,7 @@ const DashBoard = () => {
 
     const Childdiv = {
       height: "100%",
-      width: `${xp  }%`,
+      width: `${xp}%`,
       backgroundColor: "#50FFC0",
       borderRadius: 40,
     };
@@ -52,7 +51,7 @@ const DashBoard = () => {
     const lvlText = {
       padding: 10,
       color: "black",
-    }
+    };
 
     const progresstext = {
       padding: 10,
@@ -64,17 +63,13 @@ const DashBoard = () => {
         <div className="" style={Parentdiv}>
           <div style={Childdiv}>
             <span style={progresstext}>{`${xp}`}</span>
-
           </div>
         </div>
       </>
     );
   };
 
-  const generateDailyTasks = () => {
-
-
-  };
+  const generateDailyTasks = () => {};
 
   const getDailyTasks = () => {
     return (
@@ -149,20 +144,18 @@ const DashBoard = () => {
   };
 
   const calcLvl = (activity) => {
-
-    console.log(activity)
- 
-  }
+    console.log(activity);
+  };
 
   const getLatestActivity = async () => {
     const tracker = new ActivityTracker();
     const activity = await tracker.getLatestActivity();
-    const latest = activity.latest
+    const latest = activity.latest;
     latest.reverse();
 
-    setXP(activity.xp)
-    setLvl(activity.lvl)
-    
+    setXP(activity.xp);
+    setLvl(activity.lvl);
+
     let activityElements = [];
     for (var i = 0; i < latest.length; i++) {
       activityElements.push(
@@ -190,8 +183,6 @@ const DashBoard = () => {
         });
       }
     });
-
-    
   }, []);
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
@@ -226,10 +217,10 @@ const DashBoard = () => {
               <div className="dashline" />
               {getDailyTasks()}
               <div className="row align-items-center">
-              <div className="col-md-10 xpbar ">
-                <Progress_bar/>
-              </div>
-              <div className="col-md-2 lvltext">Level {lvl}</div>
+                <div className="col-md-10 xpbar ">
+                  <Progress_bar />
+                </div>
+                <div className="col-md-2 lvltext">Level {lvl}</div>
               </div>
             </div>
           </div>
