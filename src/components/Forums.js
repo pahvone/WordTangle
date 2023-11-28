@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import Footer from "./Footter";
+import ActivityTracker from "./ActivityTracker";
 
 const Forums = () => {
+
+  useEffect(() => {
+    let tracker = new ActivityTracker();
+    tracker.updateLatestActivity("Visited forums")
+  })
+
   return (
     <div>
       <NavBar />

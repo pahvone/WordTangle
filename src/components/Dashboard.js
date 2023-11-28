@@ -6,6 +6,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
+import ActivityTracker from "./ActivityTracker";
 
 const DashBoard = () => {
   const auth = getAuth();
@@ -16,6 +17,9 @@ const DashBoard = () => {
   const [userName, setuserName] = useState(null);
   const [userLangs, setUserLangs] = useState(null);
   const [langButtons, setLangButtons] = useState(null);
+  const [activityElements, setActivityElements] = useState([])
+
+  let tracker = null;
 
   const Button = ({ text, onClick }) => {
     return (
@@ -56,6 +60,10 @@ const DashBoard = () => {
     );
   };
 
+  const generateDailyTasks = () => {
+
+  }
+
   const getDailyTasks = () => {
     return (
       <>
@@ -85,8 +93,6 @@ const DashBoard = () => {
 
     let buttonElements = [];
 
-    console.log(userLangs);
-
     for (const langObj in userLangs) {
       buttonElements.push(
         <button
@@ -97,44 +103,68 @@ const DashBoard = () => {
           <img src={flagsAPI + langObj + flagStyle} />
         </button>,
       );
-    }
-    console.log(buttonElements);
-    setLangButtons(buttonElements);
+    }    setLangButtons(buttonElements);
   };
   const getProgress = () => {};
 
-  const getLatestActivity = () => {
-    return (
-      <>
-        <div className="activity">
-          {">"} Completed a quiz
-          <span className="xp">25XP</span>
+  const getLeaderBoards = () => {
+    return(<> <div className="leaderlist">
+    {" "}
+    1. Kyle
+    <span className="xp">25XP</span>
+  </div>
+  <div className="leaderlist">
+    {" "}
+    2. Eric
+    <span className="xp">15XP</span>
+  </div>
+  <div className="leaderlist">
+    {" "}
+    3. Stan
+    <span className="xp">10XP</span>
+  </div>
+  <div className="leaderlist">
+    {" "}
+    3. Juu
+    <span className="xp">10XP</span>
+  </div></>)
+  }
+
+  
+  const getLatestActivity = async () => {
+    const tracker = new ActivityTracker();
+    const activity = await tracker.getLatestActivity();
+    activity.reverse()
+
+    let activityElements = []
+    for(var i = 0; i < activity.length; i++){
+      activityElements.push(
+        <div key={"act" + activity[i]} className="activity">
+          {">"} {activity[i]}
+          <span className="xp">?? XP</span>
         </div>
-        <div className="activity">
-          {">"} Played a mini-game
-          <span className="xp">15XP</span>
-        </div>
-        <div className="activity">
-          {">"} Posted in the forums
-          <span className="xp">10XP</span>
-        </div>
-      </>
-    );
+      )
+    }
+    
+    setActivityElements(activityElements)
   };
 
   useEffect(() => {
+    if(tracker ===  null){
+      tracker = new ActivityTracker()
+    }
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
           setuserName(snapshot.val().username);
           setUserLangs(snapshot.val().langs);
+          getLatestActivity()
         });
       }
     });
   }, []);
 
-  console.log("render");
   if (userLangs !== null && langButtons === null) getCurrentLangs();
 
   return (
@@ -157,7 +187,7 @@ const DashBoard = () => {
               <div className="title">Hi {userName}</div>
               <div className="dashline" />
               <div className="latestactivity">Latest activity:</div>
-              {getLatestActivity()}
+              {activityElements}
             </div>
           </div>
 
@@ -189,26 +219,7 @@ const DashBoard = () => {
                 {"("}XP gained during the last 7 days{")"}
               </span>
               <div className="dashline" />
-              <div className="leaderlist">
-                {" "}
-                1. Kyle
-                <span className="xp">25XP</span>
-              </div>
-              <div className="leaderlist">
-                {" "}
-                2. Eric
-                <span className="xp">15XP</span>
-              </div>
-              <div className="leaderlist">
-                {" "}
-                3. Stan
-                <span className="xp">10XP</span>
-              </div>
-              <div className="leaderlist">
-                {" "}
-                3. Juu
-                <span className="xp">10XP</span>
-              </div>
+             {getLeaderBoards()}
             </div>
           </div>
         </div>
