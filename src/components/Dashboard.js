@@ -10,7 +10,6 @@ import ActivityTracker from "./ActivityTracker";
 
 const DashBoard = () => {
   const auth = getAuth();
-  const user = auth.currentUser;
   const dbRef = ref(getDatabase(fb));
   const db = getDatabase();
 
@@ -75,12 +74,14 @@ const DashBoard = () => {
     tracker = new ActivityTracker();
     let activity = await tracker.getLatestActivity();
 
+    console.log(activity.dailyTasks)
+
     for (var i = 0; i < 3; i++) {
       dailyElements.push(
-        <div className="dailytask">
+        <div key={"daily" + i} className="dailytask">
           {" "}
           {tracker.getActivityDesc(activity.dailyTasks[i].task)}
-          <span className="xp">10XP</span>
+          <span className="xp">{tracker.xpTable[activity.dailyTasks[i].task]} XP</span>
         </div>,
       );
     }

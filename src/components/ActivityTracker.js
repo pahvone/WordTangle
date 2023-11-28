@@ -5,6 +5,8 @@ export default class ActivityTracker {
   xpTable = {
     quiz: 25,
     forums: 60,
+    dictionary: 10,
+    minigame: 30
   };
 
   dailyTaskList = ["quiz", "forums", "dictionary", "minigame"];
@@ -69,11 +71,10 @@ export default class ActivityTracker {
             console.log("No daily tasks in db");
 
             for (var i = 0; i < 3; i++) {
-              let randomDaily = this.getRandomDaily();
+              let randomDaily = this.getRandomDaily(dailyTasks);
               dailyTasks[i] = { task: randomDaily, completed: false };
             }
           }
-          console.log(dailyTasks);
           activity = snapshot.val().activity;
           activity["dailyTasks"] = dailyTasks;
 
@@ -85,8 +86,16 @@ export default class ActivityTracker {
     });
   }
 
-  getRandomDaily() {
-    var rand = Math.floor(Math.random() * (this.dailyTaskList.length - 1)) + 0;
+  getRandomDaily(dailyTasks) {
+    let rand = Math.floor(Math.random() * (this.dailyTaskList.length - 1)) + 0;
+
+    for(var i = 0; i < dailyTasks.length; i++){
+        if(dailyTasks[i].task === this.dailyTaskList[rand]) {
+            i--;
+            rand = Math.floor(Math.random() * (this.dailyTaskList.length - 1)) + 0;
+            //console.log(this.dailyTaskList[rand] + " is already a daily task")
+        }
+    }
     return this.dailyTaskList[rand];
   }
 
