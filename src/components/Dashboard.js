@@ -20,6 +20,8 @@ const Button = ({ text, onClick }) => {
   );
 };
 
+//testi
+
 const Progress_bar = ({ progress }) => {
   const Parentdiv = {
     height: 35,
