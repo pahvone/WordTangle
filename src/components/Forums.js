@@ -5,11 +5,10 @@ import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
 
 const Forums = () => {
-
   useEffect(() => {
     let tracker = new ActivityTracker();
-    tracker.updateLatestActivity("Visited forums")
-  })
+    tracker.updateLatestActivity("Visited forums");
+  });
 
   return (
     <div>

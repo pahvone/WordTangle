@@ -50,9 +50,9 @@ const VocabQuiz = ({ lang, diff, index }) => {
         }
       });
 
-      let tracker = new ActivityTracker()
+      let tracker = new ActivityTracker();
 
-      tracker.updateLatestActivity("Take a quiz")
+      tracker.updateLatestActivity("Take a quiz");
 
       return true;
     } else return false;

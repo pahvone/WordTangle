@@ -17,7 +17,7 @@ const DashBoard = () => {
   const [userName, setuserName] = useState(null);
   const [userLangs, setUserLangs] = useState(null);
   const [langButtons, setLangButtons] = useState(null);
-  const [activityElements, setActivityElements] = useState([])
+  const [activityElements, setActivityElements] = useState([]);
 
   let tracker = null;
 
@@ -60,9 +60,7 @@ const DashBoard = () => {
     );
   };
 
-  const generateDailyTasks = () => {
-
-  }
+  const generateDailyTasks = () => {};
 
   const getDailyTasks = () => {
     return (
@@ -103,55 +101,60 @@ const DashBoard = () => {
           <img src={flagsAPI + langObj + flagStyle} />
         </button>,
       );
-    }    setLangButtons(buttonElements);
+    }
+    setLangButtons(buttonElements);
   };
   const getProgress = () => {};
 
   const getLeaderBoards = () => {
-    return(<> <div className="leaderlist">
-    {" "}
-    1. Kyle
-    <span className="xp">25XP</span>
-  </div>
-  <div className="leaderlist">
-    {" "}
-    2. Eric
-    <span className="xp">15XP</span>
-  </div>
-  <div className="leaderlist">
-    {" "}
-    3. Stan
-    <span className="xp">10XP</span>
-  </div>
-  <div className="leaderlist">
-    {" "}
-    3. Juu
-    <span className="xp">10XP</span>
-  </div></>)
-  }
+    return (
+      <>
+        {" "}
+        <div className="leaderlist">
+          {" "}
+          1. Kyle
+          <span className="xp">25XP</span>
+        </div>
+        <div className="leaderlist">
+          {" "}
+          2. Eric
+          <span className="xp">15XP</span>
+        </div>
+        <div className="leaderlist">
+          {" "}
+          3. Stan
+          <span className="xp">10XP</span>
+        </div>
+        <div className="leaderlist">
+          {" "}
+          3. Juu
+          <span className="xp">10XP</span>
+        </div>
+      </>
+    );
+  };
 
-  
   const getLatestActivity = async () => {
     const tracker = new ActivityTracker();
     const activity = await tracker.getLatestActivity();
-    activity.reverse()
+    activity.reverse();
 
-    let activityElements = []
-    for(var i = 0; i < activity.length; i++){
+    let activityElements = [];
+    for (var i = 0; i < activity.length; i++) {
       activityElements.push(
         <div key={"act" + activity[i]} className="activity">
           {">"} {activity[i]}
           <span className="xp">?? XP</span>
-        </div>
-      )
+        </div>,
+      );
     }
-    
-    setActivityElements(activityElements)
+
+    setActivityElements(activityElements);
   };
 
   useEffect(() => {
-    if(tracker ===  null){
-      tracker = new ActivityTracker()
+    if (tracker === null) {
+      tracker = new ActivityTracker();
     }
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
@@ -159,7 +162,7 @@ const DashBoard = () => {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
           setuserName(snapshot.val().username);
           setUserLangs(snapshot.val().langs);
-          getLatestActivity()
+          getLatestActivity();
         });
       }
     });
@@ -219,7 +222,7 @@ const DashBoard = () => {
                 {"("}XP gained during the last 7 days{")"}
               </span>
               <div className="dashline" />
-             {getLeaderBoards()}
+              {getLeaderBoards()}
             </div>
           </div>
         </div>
