@@ -1,13 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
 
+
+
 const Forums = () => {
+
+  const [loaded, setLoaded] = useState(false)
+  
   useEffect(() => {
+    if(!loaded){
     let tracker = new ActivityTracker();
-    tracker.updateLatestActivity("Visited forums");
+    tracker.updateLatestActivity("forums");
+    setLoaded(true)
+    }
   });
 
   return (

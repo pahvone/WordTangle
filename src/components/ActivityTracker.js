@@ -1,57 +1,119 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 
+
+
 export default class ActivityTracker {
-  async getLatestActivity() {
-    const db = getDatabase();
-    const auth = getAuth();
+    xpTable = {
+        "quiz": 25,
+        "forums": 10
+    }
 
-    return new Promise((resolve) => {
-      if (auth.currentUser === null) {
-        resolve(null);
-      }
+    updateXP(type) {
+        const db = getDatabase();
+        const auth = getAuth();
 
-      const userId = auth.currentUser.uid;
+        var xpAmount = this.xpTable[type]
 
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          get(ref(db, "/users/" + userId)).then((snapshot) => {
-            const activity = snapshot.val().activity["latest"];
-            resolve(activity);
-          });
+
+        if (auth.currentUser === null) {
+            return;
         }
-      });
-    });
-  }
 
-  updateLatestActivity(_activity) {
-    const db = getDatabase();
-    const auth = getAuth();
-    const userId = auth.currentUser.uid;
-    if (auth.currentUser === null) return;
-    let activity = {
-      latest: [],
-    };
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if (snapshot.val().activity === undefined) {
-            console.log("No activities in db");
-            activity["latest"].push(_activity);
-            console.log(activity);
-          } else {
-            console.log("Push " + _activity + " to activities");
-            activity = snapshot.val().activity;
-            activity["latest"].push(_activity);
+        var xpAmount = this.xpTable[type]
+        console.log(xpAmount)
 
-            if (activity["latest"].length > 3) activity["latest"].shift();
-          }
+        const userId = auth.currentUser.uid;
 
-          update(ref(db, "/users/" + userId), {
-            activity: activity,
-          });
+        let activity = {
+            "latest": [],
+            "xp": 0,
+            "lvl": 0
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                get(ref(db, "/users/" + userId)).then((snapshot) => {
+
+                    //   console.log(activity["xp"])
+                    activity = snapshot.val().activity
+                    activity.xp += xpAmount;
+
+                    console.log(activity)
+
+                    update(ref(db, "/users/" + userId), {
+                        activity: activity,
+                    });
+
+                });
+
+
+            }
         });
-      }
-    });
-  }
+
+    }
+    async getLatestActivity() {
+        const db = getDatabase();
+        const auth = getAuth();
+
+        return new Promise((resolve) => {
+            if (auth.currentUser === null) {
+                resolve(null);
+            }
+
+            const userId = auth.currentUser.uid;
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    get(ref(db, "/users/" + userId)).then((snapshot) => {
+                        if (!snapshot.val().activity) return;
+                        const activity = snapshot.val().activity["latest"];
+                        resolve(activity);
+                    });
+                }
+            });
+        });
+    }
+
+    updateLatestActivity(_activity) {
+        const db = getDatabase();
+        const auth = getAuth();
+
+
+        if (auth === null) return;
+        if (auth.currentUser === null) return;
+
+        const userId = auth.currentUser.uid;
+
+        let activity = {
+            latest: [],
+            xp: 0,
+            lvl: 0
+        }
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                get(ref(db, "/users/" + userId)).then((snapshot) => {
+                    if (snapshot.val().activity === undefined) {
+                        console.log("No activities in db");
+                        activity["latest"].push(_activity);
+                        console.log(activity);
+                    } else {
+                        console.log("Push " + _activity + " to activities");
+                        activity = snapshot.val().activity;
+                        activity["latest"].push(_activity);
+
+                        if (activity["latest"].length > 3) activity["latest"].shift();
+                    }
+
+                    update(ref(db, "/users/" + userId), {
+                        activity: activity,
+                    });
+
+                    this.updateXP(_activity)
+                });
+            }
+        });
+
+
+    }
 }

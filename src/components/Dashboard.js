@@ -60,7 +60,10 @@ const DashBoard = () => {
     );
   };
 
-  const generateDailyTasks = () => {};
+  const generateDailyTasks = () => {
+
+
+  };
 
   const getDailyTasks = () => {
     return (
@@ -142,9 +145,9 @@ const DashBoard = () => {
     let activityElements = [];
     for (var i = 0; i < activity.length; i++) {
       activityElements.push(
-        <div key={"act" + activity[i]} className="activity">
+        <div key={"act" + i} className="activity">
           {">"} {activity[i]}
-          <span className="xp">?? XP</span>
+          <span className="xp">{tracker.xpTable[activity[i]]} XP</span>
         </div>,
       );
     }

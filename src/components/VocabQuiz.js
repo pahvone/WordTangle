@@ -52,7 +52,7 @@ const VocabQuiz = ({ lang, diff, index }) => {
 
       let tracker = new ActivityTracker();
 
-      tracker.updateLatestActivity("Take a quiz");
+      tracker.updateLatestActivity("quiz");
 
       return true;
     } else return false;
