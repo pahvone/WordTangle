@@ -7,18 +7,18 @@ export default class ActivityTracker {
     forums: 60,
   };
 
-  dailyTaskList = ["quiz", "forums", "dictionary", "minigame"]
+  dailyTaskList = ["quiz", "forums", "dictionary", "minigame"];
 
-  getActivityDesc(act){
-    switch(act){
-        case "quiz":
-            return "Completed a quiz"
-        case "forums":
-            return "Visited the forums"
-        case "dictionary":
-            return "Searched the dictionary"
-        case "minigame":
-            return "Played a mini-game"
+  getActivityDesc(act) {
+    switch (act) {
+      case "quiz":
+        return "Completed a quiz";
+      case "forums":
+        return "Visited the forums";
+      case "dictionary":
+        return "Searched the dictionary";
+      case "minigame":
+        return "Played a mini-game";
     }
   }
   calcXPTresh(lvl, _tresh) {
@@ -33,62 +33,61 @@ export default class ActivityTracker {
     const userId = auth.currentUser.uid;
 
     let activity = {
-        latest: [""],
-        dailyTasks: [""],
-        xp: 0,
-        lvl: 1,
-      };
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-            update(ref(db, "/users/" + userId), {
-              activity: activity,
-            });
-        }
-      });
-  }
-
-  generateDailyTasks (){
-    const db = getDatabase();
-    const auth = getAuth();
-
-    let dailyTasks = [{task: "", completed: false}];
-    
-    let activity = {
-      latest: [],
-      dailyTasks: [{task: "", completed: false}],
+      latest: [""],
+      dailyTasks: [""],
       xp: 0,
       lvl: 1,
     };
 
-        onAuthStateChanged(auth, (user) => {
-            const userId = auth.currentUser.uid;
-            if (user) {
-                get(ref(db, "/users/" + userId)).then((snapshot) => {
-                    if (!snapshot.val().activity.dailyTasks.length < 3) {
-                        console.log("No daily tasks in db");
-
-                        for (var i = 0; i < 3; i++) {
-                            let randomDaily = this.getRandomDaily()
-                            dailyTasks[i] = { task: randomDaily, completed: false }
-                        }
-                    }
-                    console.log(dailyTasks)
-                    activity = snapshot.val().activity
-                    activity["dailyTasks"] = dailyTasks
-
-                    update(ref(db, "/users/" + userId), {
-                        activity: activity,
-                    });
-                }
-                )
-            }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        update(ref(db, "/users/" + userId), {
+          activity: activity,
         });
-    }
+      }
+    });
+  }
+
+  generateDailyTasks() {
+    const db = getDatabase();
+    const auth = getAuth();
+
+    let dailyTasks = [{ task: "", completed: false }];
+
+    let activity = {
+      latest: [],
+      dailyTasks: [{ task: "", completed: false }],
+      xp: 0,
+      lvl: 1,
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      const userId = auth.currentUser.uid;
+      if (user) {
+        get(ref(db, "/users/" + userId)).then((snapshot) => {
+          if (!snapshot.val().activity.dailyTasks.length < 3) {
+            console.log("No daily tasks in db");
+
+            for (var i = 0; i < 3; i++) {
+              let randomDaily = this.getRandomDaily();
+              dailyTasks[i] = { task: randomDaily, completed: false };
+            }
+          }
+          console.log(dailyTasks);
+          activity = snapshot.val().activity;
+          activity["dailyTasks"] = dailyTasks;
+
+          update(ref(db, "/users/" + userId), {
+            activity: activity,
+          });
+        });
+      }
+    });
+  }
 
   getRandomDaily() {
     var rand = Math.floor(Math.random() * (this.dailyTaskList.length - 1)) + 0;
-    return this.dailyTaskList[rand]
+    return this.dailyTaskList[rand];
   }
 
   updateXP(type) {

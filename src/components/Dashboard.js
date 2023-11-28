@@ -18,7 +18,7 @@ const DashBoard = () => {
   const [userLangs, setUserLangs] = useState(null);
   const [langButtons, setLangButtons] = useState(null);
   const [activityElements, setActivityElements] = useState([]);
-  const [dailyTasks, setDailyTasks] = useState(null)
+  const [dailyTasks, setDailyTasks] = useState(null);
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
 
@@ -71,20 +71,20 @@ const DashBoard = () => {
   };
 
   const getDailyTasks = async () => {
+    let dailyElements = [];
+    tracker = new ActivityTracker();
+    let activity = await tracker.getLatestActivity();
 
-    let dailyElements = []
-    tracker = new ActivityTracker()
-    let activity = await tracker.getLatestActivity()
-
-    for(var i = 0; i < 3; i++){
-      dailyElements.push(<div className="dailytask">
-      {" "}
-      {tracker.getActivityDesc(activity.dailyTasks[i].task)}
-      <span className="xp">10XP</span>
-    </div>)
-
+    for (var i = 0; i < 3; i++) {
+      dailyElements.push(
+        <div className="dailytask">
+          {" "}
+          {tracker.getActivityDesc(activity.dailyTasks[i].task)}
+          <span className="xp">10XP</span>
+        </div>,
+      );
     }
-      setDailyTasks(dailyElements)
+    setDailyTasks(dailyElements);
   };
 
   const getCurrentLangs = () => {
@@ -109,7 +109,6 @@ const DashBoard = () => {
   const getProgress = () => {};
 
   const getLeaderBoards = () => {
-
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
       /*
@@ -120,7 +119,6 @@ const DashBoard = () => {
       }*/
     });
 
-    
     return (
       <>
         {" "}
@@ -163,7 +161,7 @@ const DashBoard = () => {
 
     let activityElements = [];
     for (var i = 0; i < latest.length; i++) {
-      if(latest[i] === "") break;
+      if (latest[i] === "") break;
       activityElements.push(
         <div key={"act" + i} className="activity">
           {">"} {latest[i]}
@@ -185,20 +183,19 @@ const DashBoard = () => {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
           setuserName(snapshot.val().username);
           setUserLangs(snapshot.val().langs);
-          if(!snapshot.val().activity) tracker.initActivities();
+          if (!snapshot.val().activity) tracker.initActivities();
           else {
             getLatestActivity();
             tracker.generateDailyTasks();
-            }
-            getDailyTasks()
+          }
+          getDailyTasks();
         });
       }
     });
   }, []);
 
-  
   if (userLangs !== null && langButtons === null) getCurrentLangs();
-  
+
   return (
     <div>
       <NavBar />
