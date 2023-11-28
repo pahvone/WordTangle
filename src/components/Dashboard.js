@@ -8,7 +8,6 @@ import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
 
 const DashBoard = () => {
-
   const auth = getAuth();
   const user = auth.currentUser;
   const dbRef = ref(getDatabase(fb));
@@ -16,7 +15,7 @@ const DashBoard = () => {
 
   const [userName, setuserName] = useState(null);
   const [userLangs, setUserLangs] = useState(null);
-  const [langButtons, setLangButtons] = useState(null)
+  const [langButtons, setLangButtons] = useState(null);
 
   const Button = ({ text, onClick }) => {
     return (
@@ -58,48 +57,51 @@ const DashBoard = () => {
   };
 
   const getDailyTasks = () => {
-    return(
-    <> <div className="dailytask">
-      {" "}
-      Completed a quiz
-      <span className="xp">10XP</span>
-    </div>
-      <div className="dailytask">
+    return (
+      <>
         {" "}
-        Played a mini-game
-        <span className="xp">10XP</span>
-      </div>
-      <div className="dailytask">
-        {" "}
-        Browse the dictionary
-        <span className="xp">10XP</span>
-      </div></>
-      )
-  }
+        <div className="dailytask">
+          {" "}
+          Completed a quiz
+          <span className="xp">10XP</span>
+        </div>
+        <div className="dailytask">
+          {" "}
+          Played a mini-game
+          <span className="xp">10XP</span>
+        </div>
+        <div className="dailytask">
+          {" "}
+          Browse the dictionary
+          <span className="xp">10XP</span>
+        </div>
+      </>
+    );
+  };
 
   const getCurrentLangs = () => {
-    let flagsAPI = "https://flagsapi.com/"
-    let flagStyle = "/flat/64.png"
-    
-    let buttonElements = []
+    let flagsAPI = "https://flagsapi.com/";
+    let flagStyle = "/flat/64.png";
 
-    console.log(userLangs)
+    let buttonElements = [];
 
-    for(const langObj in userLangs){
-      buttonElements.push(<button
-        key={"lang" + langObj}
-        className="btn"
-        onClick={() => console.log("sdf")} //redirect learnpage setlang
-      >
-        <img src={flagsAPI + langObj + flagStyle} />
-      </button>)
+    console.log(userLangs);
+
+    for (const langObj in userLangs) {
+      buttonElements.push(
+        <button
+          key={"lang" + langObj}
+          className="btn"
+          onClick={() => console.log("sdf")} //redirect learnpage setlang
+        >
+          <img src={flagsAPI + langObj + flagStyle} />
+        </button>,
+      );
     }
-    console.log(buttonElements)
-    setLangButtons(buttonElements)
-  }
-  const getProgress = () => {
-    
-  }
+    console.log(buttonElements);
+    setLangButtons(buttonElements);
+  };
+  const getProgress = () => {};
 
   const getLatestActivity = () => {
     return (
@@ -118,25 +120,22 @@ const DashBoard = () => {
         </div>
       </>
     );
-  }
-
-
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
-            setuserName(snapshot.val().username);
-            setUserLangs(snapshot.val().langs)
+          setuserName(snapshot.val().username);
+          setUserLangs(snapshot.val().langs);
         });
       }
     });
-    
   }, []);
 
-    console.log("render")
-  if(userLangs !== null && langButtons === null) getCurrentLangs()
+  console.log("render");
+  if (userLangs !== null && langButtons === null) getCurrentLangs();
 
   return (
     <div>
@@ -180,7 +179,7 @@ const DashBoard = () => {
               <div className="title">CONTINUE LEARNING</div>
               <div className="dashline" />
               <div className="latestactivity">Currently learning </div>
-             <div>{langButtons}</div>
+              <div>{langButtons}</div>
             </div>
           </div>
           <div className="boxcontainer">
