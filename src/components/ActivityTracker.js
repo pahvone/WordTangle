@@ -7,54 +7,88 @@ export default class ActivityTracker {
     forums: 60,
   };
 
+  dailyTaskList = ["quiz", "forums", "dictionary", "minigame"]
+
+  getActivityDesc(act){
+    switch(act){
+        case "quiz":
+            return "Completed a quiz"
+        case "forums":
+            return "Visited the forums"
+        case "dictionary":
+            return "Searched the dictionary"
+        case "minigame":
+            return "Played a mini-game"
+    }
+  }
   calcXPTresh(lvl, _tresh) {
     if (_tresh === undefined) _tresh = 100;
     var tresh = _tresh + lvl * (_tresh * 0.05);
     return tresh;
   }
-  /*
-  calcXp (activity) {
-    let xp = activity.xp;
-    let lvl = activity.lvl;
 
-    let tresh = this.calcXPTresh(lvl)
-
-    if(xp > tresh) {
-        lvl++
-        console.log("level up")
-        console.log("xp " + xp + " vs trsh " + resh)
-        xp = xp - this.calcXPTresh(lvl - 1);
-    }
-
+  initActivities() {
     const db = getDatabase();
     const auth = getAuth();
     const userId = auth.currentUser.uid;
 
+    let activity = {
+        latest: [""],
+        dailyTasks: [""],
+        xp: 0,
+        lvl: 1,
+      };
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          activity = snapshot.val().activity;
-          activity.xp = xp;
-          activity.lvl = lvl;
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+            update(ref(db, "/users/" + userId), {
+              activity: activity,
+            });
+        }
+      });
+  }
 
-          update(ref(db, "/users/" + userId), {
-            activity: activity,
-          });
+  generateDailyTasks (){
+    const db = getDatabase();
+    const auth = getAuth();
+
+    let dailyTasks = [{task: "", completed: false}];
+    
+    let activity = {
+      latest: [],
+      dailyTasks: [{task: "", completed: false}],
+      xp: 0,
+      lvl: 1,
+    };
+
+        onAuthStateChanged(auth, (user) => {
+            const userId = auth.currentUser.uid;
+            if (user) {
+                get(ref(db, "/users/" + userId)).then((snapshot) => {
+                    if (!snapshot.val().activity.dailyTasks.length < 3) {
+                        console.log("No daily tasks in db");
+
+                        for (var i = 0; i < 3; i++) {
+                            let randomDaily = this.getRandomDaily()
+                            dailyTasks[i] = { task: randomDaily, completed: false }
+                        }
+                    }
+                    console.log(dailyTasks)
+                    activity = snapshot.val().activity
+                    activity["dailyTasks"] = dailyTasks
+
+                    update(ref(db, "/users/" + userId), {
+                        activity: activity,
+                    });
+                }
+                )
+            }
         });
-      }
-    });
+    }
 
-    return [xp, lvl];
-  }*/
-
-  calcLvl(activity) {
-    /*var lvl = activity.lvl
-
-    if(activity.xp > 100) lvl++ //TEST tresh VAL 100
-    setXP(activity.xp)
-    setLvl(lvl)*/
-    //update to db
+  getRandomDaily() {
+    var rand = Math.floor(Math.random() * (this.dailyTaskList.length - 1)) + 0;
+    return this.dailyTaskList[rand]
   }
 
   updateXP(type) {
@@ -72,6 +106,7 @@ export default class ActivityTracker {
 
     let activity = {
       latest: [],
+      dailyTasks: [],
       xp: 0,
       lvl: 1,
     };
@@ -130,6 +165,7 @@ export default class ActivityTracker {
 
     let activity = {
       latest: [],
+      dailyTasks: [],
       xp: 0,
       lvl: 1,
     };
