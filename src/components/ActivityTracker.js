@@ -8,7 +8,7 @@ export default class ActivityTracker {
 
     return new Promise((resolve) => {
       if (auth.currentUser === null) {
-        resolve(null); // or handle it in some way
+        resolve(null);
       }
 
       const userId = auth.currentUser.uid;
