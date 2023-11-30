@@ -80,7 +80,7 @@ export default class ActivityTracker {
       xp: 0,
       lvl: 1,
     };
-    
+
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         const userId = auth.currentUser.uid;
@@ -238,7 +238,7 @@ export default class ActivityTracker {
       xp: 0,
       lvl: 1,
     };
-    
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
