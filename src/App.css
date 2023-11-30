@@ -112,6 +112,11 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans&display=swap");
 
+@font-face {
+  font-family: "mega boxs";
+  src: url("./components/fonts/mega boxs.otf");
+}
+
 .pagecontainer {
   min-width: 50em;
   min-height: 100vh;
@@ -227,11 +232,19 @@
 .xp {
   font-weight: 600;
 }
+
+.row {
+  flex-direction: row;
+}
+
 .xpbar {
   text-align: right;
   font-size: 25px;
-  padding-top: 10px;
+  padding-top: 25px;
+  padding-left: 15px;
+  padding-right: 20px;
 }
+
 .XPgained {
   font-size: 10;
 }
@@ -243,6 +256,18 @@
   margin-bottom: 5px;
   border-radius: 5px;
   justify-content: space-between;
+}
+
+.expiitext {
+  padding-top: 10px;
+  font-family: "mega boxs";
+  font-size: 40px;
+  color: #f4f4f4;
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
 }
 
 /* Learn VVV */
