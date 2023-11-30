@@ -17,14 +17,10 @@ const DashBoard = () => {
   const [userLangs, setUserLangs] = useState(null);
   const [langButtons, setLangButtons] = useState(null);
   const [activityElements, setActivityElements] = useState([]);
-  const [dailyTasks, setDailyTasks] = useState(null);
+  const [dailyTaskElements, setDailyTasks] = useState(null);
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
-
   const [tracker, setTracker] = useState(null);
-  const [activity, setActivity] = useState(null);
-
-  const [loadState, setLoadState] = useState(0);
 
   const Button = ({ text, onClick }) => {
     return (
@@ -74,29 +70,25 @@ const DashBoard = () => {
 
   const getDailyTasks = async () => {
     let dailyElements = [];
-    let dailyTasks = await tracker.getDailyTasks();
+    await tracker.getDailyTasks().then((tasks) => {
+      for (var i = 0; i < 3; i++) {
 
-    if (dailyTasks.length < 3) {
-      return;
-    }
-
-    for (var i = 0; i < 3; i++) {
-      dailyElements.push(
-        <div
-          key={"daily" + i}
-          className={`dailytask-${
-            dailyTasks[i].completed ? "complete" : "incomplete"
-          }`}
-        >
-          {" "}
-          {tracker.getActivityDesc(dailyTasks[i].task) +
-            ` ${dailyTasks[i].completed ? "(COMPLETE)" : ""}`}
-          <span className="xp">{tracker.xpTable[dailyTasks[i].task]} XP</span>
-        </div>,
-      );
-    }
-    setDailyTasks(dailyElements);
-    setLoadState(-1);
+        dailyElements.push(
+          <div
+            key={"daily" + i}
+            className={`dailytask-${
+              tasks[i].completed ? "complete" : "incomplete"
+            }`}
+          >
+            {" "}
+            {tracker.getActivityDesc(tasks[i].task) +
+              ` ${tasks[i].completed ? "(COMPLETE)" : ""}`}
+            <span className="xp">{tracker.xpTable[tasks[i].task]} XP</span>
+          </div>,
+        );
+      }
+      setDailyTasks(dailyElements);
+    });
   };
 
   const getCurrentLangs = () => {
@@ -158,28 +150,27 @@ const DashBoard = () => {
   };
 
   const getLatestActivity = async () => {
-    const tracker = new ActivityTracker();
-    const activity = await tracker.getLatestActivity();
-    console.log(activity);
-    const latest = activity.latest;
+    await tracker.getLatestActivity().then((act) => {
+    const latest = act.latest;
     latest.reverse();
 
-    setXP(activity.xp);
-    setLvl(activity.lvl);
+    setXP(act.xp);
+    setLvl(act.lvl);
 
     let activityElements = [];
     for (var i = 0; i < latest.length; i++) {
       if (latest[i] === "") break;
       activityElements.push(
         <div key={"act" + i} className="activity">
-          {">"} {latest[i]}
+          {">"} {tracker.getActivityDesc(latest[i])}
           <span className="xp">{tracker.xpTable[latest[i]]} XP</span>
         </div>,
       );
     }
 
     setActivityElements(activityElements);
-    setLoadState(1);
+    });
+    
   };
 
   if (tracker === null) {
@@ -190,15 +181,24 @@ const DashBoard = () => {
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
       if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
+        get(ref(db, "/users/" + userId)).then(async (snapshot) => {
           setuserName(snapshot.val().username);
           setUserLangs(snapshot.val().langs);
           if (!snapshot.val().activity) {
-            setActivity(tracker.initActivities());
-            console.log(activity);
+            await tracker.initActivities().then(async (act) => {
+              await tracker.generateDailyTasks().then((act) => {
+                getDailyTasks();
+              })
+            });
           } else {
             // console.log("get latest")
-            getLatestActivity();
+            await getLatestActivity().then(async (act) => {
+              await tracker.generateDailyTasks().then((act) => {
+                getDailyTasks();
+                
+              })
+            });
+            getLatestActivity()
           }
         });
       }
@@ -206,17 +206,6 @@ const DashBoard = () => {
   }, []);
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
-
-  //console.log(loadState)
-
-  switch (loadState) {
-    case 0:
-      break;
-    case 1:
-      tracker.generateDailyTasks();
-      getDailyTasks();
-      break;
-  }
 
   return (
     <div>
@@ -246,7 +235,7 @@ const DashBoard = () => {
             <div className="greycontainer">
               <div className="title">DAILY TASKS</div>
               <div className="dashline" />
-              {dailyTasks}
+              {dailyTaskElements}
               <div className="row align-items-center">
                 <div className="col-md-10 xpbar ">
                   <Progress_bar />

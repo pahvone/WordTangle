@@ -30,7 +30,7 @@ export default class ActivityTracker {
     return tresh;
   }
 
-  initActivities() {
+  async initActivities() {
     const db = getDatabase();
     const auth = getAuth();
     const userId = auth.currentUser.uid;
@@ -42,7 +42,7 @@ export default class ActivityTracker {
       xp: 0,
       lvl: 1,
     };
-
+    return new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
@@ -51,8 +51,10 @@ export default class ActivityTracker {
         update(ref(db, "/users/" + userId), {
           activity: activity,
         });
+        resolve(activity)
       }
-    });
+    })
+  });
 
     return activity;
   }
@@ -80,7 +82,7 @@ export default class ActivityTracker {
       xp: 0,
       lvl: 1,
     };
-
+    return new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
       if (user) {
@@ -90,17 +92,19 @@ export default class ActivityTracker {
           var newDailies = false;
 
           if (snapshot.val().activity.dailyTasks.length !== 3) {
-            console.log("No daily tasks in db");
+            //console.log("No daily tasks in db");
             newDailies = true;
           } else {
             let lastGen = snapshot.val().activity.dailyGenDate;
-
+            
+            /*
             console.log(
               "Previous dailies were generated on " +
                 lastGen +
                 " vs " +
                 timestamp,
-            );
+            );*/
+            
             if (timestamp !== lastGen) {
               console.log("New date, generate new dailies");
               newDailies = true;
@@ -121,9 +125,10 @@ export default class ActivityTracker {
             activity: activity,
           });
 
-          return activity.dailyTasks;
+          resolve(activity)
         });
       }
+      });
     });
   }
 
@@ -152,7 +157,7 @@ export default class ActivityTracker {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
             if (!snapshot.val().activity.dailyTasks) return;
             const dailyTasks = snapshot.val().activity.dailyTasks;
-            resolve(dailyTasks);
+            resolve(snapshot.val().activity.dailyTasks);
           });
         }
       });
@@ -175,14 +180,13 @@ export default class ActivityTracker {
             if (dailys[i].task === task) {
               dailys[i].completed = true;
               complete = true;
-              console.log(task + " is completed");
+              //console.log(task + " is completed");
               break;
             }
           }
           activity.dailyTasks = dailys;
           if (!complete) return;
-          console.log("Updating daily completion to db");
-          console.log(activity.dailyTasks);
+         // console.log("Updating daily completion to db");
           update(ref(db, "/users/" + userId), {
             activity: activity,
           });
@@ -190,7 +194,7 @@ export default class ActivityTracker {
       }
     });
 
-    console.log("complete daily done");
+    //console.log("complete daily done");
   }
 
   async getLatestActivity() {
@@ -242,7 +246,7 @@ export default class ActivityTracker {
             console.log("No activities in db");
             activity["latest"].push(_activity);
           } else {
-            console.log("Push " + _activity + " to activities");
+            //console.log("Push " + _activity + " to activities");
             activity = snapshot.val().activity;
             activity["latest"].push(_activity);
             activity.xp += xpAmount;
@@ -256,15 +260,16 @@ export default class ActivityTracker {
             if (activity["latest"].length > 3) activity["latest"].shift();
           }
 
+          //console.log("update act " + activity)
+
           update(ref(db, "/users/" + userId), {
             activity: activity,
           });
-
-          //this.updateXP(_activity);
+          //console.log("update activity done");
+          this.completeDailyTask(_activity);
         });
       }
     });
-    console.log("update activity done");
-    this.completeDailyTask(_activity);
+    
   }
 }
