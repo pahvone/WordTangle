@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
+import ActivityTracker from "./ActivityTracker";
 
 const VocabQuiz = ({ lang, diff, index }) => {
   const [qIndex, setIndex] = useState(0);
@@ -48,6 +49,10 @@ const VocabQuiz = ({ lang, diff, index }) => {
           });
         }
       });
+
+      let tracker = new ActivityTracker();
+
+      tracker.updateLatestActivity("quiz");
 
       return true;
     } else return false;
