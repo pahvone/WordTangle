@@ -72,7 +72,6 @@ const DashBoard = () => {
     let dailyElements = [];
     await tracker.getDailyTasks().then((tasks) => {
       for (var i = 0; i < 3; i++) {
-
         dailyElements.push(
           <div
             key={"daily" + i}
@@ -151,26 +150,25 @@ const DashBoard = () => {
 
   const getLatestActivity = async () => {
     await tracker.getLatestActivity().then((act) => {
-    const latest = act.latest;
-    latest.reverse();
+      const latest = act.latest;
+      latest.reverse();
 
-    setXP(act.xp);
-    setLvl(act.lvl);
+      setXP(act.xp);
+      setLvl(act.lvl);
 
-    let activityElements = [];
-    for (var i = 0; i < latest.length; i++) {
-      if (latest[i] === "") break;
-      activityElements.push(
-        <div key={"act" + i} className="activity">
-          {">"} {tracker.getActivityDesc(latest[i])}
-          <span className="xp">{tracker.xpTable[latest[i]]} XP</span>
-        </div>,
-      );
-    }
+      let activityElements = [];
+      for (var i = 0; i < latest.length; i++) {
+        if (latest[i] === "") break;
+        activityElements.push(
+          <div key={"act" + i} className="activity">
+            {">"} {tracker.getActivityDesc(latest[i])}
+            <span className="xp">{tracker.xpTable[latest[i]]} XP</span>
+          </div>,
+        );
+      }
 
-    setActivityElements(activityElements);
+      setActivityElements(activityElements);
     });
-    
   };
 
   if (tracker === null) {
@@ -188,17 +186,16 @@ const DashBoard = () => {
             await tracker.initActivities().then(async (act) => {
               await tracker.generateDailyTasks().then((act) => {
                 getDailyTasks();
-              })
+              });
             });
           } else {
             // console.log("get latest")
             await getLatestActivity().then(async (act) => {
               await tracker.generateDailyTasks().then((act) => {
                 getDailyTasks();
-                
-              })
+              });
             });
-            getLatestActivity()
+            getLatestActivity();
           }
         });
       }

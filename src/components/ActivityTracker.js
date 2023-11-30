@@ -43,18 +43,18 @@ export default class ActivityTracker {
       lvl: 1,
     };
     return new Promise((resolve) => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if (snapshot.val().activity) return snapshot.val().activity;
-        });
-        update(ref(db, "/users/" + userId), {
-          activity: activity,
-        });
-        resolve(activity)
-      }
-    })
-  });
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            if (snapshot.val().activity) return snapshot.val().activity;
+          });
+          update(ref(db, "/users/" + userId), {
+            activity: activity,
+          });
+          resolve(activity);
+        }
+      });
+    });
 
     return activity;
   }
@@ -83,51 +83,51 @@ export default class ActivityTracker {
       lvl: 1,
     };
     return new Promise((resolve) => {
-    onAuthStateChanged(auth, (user) => {
-      const userId = auth.currentUser.uid;
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          activity = snapshot.val().activity;
+      onAuthStateChanged(auth, (user) => {
+        const userId = auth.currentUser.uid;
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            activity = snapshot.val().activity;
 
-          var newDailies = false;
+            var newDailies = false;
 
-          if (snapshot.val().activity.dailyTasks.length !== 3) {
-            //console.log("No daily tasks in db");
-            newDailies = true;
-          } else {
-            let lastGen = snapshot.val().activity.dailyGenDate;
-            
-            /*
+            if (snapshot.val().activity.dailyTasks.length !== 3) {
+              //console.log("No daily tasks in db");
+              newDailies = true;
+            } else {
+              let lastGen = snapshot.val().activity.dailyGenDate;
+
+              /*
             console.log(
               "Previous dailies were generated on " +
                 lastGen +
                 " vs " +
                 timestamp,
             );*/
-            
-            if (timestamp !== lastGen) {
-              console.log("New date, generate new dailies");
-              newDailies = true;
-            }
-          }
 
-          if (newDailies) {
-            console.log("Generate new dailies");
-            for (var i = 0; i < 3; i++) {
-              let randomDaily = this.getRandomDaily(dailyTasks);
-              dailyTasks[i] = { task: randomDaily, completed: false };
+              if (timestamp !== lastGen) {
+                console.log("New date, generate new dailies");
+                newDailies = true;
+              }
             }
-            activity.dailyGenDate = timestamp;
-            activity["dailyTasks"] = dailyTasks;
-          }
 
-          update(ref(db, "/users/" + userId), {
-            activity: activity,
+            if (newDailies) {
+              console.log("Generate new dailies");
+              for (var i = 0; i < 3; i++) {
+                let randomDaily = this.getRandomDaily(dailyTasks);
+                dailyTasks[i] = { task: randomDaily, completed: false };
+              }
+              activity.dailyGenDate = timestamp;
+              activity["dailyTasks"] = dailyTasks;
+            }
+
+            update(ref(db, "/users/" + userId), {
+              activity: activity,
+            });
+
+            resolve(activity);
           });
-
-          resolve(activity)
-        });
-      }
+        }
       });
     });
   }
@@ -186,7 +186,7 @@ export default class ActivityTracker {
           }
           activity.dailyTasks = dailys;
           if (!complete) return;
-         // console.log("Updating daily completion to db");
+          // console.log("Updating daily completion to db");
           update(ref(db, "/users/" + userId), {
             activity: activity,
           });
@@ -270,6 +270,5 @@ export default class ActivityTracker {
         });
       }
     });
-    
   }
 }
