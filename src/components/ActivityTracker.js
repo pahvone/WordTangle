@@ -24,6 +24,7 @@ export default class ActivityTracker {
         return "Played a mini-game";
     }
   }
+
   calcXPTresh(lvl, _tresh) {
     if (_tresh === undefined) _tresh = 100;
     var tresh = _tresh + lvl * (_tresh * 0.05);
@@ -55,8 +56,6 @@ export default class ActivityTracker {
         }
       });
     });
-
-    return activity;
   }
 
   newDailies() {}
@@ -73,7 +72,6 @@ export default class ActivityTracker {
       month: "numeric",
       year: "numeric",
     });
-    //console.log(timestamp)
 
     let activity = {
       latest: [],
@@ -82,6 +80,7 @@ export default class ActivityTracker {
       xp: 0,
       lvl: 1,
     };
+    
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         const userId = auth.currentUser.uid;
@@ -239,6 +238,7 @@ export default class ActivityTracker {
       xp: 0,
       lvl: 1,
     };
+    
     onAuthStateChanged(auth, (user) => {
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {

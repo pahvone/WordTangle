@@ -10,7 +10,7 @@ import ActivityTracker from "./ActivityTracker";
 
 const DashBoard = () => {
   const auth = getAuth();
-  const dbRef = ref(getDatabase(fb));
+  const dbRef = ref(getDatabase(fb)); //NEEDED?
   const db = getDatabase();
 
   const [userName, setuserName] = useState(null);
@@ -21,16 +21,6 @@ const DashBoard = () => {
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
-
-  const Button = ({ text, onClick }) => {
-    return (
-      <button className="styled-button" onClick={onClick}>
-        {text}
-      </button>
-    );
-  };
-
-  //testi
 
   const Progress_bar = () => {
     const Parentdiv = {
@@ -45,11 +35,6 @@ const DashBoard = () => {
       width: `${xp}%`,
       backgroundColor: "#50FFC0",
       borderRadius: 40,
-    };
-
-    const lvlText = {
-      padding: 10,
-      color: "black",
     };
 
     const progresstext = {
@@ -110,6 +95,7 @@ const DashBoard = () => {
     setLangButtons(buttonElements);
   };
 
+  //TODO: LEADERBOARDS
   const getLeaderBoards = () => {
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
