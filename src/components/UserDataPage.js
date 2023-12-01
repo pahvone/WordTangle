@@ -66,22 +66,24 @@ const UserDataPage = () => {
           <Button text="Get User Data" onClick={GetUserData} />
           <Button text="Return to Settings" onClick={SettingsRedirect} />
           <table>
-            <tr>
-              <th>Nickname</th>
-              <th>Current Language</th>
-              <th>User Level</th>
-              <th>User XP</th>
-              <th>Email</th>
-              <th>Latest Activity</th>
-            </tr>
-            <tr>
-              <td>{Nickname}</td>
-              <td>{CurrentLang}</td>
-              <td>{Level}</td>
-              <td>{XP}</td>
-              <td>{Email}</td>
-              <td>{Latest}</td>
-            </tr>
+            <tbody>
+              <tr>
+                <th>Nickname</th>
+                <th>Current Language</th>
+                <th>User Level</th>
+                <th>User XP</th>
+                <th>Email</th>
+                <th>Latest Activity</th>
+              </tr>
+              <tr>
+                <td>{Nickname}</td>
+                <td>{CurrentLang}</td>
+                <td>{Level}</td>
+                <td>{XP}</td>
+                <td>{Email}</td>
+                <td>{Latest}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
