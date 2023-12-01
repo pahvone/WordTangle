@@ -3,15 +3,12 @@ import React, { useState, useEffect } from "react";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 
 export default class ActivityTracker {
-
-  
   dailyXPTable = {
     quiz: 25,
     forums: 15,
     dictionary: 10,
     minigame: 30,
   };
-
 
   dailyTaskList = ["quiz", "forums", "dictionary", "minigame"];
 
@@ -189,7 +186,7 @@ export default class ActivityTracker {
           activity.dailyTasks = dailys;
           if (!complete) return;
 
-          activity.xp += this.dailyXPTable[task]
+          activity.xp += this.dailyXPTable[task];
           let tresh = 100; //calc()
 
           if (activity.xp > tresh) {
@@ -230,7 +227,6 @@ export default class ActivityTracker {
       });
     });
   }
-
 
   updateLatestActivity(_activity) {
     const db = getDatabase();
