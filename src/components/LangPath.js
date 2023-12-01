@@ -25,8 +25,8 @@ export class UserLangs {
     beginner: [],
     intermediate: [],
     advanced: [],
-  }
-  latestQuizActivity = []
+  };
+  latestQuizActivity = [];
 
   constructor(langPath) {
     this.lang = langPath.lang;

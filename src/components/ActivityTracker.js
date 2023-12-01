@@ -2,14 +2,13 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 
-
 export class Activity {
-    latest = [""]
-    latestQuizActivity = [{lang: "", diff: "", lessonName: ""}]
-    dailyTasks = [{ task: "", completed: false }]
-    dailyGenDate = ""
-    xp = 0
-    lvl = 1
+  latest = [""];
+  latestQuizActivity = [{ lang: "", diff: "", lessonName: "" }];
+  dailyTasks = [{ task: "", completed: false }];
+  dailyGenDate = "";
+  xp = 0;
+  lvl = 1;
 }
 export default class ActivityTracker {
   dailyXPTable = {
@@ -75,7 +74,7 @@ export default class ActivityTracker {
     const auth = getAuth();
     const userId = auth.currentUser.uid;
 
-    let activity = new Activity()
+    let activity = new Activity();
 
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
@@ -92,11 +91,11 @@ export default class ActivityTracker {
     });
   }
 
-  getLatestQuizActivity () {
+  getLatestQuizActivity() {
     const db = getDatabase();
     const auth = getAuth();
 
-    let activity = new Activity()
+    let activity = new Activity();
 
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
@@ -104,7 +103,7 @@ export default class ActivityTracker {
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
             activity = snapshot.val().activity;
-            resolve(activity.latestQuizActivity)
+            resolve(activity.latestQuizActivity);
           });
         }
       });
@@ -124,7 +123,7 @@ export default class ActivityTracker {
       year: "numeric",
     });
 
-    let act = new Activity()
+    let act = new Activity();
 
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
@@ -284,7 +283,7 @@ export default class ActivityTracker {
 
     var xpAmount = this.dailyXPTable[_activity];
 
-    let activity = new Activity()
+    let activity = new Activity();
 
     onAuthStateChanged(auth, (user) => {
       if (user) {

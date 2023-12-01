@@ -42,40 +42,40 @@ const VocabQuiz = ({ lang, diff, index }) => {
             if (percentage > langs[currLang].lessonProg[diff][index]) {
               langs[currLang].lessonProg[diff][index] = percentage;
             }
-            let currentDate = new Date()
+            let currentDate = new Date();
             const timestamp = currentDate.toLocaleDateString("en-US", {
               day: "numeric",
               month: "numeric",
               year: "numeric",
               hour: "numeric",
-              minute: "numeric"
+              minute: "numeric",
             });
-            console.log(timestamp)
+            console.log(timestamp);
             let latestQ = {
               lang: lang,
               diff: diff,
               lessonName: lesson.lessonName,
               percentage: percentage,
-              date: timestamp
-            }
+              date: timestamp,
+            };
 
             let activity = snapshot.val().activity;
-            console.log(activity)
+            console.log(activity);
             activity["latestQuizActivity"].push(latestQ);
-            if (activity["latestQuizActivity"].length > 3) activity["latestQuizActivity"].shift();
+            if (activity["latestQuizActivity"].length > 3)
+              activity["latestQuizActivity"].shift();
 
             await update(ref(db, "/users/" + userId), {
               langs: langs,
-              activity: activity
+              activity: activity,
             }).then(() => {
               let tracker = new ActivityTracker();
               tracker.updateLatestActivity("quiz");
             });
           });
         }
-      })
+      });
       return true;
-      
     } else return false;
   };
 

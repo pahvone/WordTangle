@@ -253,14 +253,13 @@ const LessonPath = (_language) => {
     setCurrentLang(lang);
     setLangPath(newLangPath);
 
-    updateLangsToDB(newLangPath)
-      setLangPathSelected(true);
-      setLangSelection(false);
-      setLoaded(true);
+    updateLangsToDB(newLangPath);
+    setLangPathSelected(true);
+    setLangSelection(false);
+    setLoaded(true);
 
-      if (flagMenu) toggleDropdown();
-      setLessonsLoaded(false);
-
+    if (flagMenu) toggleDropdown();
+    setLessonsLoaded(false);
   };
 
   const getLangFlags = () => {
