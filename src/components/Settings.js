@@ -14,8 +14,8 @@ import {
 import fb from "../firebase";
 import Footer from "./Footter.js";
 
-const dbRef = ref(getDatabase(fb));
 const Settings = () => {
+  const dbRef = ref(getDatabase(fb));
   const auth = getAuth();
   const user = auth.currentUser;
   const [password, setpassword] = useState("");
@@ -71,20 +71,8 @@ const Settings = () => {
     );
   };
 
-  function GetUserData() {
-    let userId = auth.currentUser.uid;
-    get(child(dbRef, "/users/" + userId))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log(snapshot.val());
-          // functionality: snapshot.val().insertvaluetobefetchedhere
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  function UserDataRedirect() {
+    redirect("/UserDataPage");
   }
 
   function DeleteUserData(signInProvider) {
@@ -163,7 +151,7 @@ const Settings = () => {
           <br />
           <Button text="Change Password" onClick={Passwordredirect} />
           <br />
-          <Button text="Get User Data" onClick={GetUserData} />
+          <Button text="Get User Data" onClick={UserDataRedirect} />
           <br />
           <WarningButton text="Sign Out" onClick={SignOut} />
           <br />
