@@ -61,7 +61,27 @@ const VocabQuiz = ({ lang, diff, index }) => {
 
             let activity = snapshot.val().activity;
             console.log(activity);
+
+            if(!activity.latestQuizActivity){ 
+              console.log("no latestq")
+              activity = {
+                latest : [""],
+                latestQuizActivity : [{ lang: "", diff: "", lessonName: "" }],
+                dailyTasks : [{ task: "", completed: false }],
+                dailyGenDate : "",
+                xp : 0,
+                lvl : 1
+              }
+              activity.latest = snapshot.val().activity.latest
+              activity.latestQuizActivity = [{ lang: "", diff: "", lessonName: "" }]
+              activity.dailyTasks = snapshot.val().activity.dailyTasks
+              activity.dailyGenDate = snapshot.val().activity.dailyGenDate
+              activity.xp = snapshot.val().activity.xp
+              activity.lvl = snapshot.val().activity.lvl
+            }
+
             activity["latestQuizActivity"].push(latestQ);
+
             if (activity["latestQuizActivity"].length > 3)
               activity["latestQuizActivity"].shift();
 
@@ -78,6 +98,11 @@ const VocabQuiz = ({ lang, diff, index }) => {
       return true;
     } else return false;
   };
+
+  //debug func
+  const fixlatestactivity = () => {
+
+  }
 
   const handleSwitchInputMode = useCallback(() => {
     setInputMode((prevInputModeRef) => (prevInputModeRef === 0 ? 1 : 0));
