@@ -7,6 +7,7 @@ import Footer from "./Footter.js";
 import { child, get, getDatabase, ref } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import "./UserDataPage.css";
 
 const UserDataPage = () => {
   const redirect = useNavigate();
@@ -39,7 +40,7 @@ const UserDataPage = () => {
           SetCurrentLang(snapshot.val().currentLang);
           SetLevel(snapshot.val().activity.lvl);
           SetXP(snapshot.val().activity.xp);
-          SetLatest(snapshot.val().activity.latest[0]);
+          SetLatest(snapshot.val().activity.latest[2]);
           // functionality: snapshot.val().insertvaluetobefetchedhere[indeksinumero]
         } else {
           console.log("No data available");
