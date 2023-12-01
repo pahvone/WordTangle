@@ -19,11 +19,17 @@ const DashBoard = () => {
   const [langButtons, setLangButtons] = useState(null);
   const [activityElements, setActivityElements] = useState([]);
   const [dailyTaskElements, setDailyTasks] = useState(null);
+  const [latestQuizElements, setLatestQuizElements] = useState(null)
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
 
   const redirect = useNavigate();
+
+  const flagsAPI = "https://flagsapi.com/";
+  const flagStyle = "/flat/64.png";
+  const flagStyleSmall = "/flat/32.png"
+
 
   const Progress_bar = () => {
     const Parentdiv = {
@@ -79,8 +85,6 @@ const DashBoard = () => {
   };
 
   const getCurrentLangs = () => {
-    let flagsAPI = "https://flagsapi.com/";
-    let flagStyle = "/flat/64.png";
 
     let buttonElements = [];
 
@@ -91,7 +95,7 @@ const DashBoard = () => {
           className="btn"
           onClick={() =>
             redirect("/LessonPath", { state: { language: langObj } })
-          } //redirect learnpage setlang
+          }
         >
           <img src={flagsAPI + langObj + flagStyle} />
         </button>,
@@ -99,6 +103,30 @@ const DashBoard = () => {
     }
     setLangButtons(buttonElements);
   };
+
+  const getLatestQuizActivity = async () => {
+    await tracker.getLatestQuizActivity().then((qAct) => {
+
+      console.log(qAct)
+      let latestQuizElements = [];
+
+      qAct.reverse();
+      
+      for (var i = 0; i < qAct.length; i++) {
+        if (qAct[i].lang === "") break;
+        latestQuizElements.push(
+          <div key={"act" + i} className={`quizactivity`}>
+            <img src={flagsAPI + qAct[i].lang + flagStyleSmall} style={{ verticalAlign: 'middle' }} />  
+            <span>{qAct[i].lessonName} ({qAct[i].diff})</span> 
+            <span> (Result: {qAct[i].percentage}%)</span>
+            <span>{qAct[i].date}</span> 
+          </div>,
+        );
+      }
+
+      setLatestQuizElements(latestQuizElements);
+    });
+  }
 
   //TODO: LEADERBOARDS
   const getLeaderBoards = () => {
@@ -141,7 +169,9 @@ const DashBoard = () => {
 
   const getLatestActivity = async () => {
     await tracker.getLatestActivity().then((act) => {
+      
       const latest = act.latest;
+      if(!latest) return
       latest.reverse();
 
       setXP(act.xp);
@@ -186,6 +216,7 @@ const DashBoard = () => {
               });
             });
             getLatestActivity();
+            getLatestQuizActivity()
           }
         });
       }
@@ -254,6 +285,8 @@ const DashBoard = () => {
               <div className="dashline" />
               <div className="latestactivity">Currently learning </div>
               <div>{langButtons}</div>
+              <div>Latest quizzes taken: </div>
+              <div>{latestQuizElements}</div>
             </div>
           </div>
           <div className="boxcontainer">

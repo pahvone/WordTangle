@@ -155,7 +155,7 @@ const LessonPath = (_language) => {
     generateLessonButtons(currentLang);
   }
 
-  const lessonContainers = (newLang) => {
+  const lessonContainers = () => {
     return (
       <>
         <div className="lessoncontainer">
@@ -246,21 +246,21 @@ const LessonPath = (_language) => {
     });
   };
 
-  const setLang = (lang) => {
+  const setLang = async (lang) => {
     console.log("Set lang to " + lang);
 
     let newLangPath = new LangPath(lang);
     setCurrentLang(lang);
     setLangPath(newLangPath);
 
-    updateLangsToDB(newLangPath).then((e) => {
+    updateLangsToDB(newLangPath)
       setLangPathSelected(true);
       setLangSelection(false);
       setLoaded(true);
 
       if (flagMenu) toggleDropdown();
       setLessonsLoaded(false);
-    });
+
   };
 
   const getLangFlags = () => {
@@ -366,7 +366,7 @@ const LessonPath = (_language) => {
   if (
     state &&
     state.language &&
-    currentLang !== null &&
+    currentLang &&
     currentLang !== state.language
   ) {
     console.log(state.language + " in state, current lang " + currentLang);

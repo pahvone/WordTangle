@@ -35,26 +35,47 @@ const VocabQuiz = ({ lang, diff, index }) => {
 
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          get(ref(db, "/users/" + userId)).then((snapshot) => {
+          get(ref(db, "/users/" + userId)).then(async (snapshot) => {
             var currLang = snapshot.val().currentLang;
             var langs = snapshot.val().langs;
 
             if (percentage > langs[currLang].lessonProg[diff][index]) {
               langs[currLang].lessonProg[diff][index] = percentage;
             }
+            let currentDate = new Date()
+            const timestamp = currentDate.toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "numeric"
+            });
+            console.log(timestamp)
+            let latestQ = {
+              lang: lang,
+              diff: diff,
+              lessonName: lesson.lessonName,
+              percentage: percentage,
+              date: timestamp
+            }
 
-            update(ref(db, "/users/" + userId), {
+            let activity = snapshot.val().activity;
+            console.log(activity)
+            activity["latestQuizActivity"].push(latestQ);
+            if (activity["latestQuizActivity"].length > 3) activity["latestQuizActivity"].shift();
+
+            await update(ref(db, "/users/" + userId), {
               langs: langs,
+              activity: activity
+            }).then(() => {
+              let tracker = new ActivityTracker();
+              tracker.updateLatestActivity("quiz");
             });
           });
         }
-      });
-
-      let tracker = new ActivityTracker();
-
-      tracker.updateLatestActivity("quiz");
-
+      })
       return true;
+      
     } else return false;
   };
 

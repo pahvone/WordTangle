@@ -2,6 +2,15 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 
+
+export class Activity {
+    latest = [""]
+    latestQuizActivity = [{lang: "", diff: "", lessonName: ""}]
+    dailyTasks = [{ task: "", completed: false }]
+    dailyGenDate = ""
+    xp = 0
+    lvl = 1
+}
 export default class ActivityTracker {
   dailyXPTable = {
     quiz: 25,
@@ -66,13 +75,8 @@ export default class ActivityTracker {
     const auth = getAuth();
     const userId = auth.currentUser.uid;
 
-    let activity = {
-      latest: [""],
-      dailyTasks: [""],
-      dailyGenDate: "",
-      xp: 0,
-      lvl: 1,
-    };
+    let activity = new Activity()
+
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -88,7 +92,24 @@ export default class ActivityTracker {
     });
   }
 
-  newDailies() {}
+  getLatestQuizActivity () {
+    const db = getDatabase();
+    const auth = getAuth();
+
+    let activity = new Activity()
+
+    return new Promise((resolve) => {
+      onAuthStateChanged(auth, (user) => {
+        const userId = auth.currentUser.uid;
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            activity = snapshot.val().activity;
+            resolve(activity.latestQuizActivity)
+          });
+        }
+      });
+    });
+  }
 
   generateDailyTasks() {
     const db = getDatabase();
@@ -103,20 +124,14 @@ export default class ActivityTracker {
       year: "numeric",
     });
 
-    let activity = {
-      latest: [],
-      dailyTasks: [{ task: "", completed: false }],
-      dailyGenDate: "",
-      xp: 0,
-      lvl: 1,
-    };
+    let act = new Activity()
 
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         const userId = auth.currentUser.uid;
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
-            activity = snapshot.val().activity;
+            act = snapshot.val().activity;
 
             var newDailies = false;
 
@@ -146,15 +161,15 @@ export default class ActivityTracker {
                 let randomDaily = this.getRandomDaily(dailyTasks);
                 dailyTasks[i] = { task: randomDaily, completed: false };
               }
-              activity.dailyGenDate = timestamp;
-              activity["dailyTasks"] = dailyTasks;
+              act.dailyGenDate = timestamp;
+              act["dailyTasks"] = dailyTasks;
             }
 
             update(ref(db, "/users/" + userId), {
-              activity: activity,
+              activity: act,
             });
 
-            resolve(activity);
+            resolve(act);
           });
         }
       });
@@ -269,13 +284,7 @@ export default class ActivityTracker {
 
     var xpAmount = this.dailyXPTable[_activity];
 
-    let activity = {
-      latest: [],
-      dailyTasks: [],
-      dailyGenDate: "",
-      xp: 0,
-      lvl: 1,
-    };
+    let activity = new Activity()
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
