@@ -3,12 +3,15 @@ import React, { useState, useEffect } from "react";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 
 export default class ActivityTracker {
-  xpTable = {
+
+  
+  dailyXPTable = {
     quiz: 25,
-    forums: 60,
+    forums: 15,
     dictionary: 10,
     minigame: 30,
   };
+
 
   dailyTaskList = ["quiz", "forums", "dictionary", "minigame"];
 
@@ -176,7 +179,7 @@ export default class ActivityTracker {
           let dailys = activity.dailyTasks;
           let complete = false;
           for (var i = 0; i < dailys.length; i++) {
-            if (dailys[i].task === task) {
+            if (dailys[i].task === task && !dailys[i].completed) {
               dailys[i].completed = true;
               complete = true;
               //console.log(task + " is completed");
@@ -185,6 +188,14 @@ export default class ActivityTracker {
           }
           activity.dailyTasks = dailys;
           if (!complete) return;
+
+          activity.xp += this.dailyXPTable[task]
+          let tresh = 100; //calc()
+
+          if (activity.xp > tresh) {
+            activity.lvl++;
+            activity.xp = activity.xp - tresh;
+          }
           // console.log("Updating daily completion to db");
           update(ref(db, "/users/" + userId), {
             activity: activity,
@@ -220,6 +231,7 @@ export default class ActivityTracker {
     });
   }
 
+
   updateLatestActivity(_activity) {
     const db = getDatabase();
     const auth = getAuth();
@@ -229,7 +241,7 @@ export default class ActivityTracker {
 
     const userId = auth.currentUser.uid;
 
-    var xpAmount = this.xpTable[_activity];
+    var xpAmount = this.dailyXPTable[_activity];
 
     let activity = {
       latest: [],
@@ -249,23 +261,14 @@ export default class ActivityTracker {
             //console.log("Push " + _activity + " to activities");
             activity = snapshot.val().activity;
             activity["latest"].push(_activity);
-            activity.xp += xpAmount;
-            let tresh = 100; //calc()
-
-            if (activity.xp > tresh) {
-              activity.lvl++;
-              activity.xp = activity.xp - tresh;
-            }
+            //activity.xp = this.calcXP(xpAmount).xp
 
             if (activity["latest"].length > 3) activity["latest"].shift();
           }
 
-          //console.log("update act " + activity)
-
           update(ref(db, "/users/" + userId), {
             activity: activity,
           });
-          //console.log("update activity done");
           this.completeDailyTask(_activity);
         });
       }

@@ -67,7 +67,7 @@ const DashBoard = () => {
             {" "}
             {tracker.getActivityDesc(tasks[i].task) +
               ` ${tasks[i].completed ? "(COMPLETE)" : ""}`}
-            <span className="xp">{tracker.xpTable[tasks[i].task]} XP</span>
+            <span className="xp">{tracker.dailyXPTable[tasks[i].task]} XP</span>
           </div>,
         );
       }
@@ -148,7 +148,6 @@ const DashBoard = () => {
         activityElements.push(
           <div key={"act" + i} className="activity">
             {">"} {tracker.getActivityDesc(latest[i])}
-            <span className="xp">{tracker.xpTable[latest[i]]} XP</span>
           </div>,
         );
       }
