@@ -151,7 +151,7 @@ const Settings = () => {
           <br />
           <Button text="Change Password" onClick={Passwordredirect} />
           <br />
-          <Button text="Get User Data" onClick={UserDataRedirect} />
+          <Button text="Show User Data" onClick={UserDataRedirect} />
           <br />
           <WarningButton text="Sign Out" onClick={SignOut} />
           <br />
