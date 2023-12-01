@@ -190,12 +190,11 @@ const DashBoard = () => {
   if (userLangs !== null && langButtons === null) getCurrentLangs();
 
   const debugXP = () => {
-  
     tracker.debugGetXP().then((activity) => {
-      setXP(activity.xp)
-      setLvl(activity.lvl)
-    })
-  }
+      setXP(activity.xp);
+      setLvl(activity.lvl);
+    });
+  };
 
   return (
     <div>

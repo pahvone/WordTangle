@@ -31,34 +31,34 @@ export default class ActivityTracker {
     return tresh;
   }
 
-  debugGetXP(){
+  debugGetXP() {
     const db = getDatabase();
     const auth = getAuth();
 
     const userId = auth.currentUser.uid;
     let activity = null;
     return new Promise((resolve) => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          activity = snapshot.val().activity;
-          activity.xp += 40
-          let tresh = 100; //calc()
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            activity = snapshot.val().activity;
+            activity.xp += 40;
+            let tresh = 100; //calc()
 
-          if (activity.xp > tresh) {
-            activity.lvl++;
-            activity.xp = activity.xp - tresh;
-          }
-          // console.log("Updating daily completion to db");
-          update(ref(db, "/users/" + userId), {
-            activity: activity,
+            if (activity.xp > tresh) {
+              activity.lvl++;
+              activity.xp = activity.xp - tresh;
+            }
+            // console.log("Updating daily completion to db");
+            update(ref(db, "/users/" + userId), {
+              activity: activity,
+            });
+
+            resolve(activity);
           });
-
-          resolve(activity)
-        });
-      }
+        }
+      });
     });
-  });
   }
 
   async initActivities() {
