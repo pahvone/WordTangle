@@ -189,36 +189,13 @@ const LessonPath = (_language) => {
     const userId = auth.currentUser.uid;
 
     return new Promise((resolve) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            if (!snapshot.val().langs) {
+              console.log("No langs in db, creating");
 
-    
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if (!snapshot.val().langs) {
-            console.log("No langs in db, creating");
-
-            let langs = {};
-            langs[newLangPath.lang] = {
-              lessonProg: {
-                beginner: [],
-                intermediate: [],
-                advanced: [],
-              },
-            };
-
-            langs[newLangPath.lang] = new UserLangs(newLangPath);
-
-            update(ref(db, "/users/" + userId), {
-              langs: langs,
-              currentLang: newLangPath.lang,
-            });
-
-            setUserLangs(langs);
-          } else {
-            if (!snapshot.val().langs[newLangPath.lang]) {
-              console.log("Lang not currently in db, creating");
-              let langs = userLangs;
-
+              let langs = {};
               langs[newLangPath.lang] = {
                 lessonProg: {
                   beginner: [],
@@ -228,6 +205,7 @@ const LessonPath = (_language) => {
               };
 
               langs[newLangPath.lang] = new UserLangs(newLangPath);
+
               update(ref(db, "/users/" + userId), {
                 langs: langs,
                 currentLang: newLangPath.lang,
@@ -235,16 +213,36 @@ const LessonPath = (_language) => {
 
               setUserLangs(langs);
             } else {
-              console.log("Lang in db, switching");
-              update(ref(db, "/users/" + userId), {
-                currentLang: newLangPath.lang,
-              });
+              if (!snapshot.val().langs[newLangPath.lang]) {
+                console.log("Lang not currently in db, creating");
+                let langs = userLangs;
+
+                langs[newLangPath.lang] = {
+                  lessonProg: {
+                    beginner: [],
+                    intermediate: [],
+                    advanced: [],
+                  },
+                };
+
+                langs[newLangPath.lang] = new UserLangs(newLangPath);
+                update(ref(db, "/users/" + userId), {
+                  langs: langs,
+                  currentLang: newLangPath.lang,
+                });
+
+                setUserLangs(langs);
+              } else {
+                console.log("Lang in db, switching");
+                update(ref(db, "/users/" + userId), {
+                  currentLang: newLangPath.lang,
+                });
+              }
+              resolve(newLangPath);
             }
-            resolve(newLangPath)
-          }
-        });
-      }
-    });
+          });
+        }
+      });
     });
   };
 
@@ -259,14 +257,10 @@ const LessonPath = (_language) => {
       setLangPathSelected(true);
       setLangSelection(false);
       setLoaded(true);
-  
+
       if (flagMenu) toggleDropdown();
       setLessonsLoaded(false);
-  
     });
-
-
-    
   };
 
   const getLangFlags = () => {
@@ -369,10 +363,15 @@ const LessonPath = (_language) => {
     );
   };
 
-  if(state && state.language && currentLang !== null && currentLang !== state.language) {
-    console.log(state.language + " in state, current lang " + currentLang)
-    setLang(state.language) 
-    state.language = null
+  if (
+    state &&
+    state.language &&
+    currentLang !== null &&
+    currentLang !== state.language
+  ) {
+    console.log(state.language + " in state, current lang " + currentLang);
+    setLang(state.language);
+    state.language = null;
   }
 
   return (
