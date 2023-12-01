@@ -189,6 +189,14 @@ const DashBoard = () => {
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
 
+  const debugXP = () => {
+  
+    tracker.debugGetXP().then((activity) => {
+      setXP(activity.xp)
+      setLvl(activity.lvl)
+    })
+  }
+
   return (
     <div>
       <NavBar />
@@ -218,6 +226,13 @@ const DashBoard = () => {
               <div className="title">DAILY TASKS</div>
               <div className="dashline" />
               {dailyTaskElements}
+              <button
+                key={"getexp"}
+                className=""
+                onClick={() => debugXP()} //redirect learnpage setlang
+              >
+                Get debug xp here
+              </button>
               <div className="row align-items-center">
                 <div className="col-md-10 xpbar ">
                   <Progress_bar />
