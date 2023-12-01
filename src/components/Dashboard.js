@@ -7,6 +7,7 @@ import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
+import { useNavigate } from "react-router-dom";
 
 const DashBoard = () => {
   const auth = getAuth();
@@ -21,6 +22,8 @@ const DashBoard = () => {
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
+
+  const redirect = useNavigate();
 
   const Progress_bar = () => {
     const Parentdiv = {
@@ -86,7 +89,7 @@ const DashBoard = () => {
         <button
           key={"lang" + langObj}
           className="btn"
-          onClick={() => console.log("sdf")} //redirect learnpage setlang
+          onClick={() => redirect('/LessonPath', { state: { language: langObj } })} //redirect learnpage setlang
         >
           <img src={flagsAPI + langObj + flagStyle} />
         </button>,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 import "./VocabLesson.css";
@@ -29,6 +29,8 @@ const LessonPath = (_language) => {
 
   const db = getDatabase();
   const auth = getAuth();
+
+  const { state } = useLocation();
 
   const redirect = useNavigate();
   const flagsAPI = "https://flagsapi.com/";
@@ -183,8 +185,12 @@ const LessonPath = (_language) => {
     );
   };
 
-  const updateLangsToDB = (newLangPath) => {
+  const updateLangsToDB = async (newLangPath) => {
     const userId = auth.currentUser.uid;
+
+    return new Promise((resolve) => {
+
+    
     onAuthStateChanged(auth, (user) => {
       if (user) {
         get(ref(db, "/users/" + userId)).then((snapshot) => {
@@ -234,9 +240,11 @@ const LessonPath = (_language) => {
                 currentLang: newLangPath.lang,
               });
             }
+            resolve(newLangPath)
           }
         });
       }
+    });
     });
   };
 
@@ -247,14 +255,18 @@ const LessonPath = (_language) => {
     setCurrentLang(lang);
     setLangPath(newLangPath);
 
-    updateLangsToDB(newLangPath);
+    updateLangsToDB(newLangPath).then((e) => {
+      setLangPathSelected(true);
+      setLangSelection(false);
+      setLoaded(true);
+  
+      if (flagMenu) toggleDropdown();
+      setLessonsLoaded(false);
+  
+    });
 
-    setLangPathSelected(true);
-    setLangSelection(false);
-    setLoaded(true);
 
-    if (flagMenu) toggleDropdown();
-    setLessonsLoaded(false);
+    
   };
 
   const getLangFlags = () => {
@@ -356,6 +368,12 @@ const LessonPath = (_language) => {
       </div>
     );
   };
+
+  if(state && state.language && currentLang !== null && currentLang !== state.language) {
+    console.log(state.language + " in state, current lang " + currentLang)
+    setLang(state.language) 
+    state.language = null
+  }
 
   return (
     <div>
