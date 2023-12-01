@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 import "./VocabLesson.css";
@@ -29,6 +29,8 @@ const LessonPath = (_language) => {
 
   const db = getDatabase();
   const auth = getAuth();
+
+  const { state } = useLocation();
 
   const redirect = useNavigate();
   const flagsAPI = "https://flagsapi.com/";
@@ -153,7 +155,7 @@ const LessonPath = (_language) => {
     generateLessonButtons(currentLang);
   }
 
-  const lessonContainers = (newLang) => {
+  const lessonContainers = () => {
     return (
       <>
         <div className="lessoncontainer">
@@ -183,36 +185,17 @@ const LessonPath = (_language) => {
     );
   };
 
-  const updateLangsToDB = (newLangPath) => {
+  const updateLangsToDB = async (newLangPath) => {
     const userId = auth.currentUser.uid;
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if (!snapshot.val().langs) {
-            console.log("No langs in db, creating");
 
-            let langs = {};
-            langs[newLangPath.lang] = {
-              lessonProg: {
-                beginner: [],
-                intermediate: [],
-                advanced: [],
-              },
-            };
+    return new Promise((resolve) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            if (!snapshot.val().langs) {
+              console.log("No langs in db, creating");
 
-            langs[newLangPath.lang] = new UserLangs(newLangPath);
-
-            update(ref(db, "/users/" + userId), {
-              langs: langs,
-              currentLang: newLangPath.lang,
-            });
-
-            setUserLangs(langs);
-          } else {
-            if (!snapshot.val().langs[newLangPath.lang]) {
-              console.log("Lang not currently in db, creating");
-              let langs = userLangs;
-
+              let langs = {};
               langs[newLangPath.lang] = {
                 lessonProg: {
                   beginner: [],
@@ -222,6 +205,7 @@ const LessonPath = (_language) => {
               };
 
               langs[newLangPath.lang] = new UserLangs(newLangPath);
+
               update(ref(db, "/users/" + userId), {
                 langs: langs,
                 currentLang: newLangPath.lang,
@@ -229,18 +213,40 @@ const LessonPath = (_language) => {
 
               setUserLangs(langs);
             } else {
-              console.log("Lang in db, switching");
-              update(ref(db, "/users/" + userId), {
-                currentLang: newLangPath.lang,
-              });
+              if (!snapshot.val().langs[newLangPath.lang]) {
+                console.log("Lang not currently in db, creating");
+                let langs = userLangs;
+
+                langs[newLangPath.lang] = {
+                  lessonProg: {
+                    beginner: [],
+                    intermediate: [],
+                    advanced: [],
+                  },
+                };
+
+                langs[newLangPath.lang] = new UserLangs(newLangPath);
+                update(ref(db, "/users/" + userId), {
+                  langs: langs,
+                  currentLang: newLangPath.lang,
+                });
+
+                setUserLangs(langs);
+              } else {
+                console.log("Lang in db, switching");
+                update(ref(db, "/users/" + userId), {
+                  currentLang: newLangPath.lang,
+                });
+              }
+              resolve(newLangPath);
             }
-          }
-        });
-      }
+          });
+        }
+      });
     });
   };
 
-  const setLang = (lang) => {
+  const setLang = async (lang) => {
     console.log("Set lang to " + lang);
 
     let newLangPath = new LangPath(lang);
@@ -248,7 +254,6 @@ const LessonPath = (_language) => {
     setLangPath(newLangPath);
 
     updateLangsToDB(newLangPath);
-
     setLangPathSelected(true);
     setLangSelection(false);
     setLoaded(true);
@@ -356,6 +361,17 @@ const LessonPath = (_language) => {
       </div>
     );
   };
+
+  if (
+    state &&
+    state.language &&
+    currentLang &&
+    currentLang !== state.language
+  ) {
+    console.log(state.language + " in state, current lang " + currentLang);
+    setLang(state.language);
+    state.language = null;
+  }
 
   return (
     <div>

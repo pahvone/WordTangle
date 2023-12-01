@@ -7,6 +7,7 @@ import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
+import { useNavigate } from "react-router-dom";
 
 const DashBoard = () => {
   const auth = getAuth();
@@ -18,9 +19,16 @@ const DashBoard = () => {
   const [langButtons, setLangButtons] = useState(null);
   const [activityElements, setActivityElements] = useState([]);
   const [dailyTaskElements, setDailyTasks] = useState(null);
+  const [latestQuizElements, setLatestQuizElements] = useState(null);
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
+
+  const redirect = useNavigate();
+
+  const flagsAPI = "https://flagsapi.com/";
+  const flagStyle = "/flat/64.png";
+  const flagStyleSmall = "/flat/32.png";
 
   const Progress_bar = () => {
     const Parentdiv = {
@@ -67,7 +75,7 @@ const DashBoard = () => {
             {" "}
             {tracker.getActivityDesc(tasks[i].task) +
               ` ${tasks[i].completed ? "(COMPLETE)" : ""}`}
-            <span className="xp">{tracker.xpTable[tasks[i].task]} XP</span>
+            <span className="xp">{tracker.dailyXPTable[tasks[i].task]} XP</span>
           </div>,
         );
       }
@@ -76,9 +84,6 @@ const DashBoard = () => {
   };
 
   const getCurrentLangs = () => {
-    let flagsAPI = "https://flagsapi.com/";
-    let flagStyle = "/flat/64.png";
-
     let buttonElements = [];
 
     for (const langObj in userLangs) {
@@ -86,13 +91,43 @@ const DashBoard = () => {
         <button
           key={"lang" + langObj}
           className="btn"
-          onClick={() => console.log("sdf")} //redirect learnpage setlang
+          onClick={() =>
+            redirect("/LessonPath", { state: { language: langObj } })
+          }
         >
           <img src={flagsAPI + langObj + flagStyle} />
         </button>,
       );
     }
     setLangButtons(buttonElements);
+  };
+
+  const getLatestQuizActivity = async () => {
+    await tracker.getLatestQuizActivity().then((qAct) => {
+      console.log(qAct);
+      let latestQuizElements = [];
+
+      qAct.reverse();
+
+      for (var i = 0; i < qAct.length; i++) {
+        if (qAct[i].lang === "") break;
+        latestQuizElements.push(
+          <div key={"act" + i} className={`quizactivity`}>
+            <img
+              src={flagsAPI + qAct[i].lang + flagStyleSmall}
+              style={{ verticalAlign: "middle" }}
+            />
+            <span>
+              {qAct[i].lessonName} ({qAct[i].diff})
+            </span>
+            <span> (Result: {qAct[i].percentage}%)</span>
+            <span>{qAct[i].date}</span>
+          </div>,
+        );
+      }
+
+      setLatestQuizElements(latestQuizElements);
+    });
   };
 
   //TODO: LEADERBOARDS
@@ -137,6 +172,7 @@ const DashBoard = () => {
   const getLatestActivity = async () => {
     await tracker.getLatestActivity().then((act) => {
       const latest = act.latest;
+      if (!latest) return;
       latest.reverse();
 
       setXP(act.xp);
@@ -148,7 +184,6 @@ const DashBoard = () => {
         activityElements.push(
           <div key={"act" + i} className="activity">
             {">"} {tracker.getActivityDesc(latest[i])}
-            <span className="xp">{tracker.xpTable[latest[i]]} XP</span>
           </div>,
         );
       }
@@ -182,6 +217,7 @@ const DashBoard = () => {
               });
             });
             getLatestActivity();
+            getLatestQuizActivity();
           }
         });
       }
@@ -189,6 +225,13 @@ const DashBoard = () => {
   }, []);
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
+
+  const debugXP = () => {
+    tracker.debugGetXP().then((activity) => {
+      setXP(activity.xp);
+      setLvl(activity.lvl);
+    });
+  };
 
   return (
     <div>
@@ -219,6 +262,13 @@ const DashBoard = () => {
               <div className="title">DAILY TASKS</div>
               <div className="dashline" />
               {dailyTaskElements}
+              <button
+                key={"getexp"}
+                className=""
+                onClick={() => debugXP()} //redirect learnpage setlang
+              >
+                Get debug xp here
+              </button>
               <div className="row align-items-center">
                 <div className="col-md-10 xpbar ">
                   <Progress_bar />
@@ -236,6 +286,8 @@ const DashBoard = () => {
               <div className="dashline" />
               <div className="latestactivity">Currently learning </div>
               <div>{langButtons}</div>
+              <div>Latest quizzes taken: </div>
+              <div>{latestQuizElements}</div>
             </div>
           </div>
           <div className="boxcontainer">

@@ -2,10 +2,18 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 
+export class Activity {
+  latest = [""];
+  latestQuizActivity = [{ lang: "", diff: "", lessonName: "" }];
+  dailyTasks = [{ task: "", completed: false }];
+  dailyGenDate = "";
+  xp = 0;
+  lvl = 1;
+}
 export default class ActivityTracker {
-  xpTable = {
+  dailyXPTable = {
     quiz: 25,
-    forums: 60,
+    forums: 15,
     dictionary: 10,
     minigame: 30,
   };
@@ -31,18 +39,43 @@ export default class ActivityTracker {
     return tresh;
   }
 
+  debugGetXP() {
+    const db = getDatabase();
+    const auth = getAuth();
+
+    const userId = auth.currentUser.uid;
+    let activity = null;
+    return new Promise((resolve) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            activity = snapshot.val().activity;
+            activity.xp += 40;
+            let tresh = 100; //calc()
+
+            if (activity.xp > tresh) {
+              activity.lvl++;
+              activity.xp = activity.xp - tresh;
+            }
+            // console.log("Updating daily completion to db");
+            update(ref(db, "/users/" + userId), {
+              activity: activity,
+            });
+
+            resolve(activity);
+          });
+        }
+      });
+    });
+  }
+
   async initActivities() {
     const db = getDatabase();
     const auth = getAuth();
     const userId = auth.currentUser.uid;
 
-    let activity = {
-      latest: [""],
-      dailyTasks: [""],
-      dailyGenDate: "",
-      xp: 0,
-      lvl: 1,
-    };
+    let activity = new Activity();
+
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -58,7 +91,37 @@ export default class ActivityTracker {
     });
   }
 
-  newDailies() {}
+  getLatestQuizActivity() {
+    const db = getDatabase();
+    const auth = getAuth();
+
+    let activity = new Activity();
+
+    return new Promise((resolve) => {
+      onAuthStateChanged(auth, (user) => {
+        const userId = auth.currentUser.uid;
+        if (user) {
+          get(ref(db, "/users/" + userId)).then((snapshot) => {
+            activity = snapshot.val().activity;
+            if (!activity.latestQuizActivity) {
+              console.log("no latestq");
+              activity = new Activity();
+              activity.latest = snapshot.val().activity.latest;
+              activity.latestQuizActivity = [
+                { lang: "", diff: "", lessonName: "" },
+              ];
+              activity.dailyTasks = snapshot.val().activity.dailyTasks;
+              activity.dailyGenDate = snapshot.val().activity.dailyGenDate;
+              activity.xp = snapshot.val().activity.xp;
+              activity.lvl = snapshot.val().activity.lvl;
+            }
+            console.log(activity);
+            resolve(activity.latestQuizActivity);
+          });
+        }
+      });
+    });
+  }
 
   generateDailyTasks() {
     const db = getDatabase();
@@ -73,20 +136,14 @@ export default class ActivityTracker {
       year: "numeric",
     });
 
-    let activity = {
-      latest: [],
-      dailyTasks: [{ task: "", completed: false }],
-      dailyGenDate: "",
-      xp: 0,
-      lvl: 1,
-    };
+    let act = new Activity();
 
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         const userId = auth.currentUser.uid;
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
-            activity = snapshot.val().activity;
+            act = snapshot.val().activity;
 
             var newDailies = false;
 
@@ -116,15 +173,15 @@ export default class ActivityTracker {
                 let randomDaily = this.getRandomDaily(dailyTasks);
                 dailyTasks[i] = { task: randomDaily, completed: false };
               }
-              activity.dailyGenDate = timestamp;
-              activity["dailyTasks"] = dailyTasks;
+              act.dailyGenDate = timestamp;
+              act["dailyTasks"] = dailyTasks;
             }
 
             update(ref(db, "/users/" + userId), {
-              activity: activity,
+              activity: act,
             });
 
-            resolve(activity);
+            resolve(act);
           });
         }
       });
@@ -176,7 +233,7 @@ export default class ActivityTracker {
           let dailys = activity.dailyTasks;
           let complete = false;
           for (var i = 0; i < dailys.length; i++) {
-            if (dailys[i].task === task) {
+            if (dailys[i].task === task && !dailys[i].completed) {
               dailys[i].completed = true;
               complete = true;
               //console.log(task + " is completed");
@@ -185,6 +242,14 @@ export default class ActivityTracker {
           }
           activity.dailyTasks = dailys;
           if (!complete) return;
+
+          activity.xp += this.dailyXPTable[task];
+          let tresh = 100; //calc()
+
+          if (activity.xp > tresh) {
+            activity.lvl++;
+            activity.xp = activity.xp - tresh;
+          }
           // console.log("Updating daily completion to db");
           update(ref(db, "/users/" + userId), {
             activity: activity,
@@ -229,15 +294,9 @@ export default class ActivityTracker {
 
     const userId = auth.currentUser.uid;
 
-    var xpAmount = this.xpTable[_activity];
+    var xpAmount = this.dailyXPTable[_activity];
 
-    let activity = {
-      latest: [],
-      dailyTasks: [],
-      dailyGenDate: "",
-      xp: 0,
-      lvl: 1,
-    };
+    let activity = new Activity();
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -246,26 +305,15 @@ export default class ActivityTracker {
             console.log("No activities in db");
             activity["latest"].push(_activity);
           } else {
-            //console.log("Push " + _activity + " to activities");
             activity = snapshot.val().activity;
             activity["latest"].push(_activity);
-            activity.xp += xpAmount;
-            let tresh = 100; //calc()
-
-            if (activity.xp > tresh) {
-              activity.lvl++;
-              activity.xp = activity.xp - tresh;
-            }
 
             if (activity["latest"].length > 3) activity["latest"].shift();
           }
 
-          //console.log("update act " + activity)
-
           update(ref(db, "/users/" + userId), {
             activity: activity,
           });
-          //console.log("update activity done");
           this.completeDailyTask(_activity);
         });
       }
