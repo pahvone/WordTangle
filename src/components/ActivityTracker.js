@@ -103,17 +103,19 @@ export default class ActivityTracker {
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
             activity = snapshot.val().activity;
-            if(!activity.latestQuizActivity){
-              console.log("no latestq")
-              activity = new Activity()
-              activity.latest = snapshot.val().activity.latest
-              activity.latestQuizActivity = [{ lang: "", diff: "", lessonName: "" }]
-              activity.dailyTasks = snapshot.val().activity.dailyTasks
-              activity.dailyGenDate = snapshot.val().activity.dailyGenDate
-              activity.xp = snapshot.val().activity.xp
-              activity.lvl = snapshot.val().activity.lvl
+            if (!activity.latestQuizActivity) {
+              console.log("no latestq");
+              activity = new Activity();
+              activity.latest = snapshot.val().activity.latest;
+              activity.latestQuizActivity = [
+                { lang: "", diff: "", lessonName: "" },
+              ];
+              activity.dailyTasks = snapshot.val().activity.dailyTasks;
+              activity.dailyGenDate = snapshot.val().activity.dailyGenDate;
+              activity.xp = snapshot.val().activity.xp;
+              activity.lvl = snapshot.val().activity.lvl;
             }
-            console.log(activity)
+            console.log(activity);
             resolve(activity.latestQuizActivity);
           });
         }

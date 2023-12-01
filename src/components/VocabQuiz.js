@@ -62,22 +62,24 @@ const VocabQuiz = ({ lang, diff, index }) => {
             let activity = snapshot.val().activity;
             console.log(activity);
 
-            if(!activity.latestQuizActivity){ 
-              console.log("no latestq")
+            if (!activity.latestQuizActivity) {
+              console.log("no latestq");
               activity = {
-                latest : [""],
-                latestQuizActivity : [{ lang: "", diff: "", lessonName: "" }],
-                dailyTasks : [{ task: "", completed: false }],
-                dailyGenDate : "",
-                xp : 0,
-                lvl : 1
-              }
-              activity.latest = snapshot.val().activity.latest
-              activity.latestQuizActivity = [{ lang: "", diff: "", lessonName: "" }]
-              activity.dailyTasks = snapshot.val().activity.dailyTasks
-              activity.dailyGenDate = snapshot.val().activity.dailyGenDate
-              activity.xp = snapshot.val().activity.xp
-              activity.lvl = snapshot.val().activity.lvl
+                latest: [""],
+                latestQuizActivity: [{ lang: "", diff: "", lessonName: "" }],
+                dailyTasks: [{ task: "", completed: false }],
+                dailyGenDate: "",
+                xp: 0,
+                lvl: 1,
+              };
+              activity.latest = snapshot.val().activity.latest;
+              activity.latestQuizActivity = [
+                { lang: "", diff: "", lessonName: "" },
+              ];
+              activity.dailyTasks = snapshot.val().activity.dailyTasks;
+              activity.dailyGenDate = snapshot.val().activity.dailyGenDate;
+              activity.xp = snapshot.val().activity.xp;
+              activity.lvl = snapshot.val().activity.lvl;
             }
 
             activity["latestQuizActivity"].push(latestQ);
@@ -100,9 +102,7 @@ const VocabQuiz = ({ lang, diff, index }) => {
   };
 
   //debug func
-  const fixlatestactivity = () => {
-
-  }
+  const fixlatestactivity = () => {};
 
   const handleSwitchInputMode = useCallback(() => {
     setInputMode((prevInputModeRef) => (prevInputModeRef === 0 ? 1 : 0));
