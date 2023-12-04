@@ -21,7 +21,7 @@ const DashBoard = () => {
   const [activityElements, setActivityElements] = useState([]);
   const [dailyTaskElements, setDailyTasks] = useState(null);
   const [latestQuizElements, setLatestQuizElements] = useState(null);
-  const [leaderboardElements, setLeaderBoardElements] = useState(null)
+  const [leaderboardElements, setLeaderBoardElements] = useState(null);
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
@@ -131,10 +131,9 @@ const DashBoard = () => {
     });
   };
 
-
   const getLeaderBoards = async () => {
-    const lb = new Leaderboards()
-    let lbElements = []
+    const lb = new Leaderboards();
+    let lbElements = [];
 
     await lb.getLeaderboards().then((lb) => {
       lb.entries.sort((a, b) => b.xpGain - a.xpGain);
@@ -142,16 +141,16 @@ const DashBoard = () => {
       for (var i = 0; i < lb.entries.length; i++) {
         lbElements.push(
           <>
-            <div className="leaderlist" key={"lbEntry"+ i}>
+            <div className="leaderlist" key={"lbEntry" + i}>
               {" "}
               {i + 1}. {lb.entries[i].userName} (Lvl {lb.entries[i].lvl})
               <span className="xp">{lb.entries[i].xpGain} XP</span>
             </div>
-          </>
-        )
+          </>,
+        );
       }
-      setLeaderBoardElements(lbElements)
-    })
+      setLeaderBoardElements(lbElements);
+    });
   };
 
   const getLatestActivity = async () => {
@@ -203,7 +202,7 @@ const DashBoard = () => {
             });
             getLatestActivity();
             getLatestQuizActivity();
-            getLeaderBoards()
+            getLeaderBoards();
           }
         });
       }
@@ -217,7 +216,7 @@ const DashBoard = () => {
       setXP(activity.xp);
       setLvl(activity.lvl);
       let lb = new Leaderboards();
-      lb.updateLeaderboards()
+      lb.updateLeaderboards();
     });
   };
 
