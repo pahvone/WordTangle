@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import "./UsernameChange.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, update } from "firebase/database";
-import fb from "../firebase";
 
 const db = getDatabase();
 const auth = getAuth();

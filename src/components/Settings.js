@@ -3,7 +3,7 @@ import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import "./Settings.css";
 import { useNavigate } from "react-router-dom";
-import { child, get, getDatabase, ref, remove } from "firebase/database";
+import { child, getDatabase, ref, remove } from "firebase/database";
 import {
   getAuth,
   deleteUser,
@@ -28,7 +28,6 @@ const Settings = () => {
       user.providerData.forEach(function (profile) {
         if (profile) {
           if (profile.providerId) {
-            const signInProvider = profile.providerId;
             console.log("Sign-in provider: " + profile.providerId);
           }
         }
