@@ -190,7 +190,7 @@ const DashBoard = () => {
       const userId = auth.currentUser.uid;
       if (user) {
         get(ref(db, "/users/" + userId)).then(async (snapshot) => {
-          if(snapshot.val().username) setuserName(snapshot.val().username);
+          if (snapshot.val().username) setuserName(snapshot.val().username);
           setUserLangs(snapshot.val().langs);
           if (!snapshot.val().activity) {
             await tracker.initActivities().then(async (act) => {
