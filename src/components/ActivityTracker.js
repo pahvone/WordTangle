@@ -1,6 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, update } from "firebase/database";
-import { act } from "react-dom/test-utils";
 
 export class Activity {
   latest = [""];
@@ -65,8 +64,7 @@ export default class ActivityTracker {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
-            let activity = snapshot.val().activity;
-            resolve(activity);
+            resolve(snapshot.val().activity);
           });
         }
       });

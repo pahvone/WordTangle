@@ -8,6 +8,7 @@ import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
 import { useNavigate } from "react-router-dom";
+import Leaderboards from "./Leaderboards";
 
 const DashBoard = () => {
   const auth = getAuth();
@@ -20,6 +21,7 @@ const DashBoard = () => {
   const [activityElements, setActivityElements] = useState([]);
   const [dailyTaskElements, setDailyTasks] = useState(null);
   const [latestQuizElements, setLatestQuizElements] = useState(null);
+  const [leaderboardElements, setLeaderBoardElements] = useState(null)
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
@@ -129,43 +131,27 @@ const DashBoard = () => {
     });
   };
 
-  //TODO: LEADERBOARDS
-  const getLeaderBoards = () => {
-    onAuthStateChanged(auth, (user) => {
-      const userId = auth.currentUser.uid;
-      /*
-      if (user) {
-        get(ref(db, "/leaderboards/" + userId)).then((snapshot) => {
-          console.log(snapshot.val())
-        });
-      }*/
-    });
 
-    return (
-      <>
-        {" "}
-        <div className="leaderlist">
-          {" "}
-          1. Kyle
-          <span className="xp">25XP</span>
-        </div>
-        <div className="leaderlist">
-          {" "}
-          2. Eric
-          <span className="xp">15XP</span>
-        </div>
-        <div className="leaderlist">
-          {" "}
-          3. Stan
-          <span className="xp">10XP</span>
-        </div>
-        <div className="leaderlist">
-          {" "}
-          3. Juu
-          <span className="xp">10XP</span>
-        </div>
-      </>
-    );
+  const getLeaderBoards = async () => {
+    const lb = new Leaderboards()
+    let lbElements = []
+
+    await lb.getLeaderboards().then((lb) => {
+      lb.entries.sort((a, b) => b.xpGain - a.xpGain);
+
+      for (var i = 0; i < lb.entries.length; i++) {
+        lbElements.push(
+          <>
+            <div className="leaderlist" key={"lbEntry"+ i}>
+              {" "}
+              {i + 1}. {lb.entries[i].userName} (Lvl {lb.entries[i].lvl})
+              <span className="xp">{lb.entries[i].xpGain} XP</span>
+            </div>
+          </>
+        )
+      }
+      setLeaderBoardElements(lbElements)
+    })
   };
 
   const getLatestActivity = async () => {
@@ -217,6 +203,7 @@ const DashBoard = () => {
             });
             getLatestActivity();
             getLatestQuizActivity();
+            getLeaderBoards()
           }
         });
       }
@@ -229,6 +216,8 @@ const DashBoard = () => {
     await tracker.debugGetXP().then((activity) => {
       setXP(activity.xp);
       setLvl(activity.lvl);
+      let lb = new Leaderboards();
+      lb.updateLeaderboards()
     });
   };
 
@@ -296,7 +285,7 @@ const DashBoard = () => {
                 {"("}XP gained during the last 7 days{")"}
               </span>
               <div className="dashline" />
-              {getLeaderBoards()}
+              {leaderboardElements}
             </div>
           </div>
         </div>
