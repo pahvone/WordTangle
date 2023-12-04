@@ -132,22 +132,27 @@ const DashBoard = () => {
   };
 
   const getLeaderBoards = async () => {
-    const lb = new Leaderboards();
+    const leaderboards = new Leaderboards();
     let lbElements = [];
 
-    await lb.getLeaderboards().then((lb) => {
-      lb.entries.sort((a, b) => b.xpGain - a.xpGain);
+    await leaderboards.getLeaderboard().then(async (lb) => {
+      if(!lb.entries) return
+      lb.entries.sort((a, b) => b.xpGain - a.xpGain)
 
       for (var i = 0; i < lb.entries.length; i++) {
-        lbElements.push(
-          <>
-            <div className="leaderlist" key={"lbEntry" + i}>
-              {" "}
-              {i + 1}. {lb.entries[i].userName} (Lvl {lb.entries[i].lvl})
-              <span className="xp">{lb.entries[i].xpGain} XP</span>
-            </div>
-          </>,
-        );
+        await leaderboards.getUserName(lb.entries[i].id).then((username) => {
+          lbElements.push(
+            <>
+              <div className="leaderlist" key={"lbEntry" + i}>
+                {" "}
+                {i + 1}. {username} (Lvl {lb.entries[i].lvl})
+                <span className="xp"  key={"lbEntry" + i}>{lb.entries[i].xpGain} XP</span>
+              </div>
+            </>,
+          );
+        })
+        
+       
       }
       setLeaderBoardElements(lbElements);
     });
@@ -206,17 +211,15 @@ const DashBoard = () => {
           }
         });
       }
-    });
+    })
   }, []);
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
 
   const debugXP = async () => {
-    await tracker.debugGetXP().then((activity) => {
+    await tracker.debugGetXP(auth.currentUser.uid).then((activity) => {
       setXP(activity.xp);
       setLvl(activity.lvl);
-      let lb = new Leaderboards();
-      lb.updateLeaderboards();
     });
   };
 

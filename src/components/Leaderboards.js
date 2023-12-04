@@ -1,62 +1,119 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, update } from "firebase/database";
+import ActivityTracker from "./ActivityTracker";
 
 export class LeaderboardEntry {
-  userName = "";
-  xpGain = 0;
-  lvl = 0;
-  currentLang = "";
+    id = ""
+    xpGain = 0;
+    lvl = 0;
 
-  constructor(name, gain, lvl, lang) {
-    this.userName = name;
-    this.xpGain = gain;
-    this.lvl = lvl;
-    this.currentLang = lang;
-  }
+    constructor(id, gain, lvl) {
+        this.id = id
+        this.xpGain = gain;
+        this.lvl = lvl;
+    }
 }
 
 export default class Leaderboards {
-  async newLeaderBoards() {
-    const currentDate = new Date();
+    async newLeaderBoards() {
+        const currentDate = new Date();
 
-    this.updateLeaderboards();
-  }
+        this.updateLeaderboards();
+    }
 
-  async updateLeaderboards() {
-    const db = getDatabase();
-    const auth = getAuth();
-    //const userId = auth.currentUser.uid;
+    newEntry(_entries, userId, xp, lvl) {
+        let entries = _entries;
+        let entry = new LeaderboardEntry(userId, xp, lvl)
+        entries.push(entry)
+        return entries
+    }
 
-    let test1 = new LeaderboardEntry("raito", 100, 2);
-    let test2 = new LeaderboardEntry("joku", 50, 3);
-    let test3 = new LeaderboardEntry("blaa", 400, 6);
+    async updateEntry(userId, xpgained, lvl) {
 
-    const entries = [test1, test2, test3];
 
-    return new Promise((resolve) => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          update(ref(db, "/leaderboards/"), {
-            entries: entries,
-          });
-          resolve(entries);
-        }
-      });
-    });
-  }
+        await this.getLeaderboard().then((lb) => {
+            let entries = []
+            let entry = null;
+            console.log(lb.entries)
+            let xp = 0
+            if (!lb.entries) {
+                xp = xpgained;
+                entries = this.newEntry([], userId, xp, lvl)
+            }
+            else {
+                for (var i = 0; i < lb.entries.length; i++) {
+                    if (lb.entries[i].id === userId) {
+                        entry = lb.entries[i]
+                        break;
+                    }
+                }
+                if (entry) xp = entry.xpGain + xpgained;
+                else xp = xpgained
+            }
+            entries = this.newEntry(entries, userId, xp, lvl)
 
-  async getLeaderboards() {
-    const db = getDatabase();
-    const auth = getAuth();
+            console.log(entries)
+            this.updateLeaderboards(entries)
+        })
+    }
 
-    return new Promise((resolve) => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          get(ref(db, "/leaderboards/")).then((snapshot) => {
-            resolve(snapshot.val());
-          });
-        }
-      });
-    });
-  }
+    async updateLeaderboards(entries) {
+        const db = getDatabase();
+        const auth = getAuth();
+        const userId = auth.currentUser.uid;
+
+
+        //let test2 = new LeaderboardEntry("testiID", 50, 3);
+        //let test3 = new LeaderboardEntry("toinentestiID", 400, 6);
+
+
+        //const entries = [test1, test2, test3];
+
+        return new Promise((resolve) => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    update(ref(db, "/leaderboards/"), {
+                        entries: entries,
+                    });
+                    resolve(entries);
+                }
+            });
+        });
+    }
+
+    async getLeaderboard() {
+        const db = getDatabase();
+        const auth = getAuth();
+
+        return new Promise((resolve) => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    get(ref(db, "/leaderboards/")).then((snapshot) => {
+                        resolve(snapshot.val());
+                    });
+                }
+            });
+        });
+    }
+
+    getUserName() {
+        const db = getDatabase();
+        const auth = getAuth();
+        const userId = auth.currentUser.uid;
+
+
+        console.log(userId)
+
+        return new Promise((resolve) => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    get(ref(db, "/users/" + user.uid)).then((snapshot) => {
+                        resolve(snapshot.val().username);
+                    })
+                }
+            })
+        });
+    }
+
+
 }

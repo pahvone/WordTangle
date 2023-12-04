@@ -1,5 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, update } from "firebase/database";
+import Leaderboards from "./Leaderboards";
 
 export class Activity {
   latest = [""];
@@ -71,17 +72,23 @@ export default class ActivityTracker {
     });
   }
 
-  async debugGetXP() {
+  async debugGetXP(uid) {
     let activity = null;
     activity = await this.getActivity();
 
-    activity.xp += 40;
+    let amount = 40;
+
+    activity.xp += amount;
     let tresh = 100; //calc()
 
     if (activity.xp > tresh) {
       activity.lvl++;
       activity.xp = activity.xp - tresh;
     }
+    const lb = new Leaderboards()
+    
+    lb.updateEntry(uid, amount, activity.lvl)
+    
 
     this.updateActivity(activity);
     return activity;
