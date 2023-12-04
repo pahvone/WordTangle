@@ -98,14 +98,16 @@ export default class Leaderboards {
 
     console.log(userId);
 
-    return new Promise((resolve) => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          get(ref(db, "/users/" + user.uid)).then((snapshot) => {
-            resolve(snapshot.val().username);
-          });
-        }
-      });
-    });
-  }
+        return new Promise((resolve) => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    get(ref(db, "/users/" + user.uid)).then((snapshot) => {
+                        if(snapshot.val().username) resolve(snapshot.val().username);
+                    })
+                }
+            })
+        });
+    }
+
+
 }
