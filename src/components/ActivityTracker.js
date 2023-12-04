@@ -85,10 +85,9 @@ export default class ActivityTracker {
       activity.lvl++;
       activity.xp = activity.xp - tresh;
     }
-    const lb = new Leaderboards()
-    
-    lb.updateEntry(uid, amount, activity.lvl)
-    
+    const lb = new Leaderboards();
+
+    lb.updateEntry(uid, amount, activity.lvl);
 
     this.updateActivity(activity);
     return activity;

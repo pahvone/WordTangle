@@ -136,8 +136,8 @@ const DashBoard = () => {
     let lbElements = [];
 
     await leaderboards.getLeaderboard().then(async (lb) => {
-      if(!lb.entries) return
-      lb.entries.sort((a, b) => b.xpGain - a.xpGain)
+      if (!lb.entries) return;
+      lb.entries.sort((a, b) => b.xpGain - a.xpGain);
 
       for (var i = 0; i < lb.entries.length; i++) {
         await leaderboards.getUserName(lb.entries[i].id).then((username) => {
@@ -146,13 +146,13 @@ const DashBoard = () => {
               <div className="leaderlist" key={"lbEntry" + i}>
                 {" "}
                 {i + 1}. {username} (Lvl {lb.entries[i].lvl})
-                <span className="xp"  key={"lbEntry" + i}>{lb.entries[i].xpGain} XP</span>
+                <span className="xp" key={"lbEntry" + i}>
+                  {lb.entries[i].xpGain} XP
+                </span>
               </div>
             </>,
           );
-        })
-        
-       
+        });
       }
       setLeaderBoardElements(lbElements);
     });
@@ -211,7 +211,7 @@ const DashBoard = () => {
           }
         });
       }
-    })
+    });
   }, []);
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
