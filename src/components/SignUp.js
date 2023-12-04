@@ -25,7 +25,6 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userId = userCredential.user.uid;
-        const user = userCredential.user;
 
         update(ref(db, `users/${userId}`), {
           username: username,
@@ -67,11 +66,6 @@ const SignUp = () => {
     const auth = getAuth();
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
         console.log("Registering Succesful!");
         console.log(username);
         redirect("/Login");
@@ -84,6 +78,7 @@ const SignUp = () => {
             alert(
               "You have done too many requests to the server! Please wait a moment.",
             );
+            break;
 
           case "auth/cancelled-popup-request":
             alert(
@@ -99,11 +94,6 @@ const SignUp = () => {
         }
 
         alert(error.code);
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
       });
   }
 
@@ -155,7 +145,6 @@ const SignUp = () => {
       <p style={{ margin: "0px" }} />
       <input
         className="textfield"
-        role="textbox"
         type="password"
         id="password"
         value={password}

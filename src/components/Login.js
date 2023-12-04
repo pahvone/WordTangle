@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 const provider = new GoogleAuthProvider();
 
 const Login = () => {
-  const [username, setusername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const Button = ({ text, onClick }) => {
@@ -36,7 +35,6 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        const user = userCredential.user;
         console.log("login success!");
         console.log(userCredential.user.uid);
         redirect("/Dashboard");
@@ -65,8 +63,6 @@ const Login = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
         console.log("Login Successful!");
@@ -81,6 +77,7 @@ const Login = () => {
             alert(
               "You have done too many requests to the server! Please wait a moment.",
             );
+            break;
 
           case "auth/cancelled-popup-request":
             alert(
@@ -95,10 +92,7 @@ const Login = () => {
             break;
         }
         alert(error.code);
-        // The email of the user's account used.
-        const email = error.customData.email;
         // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
       });
   }

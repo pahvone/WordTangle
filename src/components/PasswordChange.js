@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./UsernameChange.css";
 import { getAuth, updatePassword } from "firebase/auth";
-import fb from "../firebase";
 
 const auth = getAuth();
 

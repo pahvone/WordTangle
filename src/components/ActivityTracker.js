@@ -1,6 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import React, { useState, useEffect } from "react";
-import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
+import { getDatabase, get, ref, update } from "firebase/database";
 
 export class Activity {
   latest = [""];
