@@ -49,11 +49,11 @@ export default class ActivityTracker {
         if (user) {
           update(ref(db, "/users/" + userId), {
             activity: activity,
-          })
-          resolve(activity)
+          });
+          resolve(activity);
         }
-      })
-    })
+      });
+    });
   }
 
   async getActivity() {
@@ -66,11 +66,11 @@ export default class ActivityTracker {
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
             let activity = snapshot.val().activity;
-            resolve(activity)
-          })
+            resolve(activity);
+          });
         }
-      })
-    })
+      });
+    });
   }
 
   async debugGetXP() {
@@ -85,24 +85,24 @@ export default class ActivityTracker {
       activity.xp = activity.xp - tresh;
     }
 
-    this.updateActivity(activity)
-    return activity
+    this.updateActivity(activity);
+    return activity;
   }
 
   async initActivities() {
     let activity = new Activity();
 
-    await this.getActivity().then(_activity => {
-      if(_activity) return _activity
-    })
+    await this.getActivity().then((_activity) => {
+      if (_activity) return _activity;
+    });
     await this.updateActivity(activity).then((_act) => {
       return _act;
-    })
+    });
   }
 
   async getLatestQuizActivity() {
     return new Promise(async (resolve) => {
-      await this.getActivity().then(_activity => {
+      await this.getActivity().then((_activity) => {
         if (!_activity.latestQuizActivity) {
           console.log("no latestq");
           let activity = new Activity();
@@ -117,9 +117,8 @@ export default class ActivityTracker {
         }
         resolve(_activity.latestQuizActivity);
       });
-    })
+    });
   }
-
 
   async generateDailyTasks() {
     let dailyTasks = [{ task: "", completed: false }];
@@ -156,8 +155,8 @@ export default class ActivityTracker {
         }
         await this.updateActivity(_activity).then((act) => {
           resolve(act);
-        })
-      })
+        });
+      });
     });
   }
 
@@ -178,7 +177,7 @@ export default class ActivityTracker {
       this.getActivity().then((activity) => {
         if (!activity.dailyTasks) return;
         resolve(activity.dailyTasks);
-      })
+      });
     });
   }
 
@@ -203,8 +202,8 @@ export default class ActivityTracker {
         activity.lvl++;
         activity.xp = activity.xp - tresh;
       }
-      this.updateActivity(activity)
-    })
+      this.updateActivity(activity);
+    });
   }
 
   async updateLatestActivity(_activity) {
@@ -218,8 +217,8 @@ export default class ActivityTracker {
         if (activity["latest"].length > 3) activity["latest"].shift();
       }
 
-      this.updateActivity(activity)
+      this.updateActivity(activity);
       this.completeDailyTask(_activity);
-    })
+    });
   }
 }
