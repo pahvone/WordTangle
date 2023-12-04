@@ -104,7 +104,6 @@ const DashBoard = () => {
 
   const getLatestQuizActivity = async () => {
     await tracker.getLatestQuizActivity().then((qAct) => {
-      console.log(qAct);
       let latestQuizElements = [];
 
       qAct.reverse();
@@ -170,7 +169,7 @@ const DashBoard = () => {
   };
 
   const getLatestActivity = async () => {
-    await tracker.getLatestActivity().then((act) => {
+    await tracker.getActivity().then((act) => {
       const latest = act.latest;
       if (!latest) return;
       latest.reverse();
@@ -226,8 +225,8 @@ const DashBoard = () => {
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
 
-  const debugXP = () => {
-    tracker.debugGetXP().then((activity) => {
+  const debugXP = async () => {
+    await tracker.debugGetXP().then((activity) => {
       setXP(activity.xp);
       setLvl(activity.lvl);
     });
