@@ -8,6 +8,7 @@ import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
 import { useNavigate } from "react-router-dom";
 import Leaderboards from "./Leaderboards";
+import Shoutbox from "./Shoutbox";
 
 const DashBoard = () => {
   const auth = getAuth();
@@ -285,6 +286,7 @@ const DashBoard = () => {
             </div>
           </div>
         </div>
+        <Shoutbox></Shoutbox>
       </div>
       <Footer />
     </div>

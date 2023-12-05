@@ -66,30 +66,21 @@ const Shoutbox = () => {
   };
 
   return (
-    <div>
-      <NavBar />
-      <div className="pagecontainer">
-        <img
-          className="app-logo-nonstacked"
-          src={nonstackedlogo}
-          alt="Word Tangle Logo"
-        />
-        <div classname="responsive-container">
-          {shouts.map((shout) => (
-            <li key={shout.timestamp}>
-              {" "}
-              {shout.nickname} ({shout.convertedtimestamp}) : {shout.message}
-            </li>
-          ))}
-          <p />
-          <input type="text" value={newShout} onChange={handleInputChange} />
-          <br></br>
-          <Button onClick={handleAddShout} text="Add Shout"></Button>
-          <p />
-        </div>
+    <ul id="shoutbox">
+      <div classname="shoutbox">
+        {shouts.map((shout) => (
+          <li key={shout.timestamp}>
+            {" "}
+            {shout.nickname} ({shout.convertedtimestamp}) : {shout.message}
+          </li>
+        ))}
+        <p />
+        <input type="text" value={newShout} onChange={handleInputChange} />
+        <br></br>
+        <Button onClick={handleAddShout} text="Add Shout"></Button>
+        <p />
       </div>
-      <Footer />
-    </div>
+    </ul>
   );
 };
 
