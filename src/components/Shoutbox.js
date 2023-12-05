@@ -2,22 +2,24 @@ import React, { useState, useEffect } from "react";
 import fb from "../firebase";
 import NavBar from "./NavBar";
 import "./Settings.css";
-import {
-  child,
-  get,
-  getDatabase,
-  ref,
-  remove,
-  serverTimestamp,
-} from "firebase/database";
+import { getDatabase, serverTimestamp } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
 import { ServerTimestamp } from "firebase/database";
+import "./Shoutbox.css";
 
 const auth = getAuth();
 const db = getDatabase(fb);
 const current_time = serverTimestamp();
+
+const Button = ({ text, onClick }) => {
+  return (
+    <button className="styled-button" onClick={onClick}>
+      {text}
+    </button>
+  );
+};
 
 const Shoutbox = () => {
   const [shouts, setShouts] = useState([]);
@@ -56,11 +58,15 @@ const Shoutbox = () => {
       <div className="pagecontainer">
         <div classname="responsive-container">
           {shouts.map((shout) => (
-            <li key={shout.timestamp}>{shout.message}</li>
+            <li key={shout.timestamp}>
+              {" "}
+              {shout.user} : {shout.message}
+            </li>
           ))}
           <p />
           <input type="text" value={newShout} onChange={handleInputChange} />
-          <button onClick={handleAddShout}>Add Shout</button>
+          <br></br>
+          <Button onClick={handleAddShout} text="Add Shout"></Button>
           <p />
         </div>
       </div>
