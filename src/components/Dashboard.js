@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import "./Settings.css";
-import { child, get, getDatabase, ref, remove } from "firebase/database";
+import { get, getDatabase, ref } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
@@ -12,7 +11,6 @@ import Leaderboards from "./Leaderboards";
 
 const DashBoard = () => {
   const auth = getAuth();
-  const dbRef = ref(getDatabase(fb)); //NEEDED?
   const db = getDatabase();
 
   const [userName, setuserName] = useState(null);
