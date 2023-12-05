@@ -284,11 +284,37 @@
 
 .lessonstitle {
   font-family: "Fira Mono", monospace;
+  font-variant-caps: all-small-caps;
+  color: #000;
+  font-size: 50px;
+  font-weight: bolder;
+  color: var(--textcolor);
+}
+
+.dictionarytitle {
+  font-family: "Fira Mono", monospace;
   color: #000;
   font-size: 30px;
   font-weight: bolder;
   color: var(--textcolor);
 }
+
+.learningbutton {
+  font-family: "Fira Mono", monospace;
+  font-variant-caps: all-small-caps;
+  color: #000;
+  font-size: 30px;
+  color: var(--textcolor);
+}
+
+.learningbutton-active {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 30px;
+  font-weight: bolder;
+  color: var(--textcolor);
+}
+
 .difficulty-title {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;

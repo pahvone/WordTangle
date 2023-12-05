@@ -9,9 +9,12 @@ import Footer from "./Footter";
 import { LangPath, UserLangs as UserLangs } from "./LangPath";
 
 const LessonPath = (_language) => {
+  
   const [langPathSelected, setLangPathSelected] = useState(null);
   const [langPath, setLangPath] = useState(null);
   const [lessonsLoaded, setLessonsLoaded] = useState(false);
+
+  const [learnTab, setLearnTab] = useState("lessons")
 
   const [langSelection, setLangSelection] = useState(false);
 
@@ -330,19 +333,66 @@ const LessonPath = (_language) => {
   const lessonsTitle = () => {
     if (loaded) {
       return (
-        <div className="lessonstitle">
-          LESSONS &gt;&gt;
-          <span className="language-title">
+        <>
+          <span className="lessonstitle">
             {" "}
             {langPathSelected === false
               ? "No language chosen"
               : langPath.langDesc}
           </span>
           {langPathSelected === false ? "" : langDropDown()}
-        </div>
+    </>
       );
     }
   };
+
+  const getLearningTab = () => {
+    if(learnTab === "lessons"){
+      return(<div className="lessonselements">
+      {langPathSelected ? lessonContainers() : languageSelection()}
+      </div>)
+    }
+    if (learnTab === "dictionary") {
+      return (
+        <div className="dashboardelements">
+          <div className="boxcontainer">
+            <span className="dictionarytitle">Search the dictionary for definitions</span>
+            <div className="greycontainer">
+              <form className="form-group">
+                <label>
+                  <input type="text" name="name" />
+                </label>
+                <input type="submit" value="Submit" />
+              </form>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+
+
+  const learningButtons = () => {
+    return (
+      <div className="boxcontainer">
+      <button className={`btn learningbutton${
+          learnTab==="lessons"
+            ? "-active"
+            : ""
+        }`} onClick={() => setLearnTab("lessons")}>
+        LESSONS
+      </button>
+
+      <button className={`btn learningbutton${
+          learnTab==="dictionary"
+            ? "-active"
+            : ""
+        }`} onClick={() => setLearnTab("dictionary")}>
+        DICTIONARY
+      </button>
+      </div>
+    )
+  }
 
   const languageSelection = () => {
     if (!langSelection) return;
@@ -380,9 +430,10 @@ const LessonPath = (_language) => {
         <div className="dashboardelements">
           <div className="boxcontainer">{lessonsTitle()}</div>
         </div>
-        <div className="lessonselements">
-          {langPathSelected ? lessonContainers() : languageSelection()}
+        <div className="dashboardelements">
+          <div>{learningButtons()}</div>
         </div>
+        {getLearningTab()}
       </div>
       <Footer />
     </div>
