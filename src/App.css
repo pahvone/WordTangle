@@ -367,6 +367,28 @@
   cursor: pointer;
   border-radius: 0;
 }
+
+.dict-search-input {
+  width: 500px;
+}
+.dict-search-button {
+  background-color: #50ffc0;
+  color: #000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  &:hover {
+    background-color: #33a87bff;
+  }
+}
+
 .flag-dropdown-container {
   position: relative;
   display: inline-block;
