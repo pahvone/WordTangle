@@ -35,21 +35,16 @@ const LearnPage = (_language) => {
   };
 
   const initLangPath = (data) => {
-    if(loaded) return
+    if (loaded) return;
     //console.log(data)
     setUserLangs(data.langs);
     setLangPath(new LangPath(data.currentLang));
     setCurrentLang(data.currentLang);
     setLangPathSelected(true);
-    setLoaded(true)
+    setLoaded(true);
   };
 
-  if (
-    langPathSelected &&
-    userLangs &&
-    userLangs[currentLang]
-  ) {
-  
+  if (langPathSelected && userLangs && userLangs[currentLang]) {
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
       if (user) {
@@ -265,10 +260,24 @@ const LearnPage = (_language) => {
   };
 
   const langModule = () => {
-    return (<>
-    {langPathSelected ? (learnTab === "lessons" ? <Lessons currentLang={currentLang} userLangs={userLangs} langPath={langPath} /> : <DictionarySearch currentLang={currentLang} />) : languageSelection()}
-    </>);
-  }
+    return (
+      <>
+        {langPathSelected ? (
+          learnTab === "lessons" ? (
+            <Lessons
+              currentLang={currentLang}
+              userLangs={userLangs}
+              langPath={langPath}
+            />
+          ) : (
+            <DictionarySearch currentLang={currentLang} />
+          )
+        ) : (
+          languageSelection()
+        )}
+      </>
+    );
+  };
 
   if (
     state &&
@@ -278,8 +287,7 @@ const LearnPage = (_language) => {
   ) {
     setLang(state.language);
     state.language = null;
-  }
-  else if(!state || !currentLang){
+  } else if (!state || !currentLang) {
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
       if (user) {
@@ -304,10 +312,9 @@ const LearnPage = (_language) => {
         </div>
         <div className="dashboardelements">
           <div>{langPathSelected ? learningButtons() : ""}</div>
-          
         </div>
         <div className="dashboardelements">
-        {<div>{loaded ? langModule() : ""}</div>}
+          {<div>{loaded ? langModule() : ""}</div>}
         </div>
       </div>
       <Footer />
