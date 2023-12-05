@@ -20,9 +20,9 @@ const LessonPath = (_language) => {
 
   const [currentLang, setCurrentLang] = useState(null);
   const [userLangs, setUserLangs] = useState(null);
-  const [translationResult, setTranslationResult] = useState(null)
+  const [translationResult, setTranslationResult] = useState(null);
 
-  const dictInputRef = useRef(null)
+  const dictInputRef = useRef(null);
   const [lessonButtons, setLessonButtons] = useState({
     beginner: [],
     intermediate: [],
@@ -41,7 +41,7 @@ const LessonPath = (_language) => {
   const flagsAPI = "https://flagsapi.com/";
   const flagStyle = "/flat/64.png";
 
-  const dictionary = new Dictionary()
+  const dictionary = new Dictionary();
 
   const LessonButton = ({ className, onClick, text, disabled }) => (
     <button className={className} onClick={onClick} disabled={disabled}>
@@ -351,13 +351,17 @@ const LessonPath = (_language) => {
   };
 
   const handleDictSubmit = async (e) => {
-    e.preventDefault()
-    console.log(dictInputRef.current.value)
-    const sourceLang = 'EN' //default
-    const targetLang = currentLang //test
-    const result = await dictionary.translateText(dictInputRef.current.value, sourceLang, currentLang)
-    if(result) setTranslationResult(result)
-  }
+    e.preventDefault();
+    console.log(dictInputRef.current.value);
+    const sourceLang = "EN"; //default
+    const targetLang = currentLang; //test
+    const result = await dictionary.translateText(
+      dictInputRef.current.value,
+      sourceLang,
+      currentLang,
+    );
+    if (result) setTranslationResult(result);
+  };
 
   const getLearningTab = () => {
     if (learnTab === "lessons") {
@@ -375,12 +379,24 @@ const LessonPath = (_language) => {
               Search the dictionary for definitions
             </span>
             <div className="greycontainer">
-              <form className="form-group" onSubmit={(e) => handleDictSubmit(e)}>
+              <form
+                className="form-group"
+                onSubmit={(e) => handleDictSubmit(e)}
+              >
                 <label>
-                  <input class="form-control dict-search-input" type="text" name="name" ref={dictInputRef} />
+                  <input
+                    class="form-control dict-search-input"
+                    type="text"
+                    name="name"
+                    ref={dictInputRef}
+                  />
                 </label>
 
-                <input type="submit" value="Search" class="btn dict-search-button"/>
+                <input
+                  type="submit"
+                  value="Search"
+                  class="btn dict-search-button"
+                />
               </form>
 
               <div>Results:</div>
