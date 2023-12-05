@@ -67,7 +67,6 @@ const Shoutbox = () => {
 
   return (
     <div>
-      <NavBar />
       <div className="pagecontainer">
         <img
           className="app-logo-nonstacked"
@@ -88,7 +87,6 @@ const Shoutbox = () => {
           <p />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
