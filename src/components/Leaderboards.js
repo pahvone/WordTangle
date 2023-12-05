@@ -1,6 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, update } from "firebase/database";
-import ActivityTracker from "./ActivityTracker";
 
 export class LeaderboardEntry {
   id = "";
@@ -15,68 +14,68 @@ export class LeaderboardEntry {
 }
 
 export default class Leaderboards {
-  async newLeaderBoards() {
-    const currentDate = new Date();
 
-    this.updateLeaderboards();
+  // Generates new leaderboard every monday.
+  // Use cloud functions instead
+  /*
+  async getGMT() {
+    try {
+      const response = await fetch('https://worldtimeapi.org/api/timezone/Etc/GMT');
+      const data = await response.json();
+      return new Date(data.utc_datetime);
+    } catch (error) {
+      console.error('Error fetching current time:', error);
+      return null;
+    }
   }
 
+  async checkGendate() {
+    const lb = await this.getLeaderboard();
+    const gmtDate = await this.getGMT();
+    
+    if(lb && gmtDate){
+      const genDate = {
+        day: gmtDate.getDay(),
+        date: gmtDate.getDate()
+      }
+      if(lb.genDate === null || lb.genDate === "" || (gmtDate.day === 1 && gmtDate.date !== lb.genDate.date)) {
+        return genDate
+      }
+      else return lb.genDate
+    }
+  }
+  */
+
   newEntry(_entries, userId, xp, lvl) {
-    let entries = _entries;
-    let entry = new LeaderboardEntry(userId, xp, lvl);
-    entries.push(entry);
-    return entries;
+    const entry = new LeaderboardEntry(userId, xp, lvl);
+    return [..._entries, entry];
   }
 
   async updateEntry(userId, xpgained, lvl) {
-    await this.getLeaderboard().then((lb) => {
-      let entries = [];
-      let entry = null;
-      let xp = 0;
-      let updatedEntries = null;
+    const lb = await this.getLeaderboard();
+    const entries = lb.entries || [];
+    const existingEntry = entries.find(entry => entry.id === userId);
 
-      if (!lb.entries) {
-        // console.log("No entries at all")
-        xp = xpgained;
-        updatedEntries = this.newEntry(entries, userId, xp, lvl);
-      } else {
-        entries = lb.entries;
-        for (var i = 0; i < entries.length; i++) {
-          if (entries[i].id === userId) {
-            entry = lb.entries[i];
-            break;
-          }
-        }
-        if (entry) {
-          xp = entry.xpGain + xpgained;
-          updatedEntries = entries.map((entry) =>
-            entry.id === userId ? { ...entry, xpGain: xp, lvl: lvl } : entry,
-          );
-        } else {
-          xp = xpgained;
-          updatedEntries = this.newEntry(entries, userId, xp, lvl);
-        }
-      }
-      this.updateLeaderboards(updatedEntries);
-    });
+    let xp = existingEntry ? existingEntry.xpGain + xpgained : xpgained;
+    const updatedEntries = entries.map((entry) => (
+      entry.id === userId ? { ...entry, xpGain: xp, lvl: lvl } : entry
+    ));
+
+    if (!existingEntry) {
+      updatedEntries.push(...this.newEntry(entries, userId, xp, lvl));
+    }
+
+    this.updateLeaderboards(updatedEntries);
   }
 
   async updateLeaderboards(entries) {
     const db = getDatabase();
     const auth = getAuth();
-    const userId = auth.currentUser.uid;
-
-    //let test2 = new LeaderboardEntry("testiID", 50, 3);
-    //let test3 = new LeaderboardEntry("toinentestiID", 400, 6);
-
-    //const entries = [test1, test2, test3];
 
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          update(ref(db, "/leaderboards/"), {
-            entries: entries,
-          });
+          update(ref(db, "/leaderboards/"), { entries });
           resolve(entries);
         }
       });

@@ -127,7 +127,9 @@ export default class ActivityTracker {
   async generateDailyTasks() {
     let dailyTasks = [{ task: "", completed: false }];
 
-    const currentDate = new Date();
+    const response = await fetch('https://worldtimeapi.org/api/ip');
+    const data = await response.json();
+    const currentDate = new Date(data.utc_datetime);
     const timestamp = currentDate.toLocaleDateString("en-US", {
       day: "numeric",
       month: "numeric",
@@ -142,7 +144,6 @@ export default class ActivityTracker {
           newDailies = true;
         } else {
           let lastGen = _activity.dailyGenDate;
-
           if (timestamp !== lastGen) {
             console.log("New date, generate new dailies");
             newDailies = true;
