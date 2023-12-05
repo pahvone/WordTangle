@@ -42,6 +42,7 @@ const LessonPath = (_language) => {
   const flagStyle = "/flat/64.png";
 
   const dictionary = new Dictionary();
+  const dictCharLimit = 15;
 
   const LessonButton = ({ className, onClick, text, disabled }) => (
     <button className={className} onClick={onClick} disabled={disabled}>
@@ -358,7 +359,7 @@ const LessonPath = (_language) => {
     const result = await dictionary.translateText(
       dictInputRef.current.value,
       sourceLang,
-      currentLang,
+      targetLang,
     );
     if (result) setTranslationResult(result);
   };
@@ -389,6 +390,7 @@ const LessonPath = (_language) => {
                     type="text"
                     name="name"
                     ref={dictInputRef}
+                    maxLength={dictCharLimit}
                   />
                 </label>
 
