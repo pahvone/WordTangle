@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import fb from "../firebase";
 import NavBar from "./NavBar";
 import "./Settings.css";
-import { getDatabase, serverTimestamp } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import { getDatabase, serverTimestamp, ref, get } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
-import { ServerTimestamp } from "firebase/database";
 import "./Shoutbox.css";
+import moment from "moment";
 
 const auth = getAuth();
-const db = getDatabase(fb);
 const current_time = serverTimestamp();
 
 const Button = ({ text, onClick }) => {
@@ -41,26 +40,45 @@ const Shoutbox = () => {
   };
 
   const handleAddShout = () => {
-    const auth = getAuth();
-    const shoutsRef = fb.database().ref("shouts/");
-    const newShoutRef = shoutsRef.push();
-    newShoutRef.set({
-      user: auth.currentUser.uid,
-      message: newShout,
-      timestamp: current_time,
+    const db = getDatabase();
+    return new Promise((resolve) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          get(ref(db, "/users/" + auth.currentUser.uid)).then((snapshot) => {
+            if (snapshot.val().username) resolve(snapshot.val().username);
+            const username = snapshot.val().username;
+            const convertedtimestamp = current_time.toLocaleString();
+            const auth = getAuth();
+            const shoutsRef = fb.database().ref("shouts/");
+            const newShoutRef = shoutsRef.push();
+            newShoutRef.set({
+              user: auth.currentUser.uid,
+              message: newShout,
+              timestamp: current_time,
+              nickname: username,
+              convertedtimestamp: moment().format("MMMM Do YYYY, H:mm:ss"),
+            });
+            setNewShout("");
+          });
+        }
+      });
     });
-    setNewShout("");
   };
 
   return (
     <div>
       <NavBar />
       <div className="pagecontainer">
+        <img
+          className="app-logo-nonstacked"
+          src={nonstackedlogo}
+          alt="Word Tangle Logo"
+        />
         <div classname="responsive-container">
           {shouts.map((shout) => (
             <li key={shout.timestamp}>
               {" "}
-              {shout.user} : {shout.message}
+              {shout.nickname} ({shout.convertedtimestamp}) : {shout.message}
             </li>
           ))}
           <p />
