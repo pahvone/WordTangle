@@ -14,7 +14,6 @@ export class LeaderboardEntry {
 }
 
 export default class Leaderboards {
-
   // Generates new leaderboard every monday.
   // Use cloud functions instead
   /*
@@ -54,12 +53,12 @@ export default class Leaderboards {
   async updateEntry(userId, xpgained, lvl) {
     const lb = await this.getLeaderboard();
     const entries = lb.entries || [];
-    const existingEntry = entries.find(entry => entry.id === userId);
+    const existingEntry = entries.find((entry) => entry.id === userId);
 
     let xp = existingEntry ? existingEntry.xpGain + xpgained : xpgained;
-    const updatedEntries = entries.map((entry) => (
-      entry.id === userId ? { ...entry, xpGain: xp, lvl: lvl } : entry
-    ));
+    const updatedEntries = entries.map((entry) =>
+      entry.id === userId ? { ...entry, xpGain: xp, lvl: lvl } : entry,
+    );
 
     if (!existingEntry) {
       updatedEntries.push(...this.newEntry(entries, userId, xp, lvl));

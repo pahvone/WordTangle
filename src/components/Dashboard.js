@@ -142,13 +142,11 @@ const DashBoard = () => {
       for (var i = 0; i < lb.entries.length; i++) {
         await leaderboards.getUserName(lb.entries[i].id).then((username) => {
           lbElements.push(
-              <div className="leaderlist" key={"lbEntry" + i}>
-                {" "}
-                {i + 1}. {username} (Lvl {lb.entries[i].lvl})
-                <span className="xp">
-                  {lb.entries[i].xpGain} XP
-                </span>
-              </div>
+            <div className="leaderlist" key={"lbEntry" + i}>
+              {" "}
+              {i + 1}. {username} (Lvl {lb.entries[i].lvl})
+              <span className="xp">{lb.entries[i].xpGain} XP</span>
+            </div>,
           );
         });
       }

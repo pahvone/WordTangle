@@ -127,7 +127,7 @@ export default class ActivityTracker {
   async generateDailyTasks() {
     let dailyTasks = [{ task: "", completed: false }];
 
-    const response = await fetch('https://worldtimeapi.org/api/ip');
+    const response = await fetch("https://worldtimeapi.org/api/ip");
     const data = await response.json();
     const currentDate = new Date(data.utc_datetime);
     const timestamp = currentDate.toLocaleDateString("en-US", {
