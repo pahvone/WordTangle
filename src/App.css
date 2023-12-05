@@ -299,6 +299,13 @@
   color: var(--textcolor);
 }
 
+.dictionarysubtitle {
+  font-family: "Fira Mono", monospace;
+  color: #000000;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
 .learningbutton {
   font-family: "Fira Mono", monospace;
   font-variant-caps: all-small-caps;
@@ -369,7 +376,7 @@
 }
 
 .dict-search-input {
-  width: 500px;
+  width: 300px;
 }
 .dict-search-button {
   background-color: #50ffc0;

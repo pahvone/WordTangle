@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 const Lessons = (props) => {
