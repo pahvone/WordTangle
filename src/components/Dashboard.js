@@ -92,7 +92,7 @@ const DashBoard = () => {
           key={"lang" + langObj}
           className="btn"
           onClick={() =>
-            redirect("/LessonPath", { state: { language: langObj } })
+            redirect("/LearnPage", { state: { language: langObj } })
           }
         >
           <img src={flagsAPI + langObj + flagStyle} />
