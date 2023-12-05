@@ -1,6 +1,6 @@
-li{
-    color: var(--textcolor);
-    list-style-type: none;
-    margin-left: 10px;
-    font-family: "Fira Mono";
+li {
+  color: var(--textcolor);
+  list-style-type: none;
+  margin-left: 10px;
+  font-family: "Fira Mono";
 }
