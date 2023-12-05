@@ -285,9 +285,6 @@ const DashBoard = () => {
               {leaderboardElements}
             </div>
           </div>
-          <div className="boxcontainer">
-            <Shoutbox></Shoutbox>
-          </div>
         </div>
         <Shoutbox></Shoutbox>
       </div>
