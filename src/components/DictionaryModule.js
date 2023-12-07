@@ -38,8 +38,8 @@ const DictionarySearch = (props) => {
         }
       });
 
-      const tracker = new ActivityTracker()
-      tracker.updateLatestActivity("dictionary")
+    const tracker = new ActivityTracker();
+    tracker.updateLatestActivity("dictionary");
 
     /*
                 // DUMMY DATA
