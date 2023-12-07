@@ -260,7 +260,6 @@ const LearnPage = (_language) => {
   };
 
   const langModule = () => {
-
     return (
       <>
         {langPathSelected ? (

@@ -3,8 +3,8 @@ import Dictionary from "./Dictionary";
 import { Spinner } from "react-bootstrap";
 
 const DictionarySearch = (props) => {
-    const [sourceLang, setSourceLang] = useState("EN")
-    const [targetLang, setTargetLang] = useState(props.currentLang)
+  const [sourceLang, setSourceLang] = useState("EN");
+  const [targetLang, setTargetLang] = useState(props.currentLang);
 
   const [searchedPhrase, setSearchedPhrase] = useState(null);
   const [translationResults, setTranslationResults] = useState(null);
@@ -14,30 +14,29 @@ const DictionarySearch = (props) => {
   const dictionary = new Dictionary();
   const dictCharLimit = 15;
 
-    const flagsAPI = "https://flagsapi.com/";
-    const flagStyle = "/flat/16.png";
-    let sourceLangFlag = ""
-    let targetLangFlag = ""
+  const flagsAPI = "https://flagsapi.com/";
+  const flagStyle = "/flat/16.png";
+  let sourceLangFlag = "";
+  let targetLangFlag = "";
 
-    const handleDictSubmit = async (e) => {
-        e.preventDefault();
-        setSearchedPhrase(dictInputRef.current.value)
-        setResultsElement(<Spinner animation="border" role="status" />)
+  const handleDictSubmit = async (e) => {
+    e.preventDefault();
+    setSearchedPhrase(dictInputRef.current.value);
+    setResultsElement(<Spinner animation="border" role="status" />);
 
-
-        await dictionary.translateText(
-            dictInputRef.current.value,
-            sourceLang,
-            targetLang,
-        ).then((response) => {
-            if (response === null) setResultsElement("An error occurred")
-            else if (response.results.length === 0) setResultsElement("Results could not be found. Check the spelling or try again later")
-            else {
-                setTranslationResults(response);
-            }
-
-        });
-        /*
+    await dictionary
+      .translateText(dictInputRef.current.value, sourceLang, targetLang)
+      .then((response) => {
+        if (response === null) setResultsElement("An error occurred");
+        else if (response.results.length === 0)
+          setResultsElement(
+            "Results could not be found. Check the spelling or try again later",
+          );
+        else {
+          setTranslationResults(response);
+        }
+      });
+    /*
                 // DUMMY DATA
                 let dummyResults = {
                     results: [
@@ -50,13 +49,12 @@ const DictionarySearch = (props) => {
                   };
                     
                 setTranslationResults(dummyResults)*/
-    };
+  };
 
-    useEffect(() => {
-        setSourceLang("EN")
-        setTargetLang(props.currentLang)
-    }, [props.currentLang]);
-
+  useEffect(() => {
+    setSourceLang("EN");
+    setTargetLang(props.currentLang);
+  }, [props.currentLang]);
 
   const searchForm = () => {
     return (
@@ -116,30 +114,48 @@ const DictionarySearch = (props) => {
     let altResultList = translationResults.results.slice(1);
     let altResultElements = [];
 
-        for (var i = 0; i < 5; i++) {
-            const cells = [];
-            for (var j = 0; j < 3; j++) {
-                const index = i * 3 + j;
-                if (index < altResultList.length) {
-                    cells.push(<td key={"cell" + index}>{altResultList[index].word}</td>);
-                    //cells.push(<td key={"cell" + index}>{altResultList[index]}</td>); //DUMMY DATA
-                } else {
-                    cells.push(<td key={"cell" + index}></td>);
-                }
-            }
-            altResultElements.push(<tr key={"result" + i}>{cells}</tr>);
+    for (var i = 0; i < 5; i++) {
+      const cells = [];
+      for (var j = 0; j < 3; j++) {
+        const index = i * 3 + j;
+        if (index < altResultList.length) {
+          cells.push(<td key={"cell" + index}>{altResultList[index].word}</td>);
+          //cells.push(<td key={"cell" + index}>{altResultList[index]}</td>); //DUMMY DATA
+        } else {
+          cells.push(<td key={"cell" + index}></td>);
         }
-
-        element.push(<div className="dictionarysubtitle" key="sourcelang"><img src={flagsAPI + sourceLangFlag + flagStyle} /> {searchedPhrase}</div>)
-        element.push(<div className="dictionarysubtitle" key="targetlang"><img src={flagsAPI + targetLangFlag + flagStyle} /> {topResult}</div>)
-        element.push(<div className="dashline" key="dash" />)
-        element.push(<div className="dictionarysubtitle" key="alttranslations"> Alternative translations: </div>)
-        element.push(<div key="resulttable"> <table width="100%"><tbody>{altResultElements}</tbody></table></div>)
-
-        setResultsElement(element)
+      }
+      altResultElements.push(<tr key={"result" + i}>{cells}</tr>);
     }
 
+    element.push(
+      <div className="dictionarysubtitle" key="sourcelang">
+        <img src={flagsAPI + sourceLangFlag + flagStyle} /> {searchedPhrase}
+      </div>,
+    );
+    element.push(
+      <div className="dictionarysubtitle" key="targetlang">
+        <img src={flagsAPI + targetLangFlag + flagStyle} /> {topResult}
+      </div>,
+    );
+    element.push(<div className="dashline" key="dash" />);
+    element.push(
+      <div className="dictionarysubtitle" key="alttranslations">
+        {" "}
+        Alternative translations:{" "}
+      </div>,
+    );
+    element.push(
+      <div key="resulttable">
+        {" "}
+        <table width="100%">
+          <tbody>{altResultElements}</tbody>
+        </table>
+      </div>,
+    );
 
+    setResultsElement(element);
+  };
 
   if (translationResults !== null) {
     generateResultsElements();
