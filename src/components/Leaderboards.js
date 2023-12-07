@@ -45,6 +45,24 @@ export default class Leaderboards {
   }
   */
 
+  fixStruct(entries) {
+    let newArr = []
+    for (var i = 0; i < 100; i++) {
+      if (entries[i] === undefined) console.log(i + " is null")
+      else newArr.push(entries[i])
+    }
+
+    const db = getDatabase();
+    const auth = getAuth();
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(entries)
+        update(ref(db, "/leaderboards/"), { entries: newArr });
+      }
+    });
+  }
+
   newEntry(_entries, userId, xp, lvl) {
     const entry = new LeaderboardEntry(userId, xp, lvl);
     return [..._entries, entry];
