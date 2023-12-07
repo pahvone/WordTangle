@@ -13,6 +13,7 @@ import {
 } from "firebase/auth";
 import fb from "../firebase";
 import Footer from "./Footter.js";
+import Leaderboards from "./Leaderboards.js";
 
 const Settings = () => {
   const dbRef = ref(getDatabase(fb));
@@ -90,7 +91,10 @@ const Settings = () => {
             remove(child(dbRef, "/users/" + userId));
             redirect("/");
             console.log("User Succesfully Deleted!");
+            const leaderboard = new Leaderboards()
+            leaderboard.deleteEntry(userId)
           });
+          
         })
         .catch((error) => {
           switch (error.code) {
@@ -105,7 +109,13 @@ const Settings = () => {
               );
           }
           // alert(error.code); uncomment for catching un-documented errors.
+        }).finally(() => {
+          //here because the
+      const leaderboard = new Leaderboards()
+      leaderboard.deleteEntry(userId)
         });
+
+      
     }
   }
 

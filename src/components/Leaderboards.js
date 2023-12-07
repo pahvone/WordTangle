@@ -83,16 +83,15 @@ export default class Leaderboards {
   }
 
   async deleteEntry(userId){
-    let entries = this.getLeaderboard()
+    let data = await this.getLeaderboard()
 
-    for(var i = 0; i < entries.length; i++){
-      if(entries[i].id === userId) {
-        entries.splice(i, 1)
+    for(var i = 0; i < data.entries.length; i++){
+      if(data.entries[i].id === userId) {
+        data.entries.splice(i, 1)
         break;
       }
     }
-
-    this.updateLeaderboards(entries)
+    this.updateLeaderboards(data.entries)
   }
 
   async updateLeaderboards(entries) {
