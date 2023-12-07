@@ -45,9 +45,23 @@ export default class Leaderboards {
   }
   */
 
-  newEntry(_entries, userId, xp, lvl) {
-    const entry = new LeaderboardEntry(userId, xp, lvl);
-    return [..._entries, entry];
+  fixStruct(entries) {
+    const db = getDatabase();
+    const auth = getAuth();
+
+    let newArr = [];
+
+    //DON'T DO IT LIKE THIS
+    for (var i = 0; i < 100; i++) {
+      if (entries[i] !== undefined) newArr.push(entries[i]);
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(entries);
+        update(ref(db, "/leaderboards/"), { entries: newArr });
+      }
+    });
   }
 
   async updateEntry(userId, xpgained, lvl) {
@@ -61,10 +75,22 @@ export default class Leaderboards {
     );
 
     if (!existingEntry) {
-      updatedEntries.push(...this.newEntry(entries, userId, xp, lvl));
+      updatedEntries.push(new LeaderboardEntry(userId, xp, lvl));
     }
 
     this.updateLeaderboards(updatedEntries);
+  }
+
+  async deleteEntry(userId) {
+    let data = await this.getLeaderboard();
+
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].id === userId) {
+        data.entries.splice(i, 1);
+        break;
+      }
+    }
+    this.updateLeaderboards(data.entries);
   }
 
   async updateLeaderboards(entries) {
