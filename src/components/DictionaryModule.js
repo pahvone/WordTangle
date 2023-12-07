@@ -1,18 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import Dictionary from "./Dictionary";
-import { Spinner } from 'react-bootstrap';
+import { Spinner } from "react-bootstrap";
 
 const DictionarySearch = (props) => {
     const [sourceLang, setSourceLang] = useState("EN")
     const [targetLang, setTargetLang] = useState(props.currentLang)
 
-    const [searchedPhrase, setSearchedPhrase] = useState(null)
-    const [translationResults, setTranslationResults] = useState(null);
-    const [resultsElement, setResultsElement] = useState(null)
+  const [searchedPhrase, setSearchedPhrase] = useState(null);
+  const [translationResults, setTranslationResults] = useState(null);
+  const [resultsElement, setResultsElement] = useState(null);
 
-    const dictInputRef = useRef(null);
-    const dictionary = new Dictionary();
-    const dictCharLimit = 15;
+  const dictInputRef = useRef(null);
+  const dictionary = new Dictionary();
+  const dictCharLimit = 15;
 
     const flagsAPI = "https://flagsapi.com/";
     const flagStyle = "/flat/16.png";
@@ -58,63 +58,63 @@ const DictionarySearch = (props) => {
     }, [props.currentLang]);
 
 
-    const searchForm = () => {
-        return (
-            <form className="form-group" onSubmit={(e) => handleDictSubmit(e)}>
-                <label>
-                    <input
-                        className="form-control dict-search-input"
-                        type="text"
-                        name="name"
-                        ref={dictInputRef}
-                        maxLength={dictCharLimit}
-                    />
-                </label>
+  const searchForm = () => {
+    return (
+      <form className="form-group" onSubmit={(e) => handleDictSubmit(e)}>
+        <label>
+          <input
+            className="form-control dict-search-input"
+            type="text"
+            name="name"
+            ref={dictInputRef}
+            maxLength={dictCharLimit}
+          />
+        </label>
 
-                <input
-                    type="submit"
-                    value="Search"
-                    className="btn dict-search-button"
-                />
-            </form>
-        );
-    };
+        <input
+          type="submit"
+          value="Search"
+          className="btn dict-search-button"
+        />
+      </form>
+    );
+  };
 
-    const switchLang = () => {
-        setSourceLang(targetLang);
-        setTargetLang(sourceLang)
-        setSearchedPhrase(null)
-        setTranslationResults(null)
-    }
+  const switchLang = () => {
+    setSourceLang(targetLang);
+    setTargetLang(sourceLang);
+    setSearchedPhrase(null);
+    setTranslationResults(null);
+  };
 
-    const getFlags = () => {
-        sourceLangFlag = sourceLang
-        targetLangFlag = targetLang
-        if (sourceLang === "EN") sourceLangFlag = "US"
-        if (targetLang === "EN") targetLangFlag = "US"
-    }
+  const getFlags = () => {
+    sourceLangFlag = sourceLang;
+    targetLangFlag = targetLang;
+    if (sourceLang === "EN") sourceLangFlag = "US";
+    if (targetLang === "EN") targetLangFlag = "US";
+  };
 
-    const sourceTargetLang = () => {
-        getFlags()
+  const sourceTargetLang = () => {
+    getFlags();
 
-        return (
-            <div className="dictionarysubtitle">
+    return (
+      <div className="dictionarysubtitle">
+        {sourceLang}
+        <img src={flagsAPI + sourceLangFlag + flagStyle} />
+        &nbsp; <button onClick={() => switchLang()}>{"=>"}</button> &nbsp;
+        {targetLang}
+        <img src={flagsAPI + targetLangFlag + flagStyle} />
+      </div>
+    );
+  };
 
-                {sourceLang}<img src={flagsAPI + sourceLangFlag + flagStyle} />
+  const generateResultsElements = () => {
+    getFlags();
 
-                &nbsp; <button onClick={() => switchLang()}>{"=>"}</button> &nbsp;
-
-                {targetLang}<img src={flagsAPI + targetLangFlag + flagStyle} /></div>
-        );
-    }
-
-    const generateResultsElements = () => {
-        getFlags()
-
-        let element = []
-        let topResult = translationResults.results[0].word
-        let altResultList = translationResults.results.slice(1)
-        let altResultElements = []
+    let element = [];
+    let topResult = translationResults.results[0].word;
+    let altResultList = translationResults.results.slice(1);
+    let altResultElements = [];
 
         for (var i = 0; i < 5; i++) {
             const cells = [];
@@ -141,22 +141,22 @@ const DictionarySearch = (props) => {
 
 
 
-    if (translationResults !== null) {
-        generateResultsElements();
-        setTranslationResults(null)
-    }
+  if (translationResults !== null) {
+    generateResultsElements();
+    setTranslationResults(null);
+  }
 
-    return (
-        <div className="dashboardelements">
-            <div className="boxcontainer">
-                <div className="greycontainer">
-                    <div>{sourceTargetLang()}</div>
-                    <div>{searchForm()}</div>
-                    <div>{resultsElement}</div>
-                </div>
-            </div>
+  return (
+    <div className="dashboardelements">
+      <div className="boxcontainer">
+        <div className="greycontainer">
+          <div>{sourceTargetLang()}</div>
+          <div>{searchForm()}</div>
+          <div>{resultsElement}</div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default DictionarySearch;
