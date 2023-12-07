@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Dictionary from "./Dictionary";
 import { Spinner } from "react-bootstrap";
+import ActivityTracker from "./ActivityTracker";
 
 const DictionarySearch = (props) => {
   const [sourceLang, setSourceLang] = useState("EN");
@@ -36,6 +37,10 @@ const DictionarySearch = (props) => {
           setTranslationResults(response);
         }
       });
+
+      const tracker = new ActivityTracker()
+      tracker.updateLatestActivity("dictionary")
+
     /*
                 // DUMMY DATA
                 let dummyResults = {
