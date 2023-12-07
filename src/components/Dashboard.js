@@ -14,7 +14,6 @@ const DashBoard = () => {
   const auth = getAuth();
   const db = getDatabase();
 
-  
   const [userName, setuserName] = useState(null);
   const [userLangs, setUserLangs] = useState(null);
   const [langButtons, setLangButtons] = useState(null);
@@ -26,8 +25,8 @@ const DashBoard = () => {
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
 
-  const [userAmount, setUserAmount] = useState(0)
- 
+  const [userAmount, setUserAmount] = useState(0);
+
   const redirect = useNavigate();
 
   const flagsAPI = "https://flagsapi.com/";
@@ -133,41 +132,42 @@ const DashBoard = () => {
     });
   };
 
-
   const getLeaderBoards = async () => {
     const leaderboards = new Leaderboards();
     let lbElements = [];
-    
 
     await leaderboards.getLeaderboard().then(async (lb) => {
       if (!lb.entries) return;
-      let entries = lb.entries
+      let entries = lb.entries;
 
       try {
-      entries.sort((a, b) => b.xpGain - a.xpGain);
+        entries.sort((a, b) => b.xpGain - a.xpGain);
 
-      for (var i = 0; i < lb.entries.length; i++) {
-        await leaderboards.getUserName(entries[i].id).then((username) => {
-          lbElements.push(
-            <div className="leaderlist" key={"lbEntry" + i}>
-              {" "}
-              {i + 1}. {username} (Lvl {entries[i].lvl})
-              <span className="xp">{entries[i].xpGain} XP</span>
-            </div>,
-          );
-        });
-      }
-      setLeaderBoardElements(lbElements);
-    } catch (error){
-      console.log(error)
-      console.log("Database structure is fkd")
-      lbElements.push(<><div>Failed to fetch leaderboards</div></>)
-      setLeaderBoardElements(lbElements);
-      leaderboards.fixStruct(entries)
+        for (var i = 0; i < lb.entries.length; i++) {
+          await leaderboards.getUserName(entries[i].id).then((username) => {
+            lbElements.push(
+              <div className="leaderlist" key={"lbEntry" + i}>
+                {" "}
+                {i + 1}. {username} (Lvl {entries[i].lvl})
+                <span className="xp">{entries[i].xpGain} XP</span>
+              </div>,
+            );
+          });
+        }
+        setLeaderBoardElements(lbElements);
+      } catch (error) {
+        console.log(error);
+        console.log("Database structure is fkd");
+        lbElements.push(
+          <>
+            <div>Failed to fetch leaderboards</div>
+          </>,
+        );
+        setLeaderBoardElements(lbElements);
+        leaderboards.fixStruct(entries);
       }
     });
   };
-
 
   const getLatestActivity = async () => {
     await tracker.getActivity().then((act) => {
