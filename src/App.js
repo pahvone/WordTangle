@@ -16,6 +16,7 @@ import PasswordChange from "./components/PasswordChange";
 import Dashboard from "./components/Dashboard";
 import UserDataPage from "./components/UserDataPage";
 import Shoutbox from "./components/Shoutbox";
+import Tester from "./components/placeholder";
 
 /* NOTE THAT GHPAGES REQUIRES ROUTING LIKE 
   <Route path="wordtangle/DashBoard" element={<Dashboard />} /> */
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/SignOut" element={<SignOut />} />
         <Route path="/UserDataPage" element={<UserDataPage />} />
+        <Route path="/Test" element={<Tester />} />
       </Routes>
     </>
   );
