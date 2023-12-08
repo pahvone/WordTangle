@@ -121,10 +121,10 @@
     opacity: 1;
   }
 }
-.testi{
+.testi {
   animation: popUpper;
 }
-.confettiposition{
+.confettiposition {
   padding-left: 7em;
   position: relative;
   justify-content: center;
