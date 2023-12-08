@@ -27,7 +27,7 @@ const Navbar = () => {
             </li>
             <li>
               <span className="merkki">{">> "}</span>
-              <NavLink data-testid="learn-main" to="/LessonPath">
+              <NavLink data-testid="learn-main" to="/LearnPage">
                 Learn
               </NavLink>
             </li>
@@ -76,7 +76,7 @@ const Navbar = () => {
               <NavLink to="/Dashboard">Dashboard</NavLink>
             </li>
             <li>
-              <NavLink to="/LessonPath">Learn</NavLink>
+              <NavLink to="/LearnPage">Learn</NavLink>
             </li>
             <li>
               <NavLink to="/Shoutbox">Community</NavLink>

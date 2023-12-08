@@ -25,6 +25,8 @@ const DashBoard = () => {
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
 
+  const [userAmount, setUserAmount] = useState(0);
+
   const redirect = useNavigate();
 
   const flagsAPI = "https://flagsapi.com/";
@@ -93,7 +95,7 @@ const DashBoard = () => {
           key={"lang" + langObj}
           className="btn"
           onClick={() =>
-            redirect("/LessonPath", { state: { language: langObj } })
+            redirect("/LearnPage", { state: { language: langObj } })
           }
         >
           <img src={flagsAPI + langObj + flagStyle} />
@@ -136,20 +138,34 @@ const DashBoard = () => {
 
     await leaderboards.getLeaderboard().then(async (lb) => {
       if (!lb.entries) return;
-      lb.entries.sort((a, b) => b.xpGain - a.xpGain);
+      let entries = lb.entries;
 
-      for (var i = 0; i < lb.entries.length; i++) {
-        await leaderboards.getUserName(lb.entries[i].id).then((username) => {
-          lbElements.push(
-            <div className="leaderlist" key={"lbEntry" + i}>
-              {" "}
-              {i + 1}. {username} (Lvl {lb.entries[i].lvl})
-              <span className="xp">{lb.entries[i].xpGain} XP</span>
-            </div>,
-          );
-        });
+      try {
+        entries.sort((a, b) => b.xpGain - a.xpGain);
+
+        for (var i = 0; i < lb.entries.length; i++) {
+          await leaderboards.getUserName(entries[i].id).then((username) => {
+            lbElements.push(
+              <div className="leaderlist" key={"lbEntry" + i}>
+                {" "}
+                {i + 1}. {username} (Lvl {entries[i].lvl})
+                <span className="xp">{entries[i].xpGain} XP</span>
+              </div>,
+            );
+          });
+        }
+        setLeaderBoardElements(lbElements);
+      } catch (error) {
+        console.log(error);
+        console.log("Database structure is fkd");
+        lbElements.push(
+          <>
+            <div>Failed to fetch leaderboards</div>
+          </>,
+        );
+        setLeaderBoardElements(lbElements);
+        leaderboards.fixStruct(entries);
       }
-      setLeaderBoardElements(lbElements);
     });
   };
 

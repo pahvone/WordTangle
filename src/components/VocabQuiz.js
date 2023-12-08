@@ -50,7 +50,7 @@ const VocabQuiz = ({ lang, diff, index }) => {
               hour: "numeric",
               minute: "numeric",
             });
-            console.log(timestamp);
+            //console.log(timestamp);
             let latestQ = {
               lang: lang,
               diff: diff,
@@ -60,7 +60,6 @@ const VocabQuiz = ({ lang, diff, index }) => {
             };
 
             let activity = snapshot.val().activity;
-            console.log(activity);
 
             if (!activity.latestQuizActivity) {
               console.log("no latestq");
@@ -419,7 +418,7 @@ const VocabQuiz = ({ lang, diff, index }) => {
               <button
                 className="btn choice-button w-100 text-center"
                 onClick={() => {
-                  nav("/LessonPath");
+                  nav("/LearnPage");
                 }}
               >
                 Back to lesson path
