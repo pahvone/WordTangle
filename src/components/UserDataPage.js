@@ -17,6 +17,7 @@ const UserDataPage = () => {
   let [XP, SetXP] = useState("");
   let [Email, SetEmail] = useState("");
   let [Latest, SetLatest] = useState("");
+  let [Logintime, SetLogintime] = useState("");
 
   const Button = ({ text, onClick }) => {
     return (
@@ -41,6 +42,7 @@ const UserDataPage = () => {
           SetLevel(snapshot.val().activity.lvl);
           SetXP(snapshot.val().activity.xp);
           SetLatest(snapshot.val().activity.latest[2]);
+          SetLogintime(auth.currentUser.metadata.lastSignInTime);
           // functionality: snapshot.val().insertvaluetobefetchedhere[indeksinumero]
         } else {
           console.log("No data available");
@@ -74,6 +76,7 @@ const UserDataPage = () => {
                 <th>User XP</th>
                 <th>Email</th>
                 <th>Latest Activity</th>
+                <th>Last Login Time</th>
               </tr>
               <tr>
                 <td>{Nickname}</td>
@@ -82,6 +85,7 @@ const UserDataPage = () => {
                 <td>{XP}</td>
                 <td>{Email}</td>
                 <td>{Latest}</td>
+                <td>{Logintime}</td>
               </tr>
             </tbody>
           </table>
