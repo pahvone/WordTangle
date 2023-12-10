@@ -5,13 +5,12 @@ import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
-import "./ForumIndex.css"
+import "./ForumIndex.css";
 
 const ForumIndex = () => {
-
-  const [languageIsOpen, setLanguageIsOpen] = useState(false)
-  const [practiceIsOpen, setPracticeIsOpen] = useState(false)
-  const [communityIsOpen, setCommunityIsOpen] = useState(false)
+  const [languageIsOpen, setLanguageIsOpen] = useState(false);
+  const [practiceIsOpen, setPracticeIsOpen] = useState(false);
+  const [communityIsOpen, setCommunityIsOpen] = useState(false);
   const languageStyles = useSpring({
     config: config.stiff,
     from: {
@@ -49,32 +48,74 @@ const ForumIndex = () => {
     }
   });
 
-  const news =
-    [
-      {id: 0, title: "Announcements", description: "News of new features", latestPost: Date(), route: "/Forums/view-forum/announcements"},
-      {id: 1, title: "Upcoming Features", description: "This is what we have planned!", latestPost: Date(), route: "/Forums/view-forum/upcoming-features"}
-    ]
-  const languageHelp= 
-    [
-      {id: 0, title: "Finnish", description: "Get help with Finnish questions!", latestPost: Date.now(), route: "/Forums/view-forum/finnish-help"},
-      {id: 1, title: "Spanish", description: "Get help with Spanish questions!", latestPost: Date.now(), route: "/Forums/view-forum/spanish-help"}
-    ]
-  const practiceTogether=
-  [
-    {id: 0, title: "Write Finnish only", description: "Communicate in Finnish only!", latestPost: Date.now(), route: "/Forums/view-forum/finnish-communication"},
-    {id: 0, title: "Write Spanish only", description: "Communicate in Spanish only!", latestPost: Date.now(), route: "/Forums/view-forum/spanish-communication"},
-  ]
-  const community=
-    [
-      {id: 0, title: "General", description: "Get to know other users! :)", latestPost: Date.now(), route: "/Forums/view-forum/general"}
-    ]
-  let SubForums = 
-  [
-    {id: 0, title: 'Language Help', subforums: languageHelp},
-    {id: 1, title: 'Practice Together', subforums: practiceTogether},
-    {id: 2, title: 'Community', subforums: community},
-  ]
-  const ForumCategories = ["News", "Language help", "Practice together", "Community"]
+  const news = [
+    {
+      id: 0,
+      title: "Announcements",
+      description: "News of new features",
+      latestPost: Date(),
+      route: "/Forums/view-forum/announcements",
+    },
+    {
+      id: 1,
+      title: "Upcoming Features",
+      description: "This is what we have planned!",
+      latestPost: Date(),
+      route: "/Forums/view-forum/upcoming-features",
+    },
+  ];
+  const languageHelp = [
+    {
+      id: 0,
+      title: "Finnish",
+      description: "Get help with Finnish questions!",
+      latestPost: Date.now(),
+      route: "/Forums/view-forum/finnish-help",
+    },
+    {
+      id: 1,
+      title: "Spanish",
+      description: "Get help with Spanish questions!",
+      latestPost: Date.now(),
+      route: "/Forums/view-forum/spanish-help",
+    },
+  ];
+  const practiceTogether = [
+    {
+      id: 0,
+      title: "Write Finnish only",
+      description: "Communicate in Finnish only!",
+      latestPost: Date.now(),
+      route: "/Forums/view-forum/finnish-communication",
+    },
+    {
+      id: 0,
+      title: "Write Spanish only",
+      description: "Communicate in Spanish only!",
+      latestPost: Date.now(),
+      route: "/Forums/view-forum/spanish-communication",
+    },
+  ];
+  const community = [
+    {
+      id: 0,
+      title: "General",
+      description: "Get to know other users! :)",
+      latestPost: Date.now(),
+      route: "/Forums/view-forum/general",
+    },
+  ];
+  let SubForums = [
+    { id: 0, title: "Language Help", subforums: languageHelp },
+    { id: 1, title: "Practice Together", subforums: practiceTogether },
+    { id: 2, title: "Community", subforums: community },
+  ];
+  const ForumCategories = [
+    "News",
+    "Language help",
+    "Practice together",
+    "Community",
+  ];
   const newsPosts = [
     {
       id: 0,

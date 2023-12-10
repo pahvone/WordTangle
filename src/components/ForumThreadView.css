@@ -24,11 +24,11 @@
   margin-bottom: 15px;
 }
 .forums .subforum {
-    padding-left:6px;
-    padding-top:6px;
-    padding-bottom:6px;
-    padding-right:0px;
-    text-align: center;
+  padding-left: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 0px;
+  text-align: center;
 }
 .forums .header {
   display: flex;
@@ -37,7 +37,7 @@
   display: inline-block;
 }
 .navlink {
-    color: black
+  color: black;
 }
 .forums .latest-post {
   display: inline-block;
@@ -45,20 +45,20 @@
   margin-right: 6px;
 }
 .forums .description {
-    font-size: 14px;
-    text-align: left;
+  font-size: 14px;
+  text-align: left;
 }
 .reply-timestamp {
-    font-size: 14px;
-    text-align: right;
-    align-items: center;
+  font-size: 14px;
+  text-align: right;
+  align-items: center;
 }
 .reply-text {
-    text-align: start;
+  text-align: start;
 }
 .original-post {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 .reply-box {
-    padding: 6px;
+  padding: 6px;
 }

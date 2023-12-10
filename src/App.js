@@ -30,7 +30,10 @@ const App = () => {
         <Route path="/Settings" element={<Settings />} />
         <Route path="/Forums" element={<ForumIndex />} />
         <Route path="/Forums/view-forum/:forum" element={<ForumView />} />
-        <Route path="/Forums/view-forum/:forum/:threadId" element={<ForumThreadView />} />
+        <Route
+          path="/Forums/view-forum/:forum/:threadId"
+          element={<ForumThreadView />}
+        />
         <Route path="/About" element={<About />} />
         <Route path="/UsernameChange" element={<UsernameChange />} />
         <Route path="/PasswordChange" element={<PasswordChange />} />
