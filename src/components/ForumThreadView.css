@@ -1,19 +1,3 @@
-.collapsible .content {
-  padding: 6px;
-  background-color: #fbff50;
-  color: black;
-  /* color: var(--textcolor); */
-}
-.collapsible .header {
-  background-color: #cdcf47;
-  padding: 6px;
-  cursor: pointer;
-  color: black;
-  text-align: left;
-  padding-left: 20px;
-  /* color: var(--textcolor); */
-}
-
 .forum-header-container {
   background-color: #fbff50;
   color: black;
@@ -40,7 +24,11 @@
   margin-bottom: 15px;
 }
 .forums .subforum {
-  padding: 6px;
+    padding-left:6px;
+    padding-top:6px;
+    padding-bottom:6px;
+    padding-right:0px;
+    text-align: center;
 }
 .forums .header {
   display: flex;
@@ -48,8 +36,8 @@
 .forums .navlink {
   display: inline-block;
 }
-.forums .navlink a {
-  color: black;
+.navlink {
+    color: black
 }
 .forums .latest-post {
   display: inline-block;
@@ -57,5 +45,20 @@
   margin-right: 6px;
 }
 .forums .description {
-  font-size: 14px;
+    font-size: 14px;
+    text-align: left;
+}
+.reply-timestamp {
+    font-size: 14px;
+    text-align: right;
+    align-items: center;
+}
+.reply-text {
+    text-align: start;
+}
+.original-post {
+    margin-bottom: 15px;
+}
+.reply-box {
+    padding: 6px;
 }

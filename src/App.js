@@ -6,7 +6,9 @@ import SignOut from "./components/SignOut";
 import Login from "./components/Login";
 import Welcome from "./components/Welcome";
 import Settings from "./components/Settings";
-import Forums from "./components/Forums";
+import ForumIndex from "./components/ForumIndex";
+import ForumView from "./components/ForumView";
+import ForumThreadView from "./components/ForumThreadView";
 import About from "./components/About";
 import UsernameChange from "./components/UsernameChange";
 import LessonPath from "./components/LessonPath";
@@ -26,7 +28,9 @@ const App = () => {
         <Route path="/Login" element={<Login />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/Settings" element={<Settings />} />
-        <Route path="/Forums" element={<Forums />} />
+        <Route path="/Forums" element={<ForumIndex />} />
+        <Route path="/Forums/view-forum/:forum" element={<ForumView />} />
+        <Route path="/Forums/view-forum/:forum/:threadId" element={<ForumThreadView />} />
         <Route path="/About" element={<About />} />
         <Route path="/UsernameChange" element={<UsernameChange />} />
         <Route path="/PasswordChange" element={<PasswordChange />} />
