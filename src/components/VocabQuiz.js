@@ -6,16 +6,16 @@ import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 import ActivityTracker from "./ActivityTracker";
 
-const VocabQuiz = ({ lang, diff, index}) => {
+const VocabQuiz = ({ lang, diff, index }) => {
   const [qIndex, setIndex] = useState(0);
-  const [prevQIndex, setPrevQIndex] = useState(-1)
+  const [prevQIndex, setPrevQIndex] = useState(-1);
 
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
   const [result, setResult] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
   const [inputMode, setInputMode] = useState(0);
-  const [qWord, setQWord] = useState("")
+  const [qWord, setQWord] = useState("");
 
   const textInputRef = useRef(null);
   const [choiceElements, setChoiceElements] = useState(null);
@@ -23,58 +23,59 @@ const VocabQuiz = ({ lang, diff, index}) => {
   const [strikeMode, setStrikeMode] = useState(false);
   const [strikes, setStrikes] = useState(3);
 
-  const [timerMode, setTimerMode] = useState(false)
-  const [seconds, setSeconds] = useState(10)
+  const [timerMode, setTimerMode] = useState(false);
+  const [seconds, setSeconds] = useState(10);
 
   const nav = useNavigate();
   const db = getDatabase();
   const auth = getAuth();
 
-
-
   useEffect(() => {
-    if (qState === 0 && lesson === null) setLesson(new Lesson(lang, "beginner", index));
-    else if (qState === 0 && lesson != null)  createRandomizedQuizOrder();
+    if (qState === 0 && lesson === null)
+      setLesson(new Lesson(lang, "beginner", index));
+    else if (qState === 0 && lesson != null) createRandomizedQuizOrder();
     else if (qState === 2) {
-      if (checkEnd()) endQuiz()
-      else if (qIndex !== prevQIndex) newWord()
+      if (checkEnd()) endQuiz();
+      else if (qIndex !== prevQIndex) newWord();
     }
     setPrevQIndex(qIndex);
     if (timerMode) {
       const interval = setInterval(() => {
         if (seconds > 0) {
-          setSeconds((prevSeconds) => prevSeconds - 1)
+          setSeconds((prevSeconds) => prevSeconds - 1);
         } else {
-          clearInterval(interval)
-          endQuiz()
+          clearInterval(interval);
+          endQuiz();
         }
       }, 1000);
-      return () => clearInterval(interval)
+      return () => clearInterval(interval);
     }
-
   }, [qIndex, qState, lesson, seconds]);
 
   const start = () => {
-    setQState(2)
-    newWord()
-  }
+    setQState(2);
+    newWord();
+  };
 
   const proceed = () => {
-    setIndex(qIndex + 1)
-    if (timerMode) setSeconds(10)
-  }
+    setIndex(qIndex + 1);
+    if (timerMode) setSeconds(10);
+  };
 
   const newWord = () => {
-    setQWord(lesson.wordList[qIndex])
+    setQWord(lesson.wordList[qIndex]);
     createChoices(0);
-  }
+  };
 
   const checkEnd = () => {
-    return (strikeMode && strikes === 0) || (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length);
-  }
+    return (
+      (strikeMode && strikes === 0) ||
+      (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length)
+    );
+  };
 
   const endQuiz = () => {
-    setQState(3)
+    setQState(3);
     let percentage = Math.round((correctCount / lesson.wordList.length) * 100);
     const userId = auth.currentUser.uid;
 
@@ -159,17 +160,17 @@ const VocabQuiz = ({ lang, diff, index}) => {
     } else if (result === "Typoed") {
       setResult(
         "You might have a typo. You answered '" +
-        textInputRef.current.value +
-        "'. Correct answer is '" +
-        lesson.translationList[qIndex][0] +
-        "'",
+          textInputRef.current.value +
+          "'. Correct answer is '" +
+          lesson.translationList[qIndex][0] +
+          "'",
       );
       setCorrectCount(correctCount + 1);
     } else if (result === "Incorrect") {
       setResult(
         "Incorrect. Correct answer is '" +
-        lesson.translationList[qIndex][0] +
-        "'",
+          lesson.translationList[qIndex][0] +
+          "'",
       );
       if (strikeMode) {
         var s = strikes;
@@ -180,7 +181,7 @@ const VocabQuiz = ({ lang, diff, index}) => {
       }
     }
 
-    proceed()
+    proceed();
   };
 
   //Handles text input answers
@@ -269,15 +270,19 @@ const VocabQuiz = ({ lang, diff, index}) => {
     //setIndex(qIndex + 1);
     setResult(
       "Correct answer would've been '" +
-      lesson.translationList[qIndex][0] +
-      "'",
+        lesson.translationList[qIndex][0] +
+        "'",
     );
   };
 
   const getSeconds = () => {
-    if (!timerMode) return
-    return <div><span>{seconds}</span></div>
-  }
+    if (!timerMode) return;
+    return (
+      <div>
+        <span>{seconds}</span>
+      </div>
+    );
+  };
 
   const getStrikes = () => {
     if (!strikeMode) return "";
@@ -328,7 +333,7 @@ const VocabQuiz = ({ lang, diff, index}) => {
       [choices[i], choices[j]] = [choices[j], choices[i]];
     }
 
-    setChoiceElements(choices)
+    setChoiceElements(choices);
   };
 
   //Generate unique wrong answers from the rest of the wordlist
@@ -390,13 +395,12 @@ const VocabQuiz = ({ lang, diff, index}) => {
 
   //Generate answer choices for the currently quizzed word
   const createChoices = (qWordSwitch) => {
-
     let word = "";
     word = lesson.translationList[qIndex][0];
 
     if (qWordSwitch === 0) word = lesson.translationList[qIndex][0];
     else if (qWordSwitch === 1) word = lesson.wordList[qIndex];
-    let elements = []
+    let elements = [];
 
     elements.push(
       <div key={"button0"} className="row">
@@ -433,38 +437,41 @@ const VocabQuiz = ({ lang, diff, index}) => {
         );
       })(i);
     }
-    setChoiceElements(elements)
+    setChoiceElements(elements);
     createRandomizedChoiceOrder(elements);
   };
 
   const lessonTitle = () => {
-    return (<h1 className="lessontitle" align="center">
-      {lesson.lessonName} {getStrikes()} {getSeconds()}
-    </h1>)
-  }
-
+    return (
+      <h1 className="lessontitle" align="center">
+        {lesson.lessonName} {getStrikes()} {getSeconds()}
+      </h1>
+    );
+  };
 
   const singleResult = () => {
-    return (<div className="row justify-content-center align-items-center">
-      <div className="quiztext col-md-4">{result}</div>
-    </div>)
-  }
+    return (
+      <div className="row justify-content-center align-items-center">
+        <div className="quiztext col-md-4">{result}</div>
+      </div>
+    );
+  };
 
   const inputSwitch = () => {
-    return (<div className="row my-5 justify-content-center">
-      <div className="col-md-4">
-        {" "}
-        <button
-          className="btn skip-button w-100 text-center"
-          onClick={handleSwitchInputMode}
-        >
-          {inputMode === 0
-            ? "Answer in writing"
-            : "Multiple choice answers"}
-        </button>
+    return (
+      <div className="row my-5 justify-content-center">
+        <div className="col-md-4">
+          {" "}
+          <button
+            className="btn skip-button w-100 text-center"
+            onClick={handleSwitchInputMode}
+          >
+            {inputMode === 0 ? "Answer in writing" : "Multiple choice answers"}
+          </button>
+        </div>
       </div>
-    </div>)
-  }
+    );
+  };
 
   const results = () => {
     return (
@@ -479,8 +486,8 @@ const VocabQuiz = ({ lang, diff, index}) => {
           <div className="col-md-4">{backButton()}</div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const backButton = () => {
     return (
@@ -545,18 +552,18 @@ const VocabQuiz = ({ lang, diff, index}) => {
   };
 
   if (qState === 1) return options();
-  if (qState === 2) return (
-    <div className="quizelements">
-      <div className="container-fluid ">
-        {lessonTitle()}
-        {quizWord()}
-        {singleResult()}
-        {inputSwitch()}
+  if (qState === 2)
+    return (
+      <div className="quizelements">
+        <div className="container-fluid ">
+          {lessonTitle()}
+          {quizWord()}
+          {singleResult()}
+          {inputSwitch()}
+        </div>
       </div>
-    </div>
-  );
-  if (qState === 3) return results()
-
+    );
+  if (qState === 3) return results();
 };
 
 export default VocabQuiz;
