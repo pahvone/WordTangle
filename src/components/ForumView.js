@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { getDatabase, ref, push, set, update, onValue, get, child } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  push,
+  set,
+  update,
+  onValue,
+  get,
+  child,
+} from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
@@ -13,30 +22,36 @@ import Grid from "@mui/material/Grid";
 import fb from "../firebase";
 
 const ForumView = () => {
-
-  const [threadList, setThreadList] = useState([])
+  const [threadList, setThreadList] = useState([]);
   const { forum } = useParams();
-  const db = getDatabase()
-  const forumRef = ref(db, "/forums/"+forum)
-  onValue(forumRef, (snapshot) => {
-    getThreads(snapshot.val(), forum)
-  }, (errorObject) => {
-    console.log('The read failed: ' + errorObject.name);
-  }); 
+  const db = getDatabase();
+  const forumRef = ref(db, "/forums/" + forum);
+  onValue(
+    forumRef,
+    (snapshot) => {
+      getThreads(snapshot.val(), forum);
+    },
+    (errorObject) => {
+      console.log("The read failed: " + errorObject.name);
+    },
+  );
 
   function getThreads(data, forum) {
-    let listOfThreads = []
+    let listOfThreads = [];
     Object.keys(data).forEach((key) => {
-      if(key != "latestPost"){
-        const dbRef = ref(db, 'users/'+data[key].author+"/username")
-        let username = "error"
-        let replies = data[key].replies
-        let repliesLength
-        if (typeof replies === 'object'){repliesLength = Object.keys(replies).length}
-        else{repliesLength=0}
-        console.log(data[key].author)
+      if (key != "latestPost") {
+        const dbRef = ref(db, "users/" + data[key].author + "/username");
+        let username = "error";
+        let replies = data[key].replies;
+        let repliesLength;
+        if (typeof replies === "object") {
+          repliesLength = Object.keys(replies).length;
+        } else {
+          repliesLength = 0;
+        }
+        console.log(data[key].author);
         onValue(dbRef, (snapshot) => {
-          username = snapshot.val()
+          username = snapshot.val();
         });
         const newThread = {
           id: key,
@@ -44,12 +59,14 @@ const ForumView = () => {
           postText: data[key].text,
           threadCreator: username,
           replies: repliesLength,
-          latestActivity: data[key].creationDate
-        }
-        listOfThreads.push(newThread)
+          latestActivity: data[key].creationDate,
+        };
+        listOfThreads.push(newThread);
       }
-    })
-    if(JSON.stringify(listOfThreads)!=JSON.stringify(threadList)){setThreadList(listOfThreads)}
+    });
+    if (JSON.stringify(listOfThreads) != JSON.stringify(threadList)) {
+      setThreadList(listOfThreads);
+    }
   }
 
   const dummyThreads = {
@@ -221,8 +238,8 @@ const ForumView = () => {
     const newThreadRef = push(forumsRef);
     set(newThreadRef, newThread);
     update(forumsRef, { latestPost: Date.now() });
-    setThreadTitle("")
-    setThreadText("")
+    setThreadTitle("");
+    setThreadText("");
   }
   const [loaded, setLoaded] = useState(false);
   // useEffect(() => {
@@ -323,7 +340,7 @@ const ForumView = () => {
                   <label>
                     <div>Title</div>
                     <input
-                    value={threadTitle}
+                      value={threadTitle}
                       type="text"
                       name="title"
                       onChange={(e) => setThreadTitle(e.target.value)}
@@ -333,7 +350,7 @@ const ForumView = () => {
                 <label>
                   <div>Text</div>
                   <textarea
-                  value={threadText}
+                    value={threadText}
                     name="text"
                     rows="5"
                     cols="35"
