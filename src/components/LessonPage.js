@@ -17,6 +17,7 @@ const LessonPage = () => {
             lang={queryParams.get("lang")}
             diff={queryParams.get("diff")}
             index={queryParams.get("index")}
+            sm={queryParams.get("sm")}
           />
         </div>
       </div>

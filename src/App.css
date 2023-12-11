@@ -161,6 +161,13 @@
   padding-left: 10px;
 }
 
+.heartscontainer {
+  flex-direction: row;
+  padding-right: 30px;
+  width: 100%;
+}
+
+
 .dashboardslogan {
   font-family: "Fira Mono", monospace;
   color: #000;

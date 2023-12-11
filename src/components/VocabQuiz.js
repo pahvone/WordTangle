@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
@@ -6,31 +6,37 @@ import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 import ActivityTracker from "./ActivityTracker";
 
-const VocabQuiz = ({ lang, diff, index }) => {
+const VocabQuiz = ({ lang, diff, index, sm }) => {
   const [qIndex, setIndex] = useState(0);
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
   const [result, setResult] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
   const [inputMode, setInputMode] = useState(0);
-  const [wordGenerated, setWordGenerated] = useState(false);
 
   const textInputRef = useRef(null);
-
   const choiceElements = [];
 
-  const nav = useNavigate();
+  const [strikeMode, setStrikeMode] = useState(false)
+  const [strikes, setStrikes] = useState(3)
 
+  const nav = useNavigate();
   const db = getDatabase();
   const auth = getAuth();
 
+  useEffect(() => {
+    //if (strikeMode === null) setStrikeMode(sm) //DEBUG, GET FROM PARAM
+  }, [])
+
   const endQuiz = () => {
-    if (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length) {
-      //update result to database
-      var percentage = Math.round(
+    let end = false;
+    let percentage = 0
+    end = ((strikeMode && strikes === 0) || (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length))
+
+    if (end) {
+      percentage = Math.round(
         (correctCount / lesson.wordList.length) * 100,
       );
-
       const userId = auth.currentUser.uid;
 
       onAuthStateChanged(auth, (user) => {
@@ -96,12 +102,10 @@ const VocabQuiz = ({ lang, diff, index }) => {
           });
         }
       });
-      return true;
-    } else return false;
-  };
+    }
 
-  //debug func
-  const fixlatestactivity = () => {};
+    return end;
+  };
 
   const handleSwitchInputMode = useCallback(() => {
     setInputMode((prevInputModeRef) => (prevInputModeRef === 0 ? 1 : 0));
@@ -120,21 +124,28 @@ const VocabQuiz = ({ lang, diff, index }) => {
     } else if (result === "Typoed") {
       setResult(
         "You might have a typo. You answered '" +
-          textInputRef.current.value +
-          "'. Correct answer is '" +
-          lesson.translationList[qIndex][0] +
-          "'",
+        textInputRef.current.value +
+        "'. Correct answer is '" +
+        lesson.translationList[qIndex][0] +
+        "'",
       );
       setCorrectCount(correctCount + 1);
-    } else if (result === "Incorrect")
+    } else if (result === "Incorrect") {
       setResult(
         "Incorrect. Correct answer is '" +
-          lesson.translationList[qIndex][0] +
-          "'",
+        lesson.translationList[qIndex][0] +
+        "'",
       );
+      if (strikeMode) {
+        var s = strikes
+        s -= 1
+        console.log(s)
+        setStrikes(s)
+        if (s === 0) endQuiz()
+      }
+    }
 
     setIndex(qIndex + 1);
-    setWordGenerated(false);
   };
 
   //Handles text input answers
@@ -223,10 +234,21 @@ const VocabQuiz = ({ lang, diff, index }) => {
     setIndex(qIndex + 1);
     setResult(
       "Correct answer would've been '" +
-        lesson.translationList[qIndex][0] +
-        "'",
+      lesson.translationList[qIndex][0] +
+      "'",
     );
   };
+
+  const getStrikes = () => {
+    if (!strikeMode) return ""
+
+    let hearts = []
+
+    for (var i = 0; i < strikes; i++) {
+      hearts.push(<img key={"strike" + i} src={require('../img/heart.png')} width="30px" alt="Heart" />)
+    }
+    return <div className="heartscontainer">{hearts}</div>
+  }
 
   const randNumber = (max) => {
     return Math.floor(Math.random() * (max - 1 + 1)) + 0;
@@ -299,9 +321,9 @@ const VocabQuiz = ({ lang, diff, index }) => {
     return (
       <div>
         <div className="row justify-content-center align-items-center">
-          <div className="quiztext col-2">
-            {qIndex + 1} / {lesson.wordList.length}
-          </div>
+
+          <div className="quiztext col-md-2">{qIndex + 1} / {lesson.wordList.length}</div>
+
           <div className="col-md-5 wordcontainer">{qWord}</div>
           <div className="col-md-3">
             <button
@@ -311,7 +333,9 @@ const VocabQuiz = ({ lang, diff, index }) => {
               Skip
             </button>
           </div>
+
         </div>
+
         <div className="row my-5 justify-content-center">
           <div className="col-md-4">{userInput(qWordSwitch)}</div>
         </div>
@@ -365,24 +389,63 @@ const VocabQuiz = ({ lang, diff, index }) => {
 
     createRandomizedChoiceOrder(choiceElements);
   };
+  const setOptions = (e, _strikeMode) => {
+      //e.preventDefault();
+      setStrikeMode(_strikeMode)
+  }
 
-  //////////////////////////////////////////////////////////
+  const getOptions = () => {
+    return(<div className="row"><div className="col-md-2"/>
+    <div className="quiztext text-center align-items-center justify-content-center col-md-6">
+      <h1 className="lessontitle" align="center">
+      {lesson.lessonName}  ({lesson.lang} {diff})
+            </h1>
 
-  //Quiz state machine
+            <h1 className="lessontitle" align="center">QUIZ OPTIONS</h1>
+        <label>
+        <input
+          type="checkbox"
+          name="checkbox1"
+          checked={strikeMode}
+          onChange={() => setStrikeMode(!strikeMode)}
+          style={{ transform: 'scale(1.5)' }}
+        />
+        <span style={{ marginLeft: '8px' }}>3 strikes mode</span>
+      </label>
+    <button
+      className="btn choice-button w-100 text-center"
+      onClick={(e) => setQState(2)} 
+    >Start quiz</button>
+    {backButton()}</div>
+    <div className="col-md-2"/>
+    </div>)
+  }
+
+  const backButton = () => {
+    return(              <button
+      className="btn choice-button w-100 text-center"
+      onClick={() => {
+        nav("/LearnPage");
+      }}
+    >
+      Back to lesson path
+    </button>)
+  }
 
   if (qState === 0 && lesson === null) {
-    setLesson(new Lesson(lang, "beginner", index)); // < get index from LessonPath
+    setLesson(new Lesson(lang, "beginner", index));
   } else if (qState === 0 && lesson != null) {
     createRandomizedQuizOrder();
   } else if (qState === 1) {
+    return getOptions()
+  }
+  else if (qState === 2) {
     if (!endQuiz()) {
-      //console.log("quizIndex " + qIndex + " word " + lesson.wordList[qIndex])
-
       return (
         <div className="quizelements">
           <div className="container-fluid ">
             <h1 className="lessontitle" align="center">
-              {lesson.lessonName}
+              {lesson.lessonName} {getStrikes()}
             </h1>
 
             {quizWord()}
@@ -408,21 +471,15 @@ const VocabQuiz = ({ lang, diff, index }) => {
     } else {
       return (
         <div className="container-fluid ">
-          <div className="row justify-content-center align-items-center">
-            <div className="quiztext col-md-4">
+          <div className="row justify-content-center">
+            <div className="quiztext col-md-4 text-center">
+              <p>{strikeMode ? "You striked out!" : ""}</p>
               You got {correctCount} out of {lesson.wordList.length} correct
             </div>
           </div>
-          <div className="row justify-content-center align-items-center">
+          <div className="row justify-content-center">
             <div className="col-md-4">
-              <button
-                className="btn choice-button w-100 text-center"
-                onClick={() => {
-                  nav("/LearnPage");
-                }}
-              >
-                Back to lesson path
-              </button>
+          {backButton()}
             </div>
           </div>
         </div>

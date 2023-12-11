@@ -31,7 +31,7 @@
         ,
         "intermediate": [
           {
-            "name": "Name",
+            "name": "Basic verbs",
             "vocab": [
               ["escribir", ["to write"]],
               ["leer", ["to read"]],
@@ -58,7 +58,7 @@
         ],
         "advanced": [
           {
-            "name": "Name",
+            "name": "High-concepts",
             "vocab": [
               ["abstracto", ["abstract"]],
               ["analogía", ["analogy"]],

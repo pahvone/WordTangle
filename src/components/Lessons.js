@@ -19,8 +19,11 @@ const Lessons = (props) => {
   );
 
   const startLesson = (_index, _diff) => {
-    redirect(
+    /*redirect(
       `/LessonPage?lang=${props.langPath.lang}&diff=${_diff}&index=${_index}`,
+    );*/
+    redirect( //DEBUG FORCE STRIKEMODE
+      `/LessonPage?lang=${props.langPath.lang}&diff=${_diff}&index=${_index}&sm=${true}`,
     );
   };
 

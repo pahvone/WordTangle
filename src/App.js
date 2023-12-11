@@ -36,7 +36,7 @@ const App = () => {
         <Route path="/LearnPage:lang" element={<LearnPage />} />
         {/*<Route path="/Lessons" element={<Lessons />} />
         <Route path="/Lessons:lang" element={<Lessons />} />*/}
-        <Route path="/LessonPage:lang/:diff/:index" element={<LessonPage />} />
+        <Route path="/LessonPage:lang/:diff/:index/:sm" element={<LessonPage />} />
         <Route path="/LessonPage" element={<LessonPage />} /> {/*debug*/}
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/SignOut" element={<SignOut />} />
