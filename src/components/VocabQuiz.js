@@ -267,12 +267,15 @@ const VocabQuiz = ({ lang, diff, index }) => {
   };
 
   const handleSkip = () => {
-    //setIndex(qIndex + 1);
+    let s = strikes 
+    s--
+    if(strikeMode) setStrikes(s)
     setResult(
       "Correct answer would've been '" +
         lesson.translationList[qIndex][0] +
         "'",
     );
+    proceed()
   };
 
   const getSeconds = () => {
