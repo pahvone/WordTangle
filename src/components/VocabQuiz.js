@@ -474,11 +474,14 @@ const VocabQuiz = ({ lang, diff, index }) => {
   };
 
   const results = () => {
+
+   
     return (
       <div className="container-fluid ">
         <div className="row justify-content-center">
           <div className="quiztext col-md-4 text-center">
-            <p>{strikeMode ? "You striked out!" : ""}</p>
+            <p>{strikeMode ? strikes === 0 ? "You striked out!" : "You survived!" : ""}</p>
+            <p>{timerMode ? seconds === 0 ? "Time's up!" : "You survived!" : ""}</p>
             You got {correctCount} out of {lesson.wordList.length} correct
           </div>
         </div>
