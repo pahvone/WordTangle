@@ -6,105 +6,141 @@ import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 import ActivityTracker from "./ActivityTracker";
 
-const VocabQuiz = ({ lang, diff, index, sm }) => {
+const VocabQuiz = ({ lang, diff, index}) => {
   const [qIndex, setIndex] = useState(0);
+  const [prevQIndex, setPrevQIndex] = useState(-1)
+
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
   const [result, setResult] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
   const [inputMode, setInputMode] = useState(0);
+  const [qWord, setQWord] = useState("")
 
   const textInputRef = useRef(null);
-  const choiceElements = [];
+  const [choiceElements, setChoiceElements] = useState(null);
 
   const [strikeMode, setStrikeMode] = useState(false);
   const [strikes, setStrikes] = useState(3);
+
+  const [timerMode, setTimerMode] = useState(false)
+  const [seconds, setSeconds] = useState(10)
 
   const nav = useNavigate();
   const db = getDatabase();
   const auth = getAuth();
 
+
+
   useEffect(() => {
-    //if (strikeMode === null) setStrikeMode(sm) //DEBUG, GET FROM PARAM
-  }, []);
-
-  const endQuiz = () => {
-    let end = false;
-    let percentage = 0;
-    end =
-      (strikeMode && strikes === 0) ||
-      (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length);
-
-    if (end) {
-      percentage = Math.round((correctCount / lesson.wordList.length) * 100);
-      const userId = auth.currentUser.uid;
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          get(ref(db, "/users/" + userId)).then(async (snapshot) => {
-            var currLang = snapshot.val().currentLang;
-            var langs = snapshot.val().langs;
-
-            if (percentage > langs[currLang].lessonProg[diff][index]) {
-              langs[currLang].lessonProg[diff][index] = percentage;
-            }
-            let currentDate = new Date();
-            const timestamp = currentDate.toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "numeric",
-              year: "numeric",
-              hour: "numeric",
-              minute: "numeric",
-            });
-            //console.log(timestamp);
-            let latestQ = {
-              lang: lang,
-              diff: diff,
-              lessonName: lesson.lessonName,
-              percentage: percentage,
-              date: timestamp,
-            };
-
-            let activity = snapshot.val().activity;
-
-            if (!activity.latestQuizActivity) {
-              console.log("no latestq");
-              activity = {
-                latest: [""],
-                latestQuizActivity: [{ lang: "", diff: "", lessonName: "" }],
-                dailyTasks: [{ task: "", completed: false }],
-                dailyGenDate: "",
-                xp: 0,
-                lvl: 1,
-              };
-              activity.latest = snapshot.val().activity.latest;
-              activity.latestQuizActivity = [
-                { lang: "", diff: "", lessonName: "" },
-              ];
-              activity.dailyTasks = snapshot.val().activity.dailyTasks;
-              activity.dailyGenDate = snapshot.val().activity.dailyGenDate;
-              activity.xp = snapshot.val().activity.xp;
-              activity.lvl = snapshot.val().activity.lvl;
-            }
-
-            activity["latestQuizActivity"].push(latestQ);
-
-            if (activity["latestQuizActivity"].length > 3)
-              activity["latestQuizActivity"].shift();
-
-            await update(ref(db, "/users/" + userId), {
-              langs: langs,
-              activity: activity,
-            }).then(() => {
-              let tracker = new ActivityTracker();
-              tracker.updateLatestActivity("quiz");
-            });
-          });
+    if (qState === 0 && lesson === null) setLesson(new Lesson(lang, "beginner", index));
+    else if (qState === 0 && lesson != null)  createRandomizedQuizOrder();
+    else if (qState === 2) {
+      if (checkEnd()) endQuiz()
+      else if (qIndex !== prevQIndex) newWord()
+    }
+    setPrevQIndex(qIndex);
+    if (timerMode) {
+      const interval = setInterval(() => {
+        if (seconds > 0) {
+          setSeconds((prevSeconds) => prevSeconds - 1)
+        } else {
+          clearInterval(interval)
+          endQuiz()
         }
-      });
+      }, 1000);
+      return () => clearInterval(interval)
     }
 
-    return end;
+  }, [qIndex, qState, lesson, seconds]);
+
+  const start = () => {
+    setQState(2)
+    newWord()
+  }
+
+  const proceed = () => {
+    setIndex(qIndex + 1)
+    if (timerMode) setSeconds(10)
+  }
+
+  const newWord = () => {
+    setQWord(lesson.wordList[qIndex])
+    createChoices(0);
+  }
+
+  const checkEnd = () => {
+    return (strikeMode && strikes === 0) || (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length);
+  }
+
+  const endQuiz = () => {
+    setQState(3)
+    let percentage = Math.round((correctCount / lesson.wordList.length) * 100);
+    const userId = auth.currentUser.uid;
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        get(ref(db, "/users/" + userId)).then(async (snapshot) => {
+          var currLang = snapshot.val().currentLang;
+          var langs = snapshot.val().langs;
+
+          if (percentage > langs[currLang].lessonProg[diff][index]) {
+            langs[currLang].lessonProg[diff][index] = percentage;
+          }
+          let currentDate = new Date();
+          const timestamp = currentDate.toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          });
+          //console.log(timestamp);
+          let latestQ = {
+            lang: lang,
+            diff: diff,
+            lessonName: lesson.lessonName,
+            percentage: percentage,
+            date: timestamp,
+          };
+
+          let activity = snapshot.val().activity;
+
+          if (!activity.latestQuizActivity) {
+            console.log("no latestq");
+            activity = {
+              latest: [""],
+              latestQuizActivity: [{ lang: "", diff: "", lessonName: "" }],
+              dailyTasks: [{ task: "", completed: false }],
+              dailyGenDate: "",
+              xp: 0,
+              lvl: 1,
+            };
+            activity.latest = snapshot.val().activity.latest;
+            activity.latestQuizActivity = [
+              { lang: "", diff: "", lessonName: "" },
+            ];
+            activity.dailyTasks = snapshot.val().activity.dailyTasks;
+            activity.dailyGenDate = snapshot.val().activity.dailyGenDate;
+            activity.xp = snapshot.val().activity.xp;
+            activity.lvl = snapshot.val().activity.lvl;
+          }
+
+          activity["latestQuizActivity"].push(latestQ);
+
+          if (activity["latestQuizActivity"].length > 3)
+            activity["latestQuizActivity"].shift();
+
+          await update(ref(db, "/users/" + userId), {
+            langs: langs,
+            activity: activity,
+          }).then(() => {
+            let tracker = new ActivityTracker();
+            tracker.updateLatestActivity("quiz");
+          });
+        });
+      }
+    });
   };
 
   const handleSwitchInputMode = useCallback(() => {
@@ -113,8 +149,7 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
 
   //Handles multiple choice answers
   const handleChoice = (index) => {
-    if (index === 0) handleResult("Correct");
-    else handleResult("Incorrect");
+    handleResult(index === 0 ? "Correct" : "Incorrect");
   };
 
   const handleResult = (result) => {
@@ -124,17 +159,17 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
     } else if (result === "Typoed") {
       setResult(
         "You might have a typo. You answered '" +
-          textInputRef.current.value +
-          "'. Correct answer is '" +
-          lesson.translationList[qIndex][0] +
-          "'",
+        textInputRef.current.value +
+        "'. Correct answer is '" +
+        lesson.translationList[qIndex][0] +
+        "'",
       );
       setCorrectCount(correctCount + 1);
     } else if (result === "Incorrect") {
       setResult(
         "Incorrect. Correct answer is '" +
-          lesson.translationList[qIndex][0] +
-          "'",
+        lesson.translationList[qIndex][0] +
+        "'",
       );
       if (strikeMode) {
         var s = strikes;
@@ -145,7 +180,7 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
       }
     }
 
-    setIndex(qIndex + 1);
+    proceed()
   };
 
   //Handles text input answers
@@ -197,7 +232,7 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
     }
 
     textInputRef.current.value = "";
-    setIndex(qIndex + 1);
+    //setIndex(qIndex + 1);
   };
 
   //Returns a text input form if inputMode == 1
@@ -231,13 +266,18 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
   };
 
   const handleSkip = () => {
-    setIndex(qIndex + 1);
+    //setIndex(qIndex + 1);
     setResult(
       "Correct answer would've been '" +
-        lesson.translationList[qIndex][0] +
-        "'",
+      lesson.translationList[qIndex][0] +
+      "'",
     );
   };
+
+  const getSeconds = () => {
+    if (!timerMode) return
+    return <div><span>{seconds}</span></div>
+  }
 
   const getStrikes = () => {
     if (!strikeMode) return "";
@@ -287,6 +327,8 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
       const j = Math.floor(Math.random() * (i + 1));
       [choices[i], choices[j]] = [choices[j], choices[i]];
     }
+
+    setChoiceElements(choices)
   };
 
   //Generate unique wrong answers from the rest of the wordlist
@@ -306,11 +348,8 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
 
   //Generate the currently quizzed word
   const quizWord = () => {
-    //if(wordGenerated == true) return;
-
-    let qWordSwitch = 0;
-    var qWord = lesson.wordList[qIndex];
-    createChoices(qWordSwitch);
+    //var qWord = lesson.wordList[qIndex];
+    //createChoices(qWordSwitch);
 
     // randomly switch quizzed word to the other lang.
     // currently changing input mode breaks this because re-render
@@ -342,9 +381,8 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
             </button>
           </div>
         </div>
-
         <div className="row my-5 justify-content-center">
-          <div className="col-md-4">{userInput(qWordSwitch)}</div>
+          <div className="col-md-4">{userInput(0)}</div>
         </div>
       </div>
     );
@@ -352,13 +390,15 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
 
   //Generate answer choices for the currently quizzed word
   const createChoices = (qWordSwitch) => {
+
     let word = "";
     word = lesson.translationList[qIndex][0];
 
     if (qWordSwitch === 0) word = lesson.translationList[qIndex][0];
     else if (qWordSwitch === 1) word = lesson.wordList[qIndex];
+    let elements = []
 
-    choiceElements.push(
+    elements.push(
       <div key={"button0"} className="row">
         <div className="col-md-10 text-center">
           <button
@@ -379,7 +419,7 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
       else if (qWordSwitch === 1) word = lesson.wordList[wrongAnswers[i]];
 
       (function (index) {
-        choiceElements.push(
+        elements.push(
           <div key={"button" + (i + 1)} className="row">
             <div className="col-md-10 text-center">
               <button
@@ -393,48 +433,54 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
         );
       })(i);
     }
-
-    createRandomizedChoiceOrder(choiceElements);
-  };
-  const setOptions = (e, _strikeMode) => {
-    //e.preventDefault();
-    setStrikeMode(_strikeMode);
+    setChoiceElements(elements)
+    createRandomizedChoiceOrder(elements);
   };
 
-  const getOptions = () => {
-    return (
-      <div className="row">
-        <div className="col-md-2" />
-        <div className="quiztext text-center align-items-center justify-content-center col-md-6">
-          <h1 className="lessontitle" align="center">
-            {lesson.lessonName} ({lesson.lang} {diff})
-          </h1>
+  const lessonTitle = () => {
+    return (<h1 className="lessontitle" align="center">
+      {lesson.lessonName} {getStrikes()} {getSeconds()}
+    </h1>)
+  }
 
-          <h1 className="lessontitle" align="center">
-            QUIZ OPTIONS
-          </h1>
-          <label>
-            <input
-              type="checkbox"
-              name="checkbox1"
-              checked={strikeMode}
-              onChange={() => setStrikeMode(!strikeMode)}
-              style={{ transform: "scale(1.5)" }}
-            />
-            <span style={{ marginLeft: "8px" }}>3 strikes mode</span>
-          </label>
-          <button
-            className="btn choice-button w-100 text-center"
-            onClick={(e) => setQState(2)}
-          >
-            Start quiz
-          </button>
-          {backButton()}
-        </div>
-        <div className="col-md-2" />
+
+  const singleResult = () => {
+    return (<div className="row justify-content-center align-items-center">
+      <div className="quiztext col-md-4">{result}</div>
+    </div>)
+  }
+
+  const inputSwitch = () => {
+    return (<div className="row my-5 justify-content-center">
+      <div className="col-md-4">
+        {" "}
+        <button
+          className="btn skip-button w-100 text-center"
+          onClick={handleSwitchInputMode}
+        >
+          {inputMode === 0
+            ? "Answer in writing"
+            : "Multiple choice answers"}
+        </button>
       </div>
-    );
-  };
+    </div>)
+  }
+
+  const results = () => {
+    return (
+      <div className="container-fluid ">
+        <div className="row justify-content-center">
+          <div className="quiztext col-md-4 text-center">
+            <p>{strikeMode ? "You striked out!" : ""}</p>
+            You got {correctCount} out of {lesson.wordList.length} correct
+          </div>
+        </div>
+        <div className="row justify-content-center">
+          <div className="col-md-4">{backButton()}</div>
+        </div>
+      </div>
+    )
+  }
 
   const backButton = () => {
     return (
@@ -449,57 +495,68 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
     );
   };
 
-  if (qState === 0 && lesson === null) {
-    setLesson(new Lesson(lang, "beginner", index));
-  } else if (qState === 0 && lesson != null) {
-    createRandomizedQuizOrder();
-  } else if (qState === 1) {
-    return getOptions();
-  } else if (qState === 2) {
-    if (!endQuiz()) {
-      return (
-        <div className="quizelements">
-          <div className="container-fluid ">
-            <h1 className="lessontitle" align="center">
-              {lesson.lessonName} {getStrikes()}
-            </h1>
+  const options = () => {
+    return (
+      <div className="row">
+        <div className="col-md-2" />
+        <div className="quiztext text-center align-items-center justify-content-center col-md-6">
+          <h1 className="lessontitle" align="center">
+            {lesson.lessonName} ({lesson.lang} {diff})
+          </h1>
 
-            {quizWord()}
-            <div className="row justify-content-center align-items-center">
-              <div className="quiztext col-md-4">{result}</div>
-            </div>
-            <div className="row my-5 justify-content-center">
-              <div className="col-md-4">
-                {" "}
-                <button
-                  className="btn skip-button w-100 text-center"
-                  onClick={handleSwitchInputMode}
-                >
-                  {inputMode === 0
-                    ? "Answer in writing"
-                    : "Multiple choice answers"}
-                </button>
-              </div>
-            </div>
+          <h1 className="lessontitle" align="center">
+            QUIZ OPTIONS
+          </h1>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                name="checkbox1"
+                checked={strikeMode}
+                onChange={() => setStrikeMode(!strikeMode)}
+                style={{ transform: "scale(1.5)" }}
+              />
+              <span style={{ marginLeft: "8px" }}>3 strikes mode</span>
+            </label>
           </div>
+          <div>
+            <label>
+              <input
+                type="checkbox"
+                name="checkbox2"
+                checked={timerMode}
+                onChange={() => setTimerMode(!timerMode)}
+                style={{ transform: "scale(1.5)" }}
+              />
+              <span style={{ marginLeft: "8px" }}>Timer mode</span>
+            </label>
+          </div>
+          <button
+            className="btn choice-button w-100 text-center"
+            onClick={(e) => start()}
+          >
+            Start quiz
+          </button>
+          {backButton()}
         </div>
-      );
-    } else {
-      return (
-        <div className="container-fluid ">
-          <div className="row justify-content-center">
-            <div className="quiztext col-md-4 text-center">
-              <p>{strikeMode ? "You striked out!" : ""}</p>
-              You got {correctCount} out of {lesson.wordList.length} correct
-            </div>
-          </div>
-          <div className="row justify-content-center">
-            <div className="col-md-4">{backButton()}</div>
-          </div>
-        </div>
-      );
-    }
-  }
+        <div className="col-md-2" />
+      </div>
+    );
+  };
+
+  if (qState === 1) return options();
+  if (qState === 2) return (
+    <div className="quizelements">
+      <div className="container-fluid ">
+        {lessonTitle()}
+        {quizWord()}
+        {singleResult()}
+        {inputSwitch()}
+      </div>
+    </div>
+  );
+  if (qState === 3) return results()
+
 };
 
 export default VocabQuiz;
