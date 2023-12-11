@@ -50,14 +50,56 @@
         ,
         "intermediate": [
           {
-            "name": "Name",
-            "vocab": []
+            "name": "Basic verbs",
+            "vocab": [
+              ["kirjoittaa", ["to write"]],
+              ["lukea", ["to read"]],
+              ["kävellä", ["to walk"]],
+              ["juoda", ["to drink"]],
+              ["syödä", ["to eat"]],
+              ["nukkua", ["to sleep"]],
+              ["puhua", ["to speak"]],
+              ["kuunnella", ["to listen"]],
+              ["katsoa", ["to look", "to watch"]],
+              ["tehdä", ["to do", "to make"]],
+              ["ajatella", ["to think"]],
+              ["matkustaa", ["to travel"]],
+              ["soittaa", ["to call", "to play (instrument)"]],
+              ["ostaa", ["to buy"]],
+              ["myydä", ["to sell"]],
+              ["tavata", ["to meet"]],
+              ["opiskella", ["to study"]],
+              ["työskennellä", ["to work"]],
+              ["harjoitella", ["to practice"]],
+              ["rakastaa", ["to love"]]
+            ]
           }
         ],
         "advanced": [
           {
-            "name": "Name",
-            "vocab": []
+            "name": "High-concepts",
+            "vocab": [
+              ["abstrakti", ["abstract"]],
+              ["analogia", ["analogy"]],
+              ["ekspansiivinen", ["expansive"]],
+              ["konkreettinen", ["concrete"]],
+              ["jäsentää", ["to structure"]],
+              ["kompleksinen", ["complex"]],
+              ["integroitu", ["integrated"]],
+              ["monitahoinen", ["multifaceted"]],
+              ["konvergenssi", ["convergence"]],
+              ["divergenssi", ["divergence"]],
+              ["efektiivinen", ["efficient"]],
+              ["futuristinen", ["futuristic"]],
+              ["heuristinen", ["heuristic"]],
+              ["interaktiivinen", ["interactive"]],
+              ["johdonmukainen", ["consistent"]],
+              ["eksponentiaalinen", ["exponential"]],
+              ["perifeerinen", ["peripheral"]],
+              ["resurssi", ["resource"]],
+              ["transsendentti", ["transcendent"]],
+              ["virtuoosi", ["virtuoso"]]
+            ]
           }
         ]
     }
