@@ -17,8 +17,8 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
   const textInputRef = useRef(null);
   const choiceElements = [];
 
-  const [strikeMode, setStrikeMode] = useState(false)
-  const [strikes, setStrikes] = useState(3)
+  const [strikeMode, setStrikeMode] = useState(false);
+  const [strikes, setStrikes] = useState(3);
 
   const nav = useNavigate();
   const db = getDatabase();
@@ -26,17 +26,17 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
 
   useEffect(() => {
     //if (strikeMode === null) setStrikeMode(sm) //DEBUG, GET FROM PARAM
-  }, [])
+  }, []);
 
   const endQuiz = () => {
     let end = false;
-    let percentage = 0
-    end = ((strikeMode && strikes === 0) || (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length))
+    let percentage = 0;
+    end =
+      (strikeMode && strikes === 0) ||
+      (lesson.wordList.length !== 0 && qIndex >= lesson.wordList.length);
 
     if (end) {
-      percentage = Math.round(
-        (correctCount / lesson.wordList.length) * 100,
-      );
+      percentage = Math.round((correctCount / lesson.wordList.length) * 100);
       const userId = auth.currentUser.uid;
 
       onAuthStateChanged(auth, (user) => {
@@ -124,24 +124,24 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
     } else if (result === "Typoed") {
       setResult(
         "You might have a typo. You answered '" +
-        textInputRef.current.value +
-        "'. Correct answer is '" +
-        lesson.translationList[qIndex][0] +
-        "'",
+          textInputRef.current.value +
+          "'. Correct answer is '" +
+          lesson.translationList[qIndex][0] +
+          "'",
       );
       setCorrectCount(correctCount + 1);
     } else if (result === "Incorrect") {
       setResult(
         "Incorrect. Correct answer is '" +
-        lesson.translationList[qIndex][0] +
-        "'",
+          lesson.translationList[qIndex][0] +
+          "'",
       );
       if (strikeMode) {
-        var s = strikes
-        s -= 1
-        console.log(s)
-        setStrikes(s)
-        if (s === 0) endQuiz()
+        var s = strikes;
+        s -= 1;
+        console.log(s);
+        setStrikes(s);
+        if (s === 0) endQuiz();
       }
     }
 
@@ -234,21 +234,28 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
     setIndex(qIndex + 1);
     setResult(
       "Correct answer would've been '" +
-      lesson.translationList[qIndex][0] +
-      "'",
+        lesson.translationList[qIndex][0] +
+        "'",
     );
   };
 
   const getStrikes = () => {
-    if (!strikeMode) return ""
+    if (!strikeMode) return "";
 
-    let hearts = []
+    let hearts = [];
 
     for (var i = 0; i < strikes; i++) {
-      hearts.push(<img key={"strike" + i} src={require('../img/heart.png')} width="30px" alt="Heart" />)
+      hearts.push(
+        <img
+          key={"strike" + i}
+          src={require("../img/heart.png")}
+          width="30px"
+          alt="Heart"
+        />,
+      );
     }
-    return <div className="heartscontainer">{hearts}</div>
-  }
+    return <div className="heartscontainer">{hearts}</div>;
+  };
 
   const randNumber = (max) => {
     return Math.floor(Math.random() * (max - 1 + 1)) + 0;
@@ -321,8 +328,9 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
     return (
       <div>
         <div className="row justify-content-center align-items-center">
-
-          <div className="quiztext col-md-2">{qIndex + 1} / {lesson.wordList.length}</div>
+          <div className="quiztext col-md-2">
+            {qIndex + 1} / {lesson.wordList.length}
+          </div>
 
           <div className="col-md-5 wordcontainer">{qWord}</div>
           <div className="col-md-3">
@@ -333,7 +341,6 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
               Skip
             </button>
           </div>
-
         </div>
 
         <div className="row my-5 justify-content-center">
@@ -390,56 +397,65 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
     createRandomizedChoiceOrder(choiceElements);
   };
   const setOptions = (e, _strikeMode) => {
-      //e.preventDefault();
-      setStrikeMode(_strikeMode)
-  }
+    //e.preventDefault();
+    setStrikeMode(_strikeMode);
+  };
 
   const getOptions = () => {
-    return(<div className="row"><div className="col-md-2"/>
-    <div className="quiztext text-center align-items-center justify-content-center col-md-6">
-      <h1 className="lessontitle" align="center">
-      {lesson.lessonName}  ({lesson.lang} {diff})
-            </h1>
+    return (
+      <div className="row">
+        <div className="col-md-2" />
+        <div className="quiztext text-center align-items-center justify-content-center col-md-6">
+          <h1 className="lessontitle" align="center">
+            {lesson.lessonName} ({lesson.lang} {diff})
+          </h1>
 
-            <h1 className="lessontitle" align="center">QUIZ OPTIONS</h1>
-        <label>
-        <input
-          type="checkbox"
-          name="checkbox1"
-          checked={strikeMode}
-          onChange={() => setStrikeMode(!strikeMode)}
-          style={{ transform: 'scale(1.5)' }}
-        />
-        <span style={{ marginLeft: '8px' }}>3 strikes mode</span>
-      </label>
-    <button
-      className="btn choice-button w-100 text-center"
-      onClick={(e) => setQState(2)} 
-    >Start quiz</button>
-    {backButton()}</div>
-    <div className="col-md-2"/>
-    </div>)
-  }
+          <h1 className="lessontitle" align="center">
+            QUIZ OPTIONS
+          </h1>
+          <label>
+            <input
+              type="checkbox"
+              name="checkbox1"
+              checked={strikeMode}
+              onChange={() => setStrikeMode(!strikeMode)}
+              style={{ transform: "scale(1.5)" }}
+            />
+            <span style={{ marginLeft: "8px" }}>3 strikes mode</span>
+          </label>
+          <button
+            className="btn choice-button w-100 text-center"
+            onClick={(e) => setQState(2)}
+          >
+            Start quiz
+          </button>
+          {backButton()}
+        </div>
+        <div className="col-md-2" />
+      </div>
+    );
+  };
 
   const backButton = () => {
-    return(              <button
-      className="btn choice-button w-100 text-center"
-      onClick={() => {
-        nav("/LearnPage");
-      }}
-    >
-      Back to lesson path
-    </button>)
-  }
+    return (
+      <button
+        className="btn choice-button w-100 text-center"
+        onClick={() => {
+          nav("/LearnPage");
+        }}
+      >
+        Back to lesson path
+      </button>
+    );
+  };
 
   if (qState === 0 && lesson === null) {
     setLesson(new Lesson(lang, "beginner", index));
   } else if (qState === 0 && lesson != null) {
     createRandomizedQuizOrder();
   } else if (qState === 1) {
-    return getOptions()
-  }
-  else if (qState === 2) {
+    return getOptions();
+  } else if (qState === 2) {
     if (!endQuiz()) {
       return (
         <div className="quizelements">
@@ -478,9 +494,7 @@ const VocabQuiz = ({ lang, diff, index, sm }) => {
             </div>
           </div>
           <div className="row justify-content-center">
-            <div className="col-md-4">
-          {backButton()}
-            </div>
+            <div className="col-md-4">{backButton()}</div>
           </div>
         </div>
       );
