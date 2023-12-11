@@ -6,8 +6,69 @@ import logo from "../img/WTlogo_stacked_white_bordered.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
 import "./ForumIndex.css";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 const ForumIndex = () => {
+
+  const db = getDatabase();
+  const announcementsRef = ref(db, 'forums/announcements/latestPost')
+  const upcomingFeaturesRef = ref(db, 'forums/upcoming-features/latestPost')
+  const finnishHelpRef = ref(db, 'forums/finnish-help/latestPost')
+  const spanishHelpRef = ref(db, 'forums/spanish-help/latestPost')
+  const finnishCommunicationRef = ref(db, 'forums/finnish-communication/latestPost')
+  const spanishCommunicationRef = ref(db, 'forums/spanish-communication/latestPost')
+  const generalRef = ref(db, 'forums/general/latestPost')
+  const [announcementsLatestPost, setAnnouncementsLatestPost] = useState(null)
+  const [upcomingFeaturesLatestPost, setUpcomingFeaturesLatestPost] = useState(null)
+  const [finnishHelpLatestPost, setFinnishHelpLatestPost] = useState(null)
+  const [spanishHelpLatestPost, setSpanishHelpLatestPost] = useState(null)
+  const [finnishCommunicationLatestPost, setFinnishCommunicationLatestPost] = useState(null)
+  const [spanishCommunicationLatestPost, setSpanishCommunicationLatestPost] = useState(null)
+  const [generalLatestPost, setGeneralLatestPost] = useState(null)
+
+  onValue(announcementsRef, (snapshot) => {
+    updateLatestPost(snapshot.val(), announcementsLatestPost, setAnnouncementsLatestPost)
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
+  onValue(upcomingFeaturesRef, (snapshot) => {
+    updateLatestPost(snapshot.val(), upcomingFeaturesLatestPost, setUpcomingFeaturesLatestPost)
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
+  onValue(finnishHelpRef, (snapshot) => {
+    updateLatestPost(snapshot.val(), finnishHelpLatestPost, setFinnishHelpLatestPost)
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
+  onValue(spanishHelpRef, (snapshot) => {
+    updateLatestPost(snapshot.val(), spanishHelpLatestPost, setSpanishHelpLatestPost)
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
+  onValue(finnishCommunicationRef, (snapshot) => {
+    updateLatestPost(snapshot.val(), finnishCommunicationLatestPost, setFinnishCommunicationLatestPost)
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
+  onValue(spanishCommunicationRef, (snapshot) => {
+    updateLatestPost(snapshot.val(), spanishCommunicationLatestPost, setSpanishCommunicationLatestPost)
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
+  onValue(generalRef, (snapshot) => {
+    updateLatestPost(snapshot.val(), generalLatestPost, setGeneralLatestPost)
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
+
+  function updateLatestPost(newValue, oldValue, updateFunction){
+    if(newValue!=oldValue){
+      updateFunction(newValue)
+    }
+  }
+  
+
   const [languageIsOpen, setLanguageIsOpen] = useState(false);
   const [practiceIsOpen, setPracticeIsOpen] = useState(false);
   const [communityIsOpen, setCommunityIsOpen] = useState(false);
@@ -89,7 +150,7 @@ const ForumIndex = () => {
       route: "/Forums/view-forum/finnish-communication",
     },
     {
-      id: 0,
+      id: 1,
       title: "Write Spanish only",
       description: "Communicate in Spanish only!",
       latestPost: Date.now(),
@@ -105,54 +166,6 @@ const ForumIndex = () => {
       route: "/Forums/view-forum/general",
     },
   ];
-  let SubForums = [
-    { id: 0, title: "Language Help", subforums: languageHelp },
-    { id: 1, title: "Practice Together", subforums: practiceTogether },
-    { id: 2, title: "Community", subforums: community },
-  ];
-  const ForumCategories = [
-    "News",
-    "Language help",
-    "Practice together",
-    "Community",
-  ];
-  const newsPosts = [
-    {
-      id: 0,
-      title: "Welcome to our new forum! :)",
-      poster: "siteAdmin69",
-      creationDate: Date.now(),
-      latestComment: Date.now(),
-      forumCategory: "News",
-    },
-    {
-      id: 1,
-      title: "Please submit feedback telepathically ONLY",
-      poster: "annoyedCustomerSupportRep",
-      creationDate: Date.now(),
-      latestComment: Date.now(),
-      forumCategory: "News",
-    },
-  ];
-  const ForumPosts = [
-    {
-      id: 2,
-      title: "Wow, new forums!",
-      poster: "username",
-      creationDate: Date.now(),
-      latestComment: Date.now(),
-      forumCategory: "Community",
-    },
-    {
-      id: 3,
-      title: "I love WordTangle!!",
-      poster: "real user",
-      creationDate: Date.now(),
-      latestComment: Date.now(),
-      forumCategory: "Community",
-    },
-  ];
-
   const postColours = ["#bdbf3d", "#838530"];
 
   return (
@@ -169,7 +182,13 @@ const ForumIndex = () => {
 
           <div className="forums">
             {news.map(function (forum, index) {
-              const timestamp = new Date(forum.latestPost);
+              let timestamp = Date.now()
+              if(forum.title=="Announcements"){
+                timestamp = new Date(announcementsLatestPost)
+              }
+              else {
+                timestamp = new Date(upcomingFeaturesLatestPost)
+              }
               let timestring = timestamp.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -211,7 +230,13 @@ const ForumIndex = () => {
             <animated.div style={{ overflow: "hidden", ...languageStyles }}>
               <div className="forums">
                 {languageHelp.map(function (forum, index) {
-                  const timestamp = new Date(forum.latestPost);
+                  let timestamp = Date.now()
+                  if(forum.title=="Finnish"){
+                    timestamp = new Date(finnishHelpLatestPost)
+                  }
+                  else {
+                    timestamp = new Date(spanishHelpLatestPost)
+                  }
                   let timestring = timestamp.toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -256,7 +281,13 @@ const ForumIndex = () => {
               <animated.div style={{ overflow: "hidden", ...practiceStyles }}>
                 <div className="forums">
                   {practiceTogether.map(function (forum, index) {
-                    const timestamp = new Date(forum.latestPost);
+                    let timestamp = Date.now()
+                    if(forum.title=="Write Finnish only"){
+                      timestamp = new Date(finnishCommunicationLatestPost)
+                    }
+                    else {
+                      timestamp = new Date(spanishCommunicationLatestPost)
+                    }
                     let timestring = timestamp.toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -305,7 +336,7 @@ const ForumIndex = () => {
                 >
                   <div className="forums">
                     {community.map(function (forum, index) {
-                      const timestamp = new Date(forum.latestPost);
+                      const timestamp = new Date(generalLatestPost);
                       let timestring = timestamp.toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",

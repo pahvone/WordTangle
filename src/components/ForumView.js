@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { getDatabase, ref, push, set, update } from "firebase/database";
+import { getDatabase, ref, push, set, update, onValue, get, child } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
@@ -13,10 +13,65 @@ import Grid from "@mui/material/Grid";
 import fb from "../firebase";
 
 const ForumView = () => {
+
+  const [threadList, setThreadList] = useState([])
   const { forum } = useParams();
+  const db = getDatabase()
+  const forumRef = ref(db, "/forums/"+forum)
+  onValue(forumRef, (snapshot) => {
+    getThreads(snapshot.val(), forum)
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
+
+  function getThreads(data, forum) {
+    let listOfThreads = []
+    Object.keys(data).forEach((key) => {
+      if(key != "latestPost"){
+        const dbRef = ref(db, 'users/'+data[key].author+"/username")
+        let username = "error"
+        let replies = data[key].replies
+        let repliesLength
+        if (typeof replies === 'object'){repliesLength = Object.keys(replies).length}
+        else{repliesLength=0}
+        console.log(data[key].author)
+        onValue(dbRef, (snapshot) => {
+          username = snapshot.val()
+        });
+        const newThread = {
+          id: key,
+          title: data[key].title,
+          postText: data[key].text,
+          threadCreator: username,
+          replies: repliesLength,
+          latestActivity: data[key].creationDate
+        }
+        listOfThreads.push(newThread)
+      }
+    })
+    if(JSON.stringify(listOfThreads)!=JSON.stringify(threadList)){setThreadList(listOfThreads)}
+  }
 
   const dummyThreads = {
     announcements: [
+      {
+        id: 0,
+        title: "We have launched our forums!",
+        postText: "hello test test test test test test test test",
+        replies: 0,
+        latestActivity: Date.now(),
+        threadCreator: "john",
+      },
+      {
+        id: 1,
+        title: "We are going bankrupt.",
+        postText: "hello test test test test test test test test",
+        replies: 5,
+        latestActivity: Date.now(),
+        threadCreator: "bertha",
+      },
+    ],
+    "upcoming-features": [
       {
         id: 0,
         title: "We have launched our forums!",
@@ -52,7 +107,61 @@ const ForumView = () => {
         threadCreator: "maxwell",
       },
     ],
+    "spanish-help": [
+      {
+        id: 0,
+        title: "What does 'hyppytyynytyydytys' mean?",
+        postText: "hello test test test test test test test test",
+        replies: 0,
+        latestActivity: Date.now(),
+        threadCreator: "mark",
+      },
+      {
+        id: 1,
+        title: "How do you say 'the fog is coming'?",
+        postText: "hello test test test test test test test test",
+        replies: 0,
+        latestActivity: Date.now(),
+        threadCreator: "maxwell",
+      },
+    ],
+    "finnish-help": [
+      {
+        id: 0,
+        title: "What does 'hyppytyynytyydytys' mean?",
+        postText: "hello test test test test test test test test",
+        replies: 0,
+        latestActivity: Date.now(),
+        threadCreator: "mark",
+      },
+      {
+        id: 1,
+        title: "How do you say 'the fog is coming'?",
+        postText: "hello test test test test test test test test",
+        replies: 0,
+        latestActivity: Date.now(),
+        threadCreator: "maxwell",
+      },
+    ],
     "finnish-communication": [
+      {
+        id: 0,
+        title: "Hei kaikki, puhutaan suomea!",
+        postText: "hello test test test test test test test test",
+        replies: 0,
+        latestActivity: Date.now(),
+        threadCreator: "john",
+      },
+      {
+        id: 1,
+        title: "Mikä lempi ruokasi?",
+        postText: "hello test test test test test test test test",
+        replies: 0,
+        latestActivity: Date.now(),
+        threadCreator: "simone",
+      },
+    ],
+    "spanish-communication": [
       {
         id: 0,
         title: "Hei kaikki, puhutaan suomea!",
@@ -92,6 +201,7 @@ const ForumView = () => {
     ],
   };
 
+  // const threadList = dummyThreads[forum]
   const [threadTitle, setThreadTitle] = useState("");
   const [threadText, setThreadText] = useState("");
 
@@ -111,17 +221,17 @@ const ForumView = () => {
     const newThreadRef = push(forumsRef);
     set(newThreadRef, newThread);
     update(forumsRef, { latestPost: Date.now() });
+    setThreadTitle("")
+    setThreadText("")
   }
-
-  const threadList = dummyThreads[forum];
   const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    if (!loaded) {
-      let tracker = new ActivityTracker();
-      tracker.updateLatestActivity("forums");
-      setLoaded(true);
-    }
-  });
+  // useEffect(() => {
+  //   if (!loaded) {
+  //     let tracker = new ActivityTracker();
+  //     tracker.updateLatestActivity("forums");
+  //     setLoaded(true);
+  //   }
+  // });
 
   const postColours = ["#bdbf3d", "#838530"];
 
@@ -213,6 +323,7 @@ const ForumView = () => {
                   <label>
                     <div>Title</div>
                     <input
+                    value={threadTitle}
                       type="text"
                       name="title"
                       onChange={(e) => setThreadTitle(e.target.value)}
@@ -222,6 +333,7 @@ const ForumView = () => {
                 <label>
                   <div>Text</div>
                   <textarea
+                  value={threadText}
                     name="text"
                     rows="5"
                     cols="35"
