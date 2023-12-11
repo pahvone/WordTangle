@@ -189,7 +189,7 @@ const VocabQuiz = ({ lang, diff, index }) => {
   const handleTextInput = (event, qWordSwitch) => {
     event.preventDefault();
 
-    qWordSwitch = 0
+    qWordSwitch = 0;
 
     //later for iterating through all possible answers
     /*for(var i = 0; i < lesson.translationList[qIndex].length; i++){
@@ -208,8 +208,8 @@ const VocabQuiz = ({ lang, diff, index }) => {
       correct =
         textInputRef.current.value === compareTo ||
         textInputRef.current.value === compareTo;
-    
-        let typoResult = ""
+
+    let typoResult = "";
     if (!correct) {
       //Check for typos
       const input = textInputRef.current.value.split("");
@@ -218,7 +218,7 @@ const VocabQuiz = ({ lang, diff, index }) => {
       else typoCompare = compareTo.split("");
 
       let typoCount = 0;
-      
+
       for (
         let i = 0, j = 0;
         i < input.length && j < typoCompare.length;
@@ -229,15 +229,14 @@ const VocabQuiz = ({ lang, diff, index }) => {
           if (input.length > typoCompare.length) j--;
           else if (input.length < typoCompare.length) i--;
         }
-        if (typoCount < 2) typoResult = "Typoed"
+        if (typoCount < 2) typoResult = "Typoed";
         if (typoCount > 1) typoResult = "Incorrect";
       }
     } else {
-      typoResult = "Correct"
-
+      typoResult = "Correct";
     }
 
-    handleResult(typoResult)
+    handleResult(typoResult);
 
     textInputRef.current.value = "";
     //setIndex(qIndex + 1);
@@ -274,15 +273,15 @@ const VocabQuiz = ({ lang, diff, index }) => {
   };
 
   const handleSkip = () => {
-    let s = strikes 
-    s--
-    if(strikeMode) setStrikes(s)
+    let s = strikes;
+    s--;
+    if (strikeMode) setStrikes(s);
     setResult(
       "Correct answer would've been '" +
         lesson.translationList[qIndex][0] +
         "'",
     );
-    proceed()
+    proceed();
   };
 
   const getSeconds = () => {
@@ -385,9 +384,12 @@ const VocabQuiz = ({ lang, diff, index }) => {
           <div className="quiztext col-md-2">
             {qIndex + 1} / {lesson.wordList.length}
           </div>
-         
-          <div className="col-md-5 wordcontainer">{qWord}</div> 
-          <div><h1 className="quiztimer" align="center">{getSeconds()} {getStrikes()} </h1>
+
+          <div className="col-md-5 wordcontainer">{qWord}</div>
+          <div>
+            <h1 className="quiztimer" align="center">
+              {getSeconds()} {getStrikes()}{" "}
+            </h1>
           </div>
 
           <div className="col-md-3">
@@ -455,11 +457,11 @@ const VocabQuiz = ({ lang, diff, index }) => {
   };
 
   const lessonTitle = () => {
-    return (<span className="quizText">
-      <h1 className="lessontitle" align="center">
-        {lesson.lessonName}
-      </h1>
-      
+    return (
+      <span className="quizText">
+        <h1 className="lessontitle" align="center">
+          {lesson.lessonName}
+        </h1>
       </span>
     );
   };
@@ -489,13 +491,16 @@ const VocabQuiz = ({ lang, diff, index }) => {
   };
 
   const results = () => {
-
-   
     return (
       <div className="container-fluid ">
         <div className="row justify-content-center">
           <div className="quiztext col-md-4 text-center">
-         <p> { (strikeMode && strikes === 0) || (timerMode && seconds === 0) ? "You didn't make it!" : "You survived!" }</p>
+            <p>
+              {" "}
+              {(strikeMode && strikes === 0) || (timerMode && seconds === 0)
+                ? "You didn't make it!"
+                : "You survived!"}
+            </p>
             You got {correctCount} out of {lesson.wordList.length} correct
           </div>
         </div>
