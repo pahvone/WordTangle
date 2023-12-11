@@ -189,6 +189,8 @@ const VocabQuiz = ({ lang, diff, index }) => {
   const handleTextInput = (event, qWordSwitch) => {
     event.preventDefault();
 
+    qWordSwitch = 0
+
     //later for iterating through all possible answers
     /*for(var i = 0; i < lesson.translationList[qIndex].length; i++){
             
@@ -206,7 +208,8 @@ const VocabQuiz = ({ lang, diff, index }) => {
       correct =
         textInputRef.current.value === compareTo ||
         textInputRef.current.value === compareTo;
-
+    
+        let typoResult = ""
     if (!correct) {
       //Check for typos
       const input = textInputRef.current.value.split("");
@@ -215,7 +218,7 @@ const VocabQuiz = ({ lang, diff, index }) => {
       else typoCompare = compareTo.split("");
 
       let typoCount = 0;
-
+      
       for (
         let i = 0, j = 0;
         i < input.length && j < typoCompare.length;
@@ -226,12 +229,15 @@ const VocabQuiz = ({ lang, diff, index }) => {
           if (input.length > typoCompare.length) j--;
           else if (input.length < typoCompare.length) i--;
         }
-        if (typoCount < 2) handleResult("Typoed");
-        if (typoCount > 1) handleResult("Incorrect");
+        if (typoCount < 2) typoResult = "Typoed"
+        if (typoCount > 1) typoResult = "Incorrect";
       }
     } else {
-      handleResult("Correct");
+      typoResult = "Correct"
+
     }
+
+    handleResult(typoResult)
 
     textInputRef.current.value = "";
     //setIndex(qIndex + 1);
@@ -379,8 +385,11 @@ const VocabQuiz = ({ lang, diff, index }) => {
           <div className="quiztext col-md-2">
             {qIndex + 1} / {lesson.wordList.length}
           </div>
+         
+          <div className="col-md-5 wordcontainer">{qWord}</div> 
+          <div><h1 className="quiztimer" align="center">{getSeconds()} {getStrikes()} </h1>
+          </div>
 
-          <div className="col-md-5 wordcontainer">{qWord}</div>
           <div className="col-md-3">
             <button
               className="btn skip-button w-100 text-center"
@@ -446,10 +455,12 @@ const VocabQuiz = ({ lang, diff, index }) => {
   };
 
   const lessonTitle = () => {
-    return (
+    return (<span className="quizText">
       <h1 className="lessontitle" align="center">
-        {lesson.lessonName} {getStrikes()} {getSeconds()}
+        {lesson.lessonName}
       </h1>
+      
+      </span>
     );
   };
 
