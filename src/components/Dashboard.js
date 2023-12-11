@@ -251,7 +251,10 @@ const DashBoard = () => {
         <div className="dashboardelements">
           <div className="boxcontainer">
             <div className="greycontainer">
-              <div className="title">Hi {userName}</div>
+              <div className="title">
+                Hi {userName}! <br></br> Last login:{" "}
+                {auth.currentUser.metadata.lastSignInTime}
+              </div>
               <div className="dashline" />
               <div className="latestactivity">Latest activity:</div>
               {activityElements}

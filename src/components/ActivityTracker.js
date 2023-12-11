@@ -1,6 +1,8 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, update } from "firebase/database";
 import Leaderboards from "./Leaderboards";
+import Popup from "./Popup";
+import React from "react";
 
 export class Activity {
   latest = [""];
@@ -82,6 +84,7 @@ export default class ActivityTracker {
     let tresh = 100; //calc()
 
     if (activity.xp > tresh) {
+      console.log("popup tässä");
       activity.lvl++;
       activity.xp = activity.xp - tresh;
     }
