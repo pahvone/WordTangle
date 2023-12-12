@@ -9,10 +9,76 @@ import "./ForumThreadView.css";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { format } from "prettier";
+import { getAuth } from "firebase/auth";
+import { getDatabase, onValue, push, ref, set, update } from "firebase/database";
 
 const ForumThreadView = () => {
   const { forum, threadId } = useParams();
+  const [replyText, setReplyText] = useState("")
+  const [repliesList, setRepliesList] = useState([])
+  const [thread, setThread] = useState({})
+  
+  const db = getDatabase()
+  const threadRef = ref(db, "/forums/"+forum+'/'+threadId)
+  onValue(threadRef, (snapshot) => {
+    getThread(snapshot.val())
+  }, (errorObject) => {
+    console.log('The read failed: ' + errorObject.name);
+  }); 
 
+
+  function getThread(data) {
+    let newData = data
+    const authorDbRef = ref(db, 'users/'+data.author+"/username")
+        let username="error"
+        onValue(authorDbRef, (snapshot) => {
+          username = snapshot.val()
+        });
+        newData["authorUsername"] = username
+    if(JSON.stringify(newData) != JSON.stringify(thread)){setThread(newData)}
+    let listOfReplies = []
+    if(typeof data.replies === 'object'){
+      
+      Object.keys(data.replies).forEach((reply) => {
+        
+        const replyObject = data.replies[reply]
+  
+        const dbRef = ref(db, 'users/'+replyObject.author+"/username")
+        let username="error"
+        onValue(dbRef, (snapshot) => {
+          username = snapshot.val()
+        });
+  
+        let newReply = {
+          id: reply,
+          text: replyObject.text,
+          author: replyObject.author,
+          authorUsername: username,
+          creationDate: replyObject.creationDate
+        }
+        listOfReplies.push(newReply)
+      })
+      if(JSON.stringify(listOfReplies)!=JSON.stringify(repliesList)){setRepliesList(listOfReplies)}
+    }
+  }
+
+
+  function createReply() {
+    const auth = getAuth()
+    const db = getDatabase()
+    const userId = auth.currentUser.uid;
+    const newReply = {
+      author: userId,
+      text: replyText,
+      creationDate: Date.now(),
+    };
+    const replyRef = ref(db, "forums/" + forum + '/' + threadId + '/replies')
+    const threadRef = ref(db, "forums/" + forum + '/' + threadId)
+    const newReplyRef = push(replyRef);
+    set(newReplyRef, newReply);
+    update(threadRef, { latestPost: Date.now() });
+    setReplyText("")
+  }
   const dummyReplies = [
     {
       id: 0,
@@ -119,27 +185,25 @@ const ForumThreadView = () => {
     ],
   };
 
-  const threadList = dummyThreads[forum];
-  const thread = threadList.find((x) => x.id === parseInt(threadId));
+  const threadList = dummyThreads["announcements"]
 
-  const threadTimestamp = new Date(thread.postDate);
+  const threadTimestamp = new Date(thread.creationDate)
   let threadTimestring = threadTimestamp.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
-  });
+  })
   const formattedThreadTimestamp =
-    threadTimestring + " " + threadTimestamp.toLocaleDateString();
-
+    threadTimestring + " " + threadTimestamp.toLocaleDateString()
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    if (!loaded) {
-      let tracker = new ActivityTracker();
-      tracker.updateLatestActivity("forums");
+    if (!loaded) {  
+      let tracker = new ActivityTracker()
+      tracker.updateLatestActivity("forums")
       setLoaded(true);
     }
-  });
+  })
 
-  const postColours = ["#bdbf3d", "#838530"];
+  const postColours = ["#bdbf3d", "#838530"]
 
   return (
     <div>
@@ -192,7 +256,7 @@ const ForumThreadView = () => {
               <Box sx={{ flexGrow: 1 }}>
                 <div
                   className="subforum"
-                  key={thread.id}
+                  key={thread}
                   style={{ backgroundColor: "fbff50" }}
                 >
                   <Grid justifyContent="space-between" container>
@@ -202,11 +266,11 @@ const ForumThreadView = () => {
                       </div>
                     </Grid>
                     <Grid item xs={6}>
-                      <div className="reply-text">{thread.postText}</div>
+                      <div className="reply-text">{thread.text}</div>
                     </Grid>
                     <Grid item xs={2}>
                       <div className="latest-post-header">
-                        {thread.threadCreator}
+                        {thread.authorUsername}
                       </div>
                     </Grid>
                   </Grid>
@@ -215,8 +279,8 @@ const ForumThreadView = () => {
             </div>
           </div>
           <div className="forums">
-            {thread.replies.map(function (reply, index) {
-              const timestamp = new Date(reply.postDate);
+            {repliesList.map(function (reply, index) {
+              const timestamp = new Date(reply.creationDate);
               let timestring = timestamp.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -242,7 +306,7 @@ const ForumThreadView = () => {
                         <div className="reply-text">{reply.text}</div>
                       </Grid>
                       <Grid item xs={2}>
-                        <div className="latest-post-header">{reply.poster}</div>
+                        <div className="latest-post-header">{reply.authorUsername}</div>
                       </Grid>
                     </Grid>
                   </div>
@@ -266,14 +330,16 @@ const ForumThreadView = () => {
               <form>
                 <label>
                   <textarea
+                  value={replyText}
                     name="text"
                     rows="5"
                     cols="35"
                     wrap="soft"
+                    onChange={(e) => {setReplyText(e.target.value)}}
                   ></textarea>
                 </label>
                 <div>
-                  <input type="submit" value="Submit" />
+                  <input type="button" value="Submit" onClick={(createReply)}/>
                 </div>
               </form>
             </div>

@@ -39,17 +39,13 @@ const ForumView = () => {
   function getThreads(data, forum) {
     let listOfThreads = [];
     Object.keys(data).forEach((key) => {
-      if (key != "latestPost") {
-        const dbRef = ref(db, "users/" + data[key].author + "/username");
-        let username = "error";
-        let replies = data[key].replies;
-        let repliesLength;
-        if (typeof replies === "object") {
-          repliesLength = Object.keys(replies).length;
-        } else {
-          repliesLength = 0;
-        }
-        console.log(data[key].author);
+      if(key != "latestPost"){
+        const dbRef = ref(db, 'users/'+data[key].author+"/username")
+        let username = "error"
+        let replies = data[key].replies
+        let repliesLength
+        if (typeof replies === 'object'){repliesLength = Object.keys(replies).length}
+        else{repliesLength=0}
         onValue(dbRef, (snapshot) => {
           username = snapshot.val();
         });
