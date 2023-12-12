@@ -5,7 +5,7 @@ const Games = (props) => {
         <div className="title">Hangman</div>
         <div className="dashline" />
         <div>
-          <img src={require("../img/hangman.JPG")} width="500px" />
+          <img src={require("../img/hangman.jpg")} width="500px" />
         </div>
         <div className="games-desc">
           Figure out the word before it's too late!
