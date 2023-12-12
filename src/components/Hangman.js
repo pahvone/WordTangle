@@ -97,6 +97,7 @@ const Hangman = ({langPath, userLangs, back }) => {
       
 
     const handleButtonClick = letter => {
+        if(gameOver) return
         const newGuessedLetters = [...guessedLetters, letter];
         setGuessedLetters(newGuessedLetters);
         checkLetter(letter)
