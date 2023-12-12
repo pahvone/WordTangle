@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ConfettiExplosion from "react-confetti-explosion";
 import "./Hangman.css"
+import ActivityTracker from "./ActivityTracker";
 
 const Hangman = ({ back }) => {
     const [secretWord, setSecretWord] = useState("")
@@ -30,6 +30,8 @@ const Hangman = ({ back }) => {
             if(!answerLine.includes("_")){
                 setWin(true)
                 setGameOver(true)
+                const tracker = new ActivityTracker();
+                tracker.updateLatestActivity("minigame");
             }
             
             if(visibleParts.length === hangmanParts.length){
