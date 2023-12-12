@@ -18,9 +18,9 @@ const LearnPage = (_language) => {
   const [userLangs, setUserLangs] = useState(null);
 
   const [langSelection, setLangSelection] = useState(false);
-  
-  const [quizRunning, setQuizRunning] = useState(false)
-  const [quizParams, setQuizParams] = useState(null)
+
+  const [quizRunning, setQuizRunning] = useState(false);
+  const [quizParams, setQuizParams] = useState(null);
 
   const [learnTab, setLearnTab] = useState("lessons");
   const [loaded, setLoaded] = useState(false);
@@ -267,28 +267,29 @@ const LearnPage = (_language) => {
     const par = {
       lang: currentLang,
       diff: params._diff,
-      index: params._index
-    }
-    setQuizParams(par)
-    setQuizRunning(true)
-  }
+      index: params._index,
+    };
+    setQuizParams(par);
+    setQuizRunning(true);
+  };
 
   const abortQuiz = (e) => {
-    e.preventDefault()
-    setQuizRunning(false)
-    setQuizParams(null)
-  }
+    e.preventDefault();
+    setQuizRunning(false);
+    setQuizParams(null);
+  };
 
   const langModule = () => {
     return (
       <>
         {langPathSelected ? (
           learnTab === "lessons" ? (
-              <Lessons onPassParams ={startQ}
-                currentLang={currentLang}
-                userLangs={userLangs}
-                langPath={langPath}
-              />
+            <Lessons
+              onPassParams={startQ}
+              currentLang={currentLang}
+              userLangs={userLangs}
+              langPath={langPath}
+            />
           ) : (
             <DictionarySearch currentLang={currentLang} />
           )
@@ -323,7 +324,6 @@ const LearnPage = (_language) => {
     });
   }
 
-
   if (quizRunning) {
     return (
       <div>
@@ -338,25 +338,25 @@ const LearnPage = (_language) => {
         </div>
         <Footer />
       </div>
-    )
-  }
-  else return (
-    <div>
-      <NavBar />
-      <div className="pagecontainer">
-        <div className="dashboardelements">
-          <div className="boxcontainer">{lessonsTitle()}</div>
+    );
+  } else
+    return (
+      <div>
+        <NavBar />
+        <div className="pagecontainer">
+          <div className="dashboardelements">
+            <div className="boxcontainer">{lessonsTitle()}</div>
+          </div>
+          <div className="dashboardelements">
+            <div>{langPathSelected ? learningButtons() : ""}</div>
+          </div>
+          <div className="dashboardelements">
+            {<div>{loaded ? langModule() : ""}</div>}
+          </div>
         </div>
-        <div className="dashboardelements">
-          <div>{langPathSelected ? learningButtons() : ""}</div>
-        </div>
-        <div className="dashboardelements">
-          {<div>{loaded ? langModule() : ""}</div>}
-        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
+    );
 };
 
 export default LearnPage;

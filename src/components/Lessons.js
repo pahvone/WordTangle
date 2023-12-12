@@ -15,7 +15,7 @@ const Lessons = (props) => {
   );
 
   const startQuiz = (_index, _diff) => {
-    props.onPassParams({_index, _diff})
+    props.onPassParams({ _index, _diff });
   };
 
   const allComplete = (difficulty) => {
@@ -100,34 +100,36 @@ const Lessons = (props) => {
   }
 
   const lessonContainers = () => {
-    return(  <>
-      <div className="lessoncontainer">
-        <div className="greycontainer">
-          <div className="difficulty-title">Beginner</div>
-          <div className="dashline" />
-          <div>{lessonButtons.beginner}</div>
+    return (
+      <>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Beginner</div>
+            <div className="dashline" />
+            <div>{lessonButtons.beginner}</div>
+          </div>
         </div>
-      </div>
 
-      <div className="lessoncontainer">
-        <div className="greycontainer">
-          <div className="difficulty-title">Intermediate</div>
-          <div className="dashline" />
-          <div>{lessonButtons.intermediate}</div>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Intermediate</div>
+            <div className="dashline" />
+            <div>{lessonButtons.intermediate}</div>
+          </div>
         </div>
-      </div>
 
-      <div className="lessoncontainer">
-        <div className="greycontainer">
-          <div className="difficulty-title">Advanced</div>
-          <div className="dashline" />
-          <div>{lessonButtons.advanced}</div>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Advanced</div>
+            <div className="dashline" />
+            <div>{lessonButtons.advanced}</div>
+          </div>
         </div>
-      </div>
-    </>)
-  }
+      </>
+    );
+  };
 
-  return lessonContainers()
+  return lessonContainers();
 };
 
 export default Lessons;
