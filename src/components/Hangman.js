@@ -31,17 +31,19 @@ const Hangman = ({langPath, userLangs, back }) => {
         }*/
         //return (mean / list.length)
     }
-    
+
     const generateWord = () => {
         let viableWords = [];
-        for (var i = 0; i < langPath.lessons["beginner"][0].vocab.length; i++) {
-          console.log(langPath.lessons["beginner"][0].vocab[i][0]);
-          viableWords.push(langPath.lessons["beginner"][0].vocab[i][0]);
+        for (var j = 0; j < langPath.lessons["beginner"].length; j++) {
+            for (var i = 0; i < langPath.lessons["beginner"][j].vocab.length; i++) {
+                console.log(langPath.lessons["beginner"][j].vocab[i][0]);
+                viableWords.push(langPath.lessons["beginner"][j].vocab[i][0]);
+            }
         }
         let word = viableWords[Math.floor(Math.random() * viableWords.length)]; // Corrected line
-      
+
         return word;
-      };
+    };
 
     useEffect(() => {
        // console.log(userLangs[langPath.lang], langPath)
