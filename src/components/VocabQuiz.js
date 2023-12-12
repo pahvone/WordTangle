@@ -77,13 +77,11 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
 
   const newWord = () => {
     let qWordSwitch = Math.floor(Math.random() * 2);
-    console.log("quizword() " + qWordSwitch);
     var qWord = "";
 
     if (qWordSwitch === 0) qWord = lesson.wordList[qIndex];
     else qWord = lesson.translationList[qIndex][0];
 
-    console.log(qWord);
     setQWord(qWord);
 
     createChoices(qWordSwitch);
@@ -428,8 +426,6 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
     if (qWordSwitch === 0) word = lesson.translationList[qIndex][0];
     else if (qWordSwitch === 1) word = lesson.wordList[qIndex];
     let elements = [];
-
-    console.log("word", word);
 
     elements.push(
       <div key={"button0"} className="row">

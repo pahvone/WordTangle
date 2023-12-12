@@ -37,7 +37,6 @@ const LearnPage = (_language) => {
 
   useEffect(() => {
     if (!quizRunning) {
-      console.log("hallo");
       if (
         state &&
         state.language &&
@@ -63,9 +62,6 @@ const LearnPage = (_language) => {
           }
         });
       }
-    }
-    if (quizRunning) {
-      console.log("running");
     }
   }, [quizRunning]);
 
