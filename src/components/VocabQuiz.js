@@ -176,7 +176,6 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
       if (strikeMode) {
         var s = strikes;
         s -= 1;
-        console.log(s);
         setStrikes(s);
         if (s === 0) endQuiz();
       }
