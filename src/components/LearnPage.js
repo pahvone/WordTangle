@@ -35,10 +35,9 @@ const LearnPage = (_language) => {
   const flagStyle = "/flat/64.png";
   const [flagMenu, setFlagMenu] = useState(false);
 
-
   useEffect(() => {
-    if(!quizRunning) {
-      console.log("hallo")
+    if (!quizRunning) {
+      console.log("hallo");
       if (
         state &&
         state.language &&
@@ -64,11 +63,11 @@ const LearnPage = (_language) => {
           }
         });
       }
-      }
-      if(quizRunning){
-        console.log("running")
-      }
-  }, [quizRunning])
+    }
+    if (quizRunning) {
+      console.log("running");
+    }
+  }, [quizRunning]);
 
   const toggleDropdown = () => {
     setFlagMenu(!flagMenu);
@@ -338,10 +337,9 @@ const LearnPage = (_language) => {
   };
 
   const loadingSpinner = () => {
-    return <Spinner animation="border" role="status" />
-  }
+    return <Spinner animation="border" role="status" />;
+  };
 
- 
   if (quizRunning) {
     return (
       <div>
@@ -368,10 +366,12 @@ const LearnPage = (_language) => {
                 <div className="boxcontainer">{lessonsTitle()}</div>
               </div>
               <div className="dashboardelements">
-                <div>{langPathSelected ? learningButtons() : {loadingSpinner}}</div>
+                <div>
+                  {langPathSelected ? learningButtons() : { loadingSpinner }}
+                </div>
               </div>
               <div className="dashboardelements">
-                <div>{loaded ? langModule() : {loadingSpinner}}</div>
+                <div>{loaded ? langModule() : { loadingSpinner }}</div>
               </div>{" "}
               s
             </>

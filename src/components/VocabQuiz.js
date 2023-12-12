@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, get, ref, update} from "firebase/database";
+import { getDatabase, get, ref, update } from "firebase/database";
 import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 import ActivityTracker from "./ActivityTracker";
@@ -29,7 +29,6 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   const db = getDatabase();
   const auth = getAuth();
 
-
   useEffect(() => {
     if (qState === 0 && lesson === null)
       setLesson(new Lesson(lang, "beginner", index));
@@ -52,21 +51,20 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
       return () => clearInterval(interval);
     }
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-
   }, [qIndex, qState, lesson, seconds]);
 
   const handleBeforeUnload = (e) => {
-    const message = "Are you sure you want to leave? Your changes may not be saved.";
-    e.returnValue = message;  // Standard for most browsers
-    return message;           // For some older browsers
+    const message =
+      "Are you sure you want to leave? Your changes may not be saved.";
+    e.returnValue = message; // Standard for most browsers
+    return message; // For some older browsers
   };
 
-  
   const start = () => {
     setQState(2);
     newWord();
@@ -78,15 +76,14 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   };
 
   const newWord = () => {
-  
     let qWordSwitch = Math.floor(Math.random() * 2);
     console.log("quizword() " + qWordSwitch);
-    var qWord = ""
+    var qWord = "";
 
-    if (qWordSwitch === 0) qWord = lesson.wordList[qIndex]
-    else qWord = lesson.translationList[qIndex][0]
+    if (qWordSwitch === 0) qWord = lesson.wordList[qIndex];
+    else qWord = lesson.translationList[qIndex][0];
 
-    console.log(qWord)
+    console.log(qWord);
     setQWord(qWord);
 
     createChoices(qWordSwitch);
@@ -382,9 +379,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
     }
     return indexes;
   };
-  const randomizedWordOrder = () => {
-
-  }
+  const randomizedWordOrder = () => {};
   //Generate the currently quizzed word
   const quizWord = () => {
     //var qWord = lesson.wordList[qIndex];
@@ -392,7 +387,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
 
     // randomly switch quizzed word to the other lang.
     // currently changing input mode breaks this because re-render
-    
+
     //setWordGenerated(true);
 
     return (
@@ -434,7 +429,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
     else if (qWordSwitch === 1) word = lesson.wordList[qIndex];
     let elements = [];
 
-    console.log("word", word)
+    console.log("word", word);
 
     elements.push(
       <div key={"button0"} className="row">
@@ -452,7 +447,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
     let wrongAnswers = createWrongAnswers(qIndex);
 
     for (var i = 0; i < 3; i++) {
-      word = ""
+      word = "";
       if (qWordSwitch === 0) word = lesson.translationList[wrongAnswers[i]][0];
       else if (qWordSwitch === 1) word = lesson.wordList[wrongAnswers[i]];
 
