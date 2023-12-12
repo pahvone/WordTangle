@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { Spinner } from "react-bootstrap";
 import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
 import "./VocabLesson.css";
 import "../App.css";
@@ -9,6 +10,7 @@ import Footer from "./Footter";
 import { LangPath, UserLangs as UserLangs } from "./LangPath";
 import Lessons from "./Lessons";
 import DictionarySearch from "./DictionaryModule";
+import VocabQuiz from "./VocabQuiz";
 
 const LearnPage = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
@@ -17,6 +19,9 @@ const LearnPage = (_language) => {
   const [userLangs, setUserLangs] = useState(null);
 
   const [langSelection, setLangSelection] = useState(false);
+
+  const [quizRunning, setQuizRunning] = useState(false);
+  const [quizParams, setQuizParams] = useState(null);
 
   const [learnTab, setLearnTab] = useState("lessons");
   const [loaded, setLoaded] = useState(false);
@@ -30,13 +35,46 @@ const LearnPage = (_language) => {
   const flagStyle = "/flat/64.png";
   const [flagMenu, setFlagMenu] = useState(false);
 
+  useEffect(() => {
+    if (!quizRunning) {
+      console.log("hallo");
+      if (
+        state &&
+        state.language &&
+        currentLang &&
+        currentLang !== state.language
+      ) {
+        setLang(state.language);
+        state.language = null;
+      } else if (!state || !currentLang) {
+        onAuthStateChanged(auth, (user) => {
+          const userId = auth.currentUser.uid;
+          if (user) {
+            get(ref(db, "/users/" + userId)).then((snapshot) => {
+              if (snapshot.val().langs === undefined) {
+                setLangPathSelected(false);
+                setLangSelection(true);
+                setLoaded(true);
+              } else {
+                setLoaded(false);
+                initLangPath(snapshot.val());
+              }
+            });
+          }
+        });
+      }
+    }
+    if (quizRunning) {
+      console.log("running");
+    }
+  }, [quizRunning]);
+
   const toggleDropdown = () => {
     setFlagMenu(!flagMenu);
   };
 
   const initLangPath = (data) => {
     if (loaded) return;
-    //console.log(data)
     setUserLangs(data.langs);
     setLangPath(new LangPath(data.currentLang));
     setCurrentLang(data.currentLang);
@@ -122,18 +160,20 @@ const LearnPage = (_language) => {
   };
 
   const setLang = async (lang) => {
+    setLoaded(false);
+    setLangPathSelected(false);
     console.log("Set lang to " + lang);
 
     let newLangPath = new LangPath(lang);
     setCurrentLang(lang);
     setLangPath(newLangPath);
+    await updateLangsToDB(newLangPath).then(() => {
+      setLangPathSelected(true);
+      setLangSelection(false);
+      //setLoaded(true);
 
-    updateLangsToDB(newLangPath);
-    setLangPathSelected(true);
-    setLangSelection(false);
-    setLoaded(true);
-
-    if (flagMenu) toggleDropdown();
+      if (flagMenu) toggleDropdown();
+    });
   };
 
   const getLangFlags = () => {
@@ -259,12 +299,29 @@ const LearnPage = (_language) => {
     );
   };
 
+  const startQ = (params) => {
+    const par = {
+      lang: currentLang,
+      diff: params._diff,
+      index: params._index,
+    };
+    setQuizParams(par);
+    setQuizRunning(true);
+  };
+
+  const abortQuiz = (e) => {
+    e.preventDefault();
+    setQuizRunning(false);
+    setQuizParams(null);
+  };
+
   const langModule = () => {
     return (
       <>
         {langPathSelected ? (
           learnTab === "lessons" ? (
             <Lessons
+              onPassParams={startQ}
               currentLang={currentLang}
               userLangs={userLangs}
               langPath={langPath}
@@ -279,47 +336,54 @@ const LearnPage = (_language) => {
     );
   };
 
-  if (
-    state &&
-    state.language &&
-    currentLang &&
-    currentLang !== state.language
-  ) {
-    setLang(state.language);
-    state.language = null;
-  } else if (!state || !currentLang) {
-    onAuthStateChanged(auth, (user) => {
-      const userId = auth.currentUser.uid;
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if (snapshot.val().langs === undefined) {
-            setLangPathSelected(false);
-            setLangSelection(true);
-          } else {
-            initLangPath(snapshot.val());
-          }
-        });
-      }
-    });
-  }
+  const loadingSpinner = () => {
+    return <Spinner animation="border" role="status" />;
+  };
 
-  return (
-    <div>
-      <NavBar />
-      <div className="pagecontainer">
-        <div className="dashboardelements">
-          <div className="boxcontainer">{lessonsTitle()}</div>
+  if (quizRunning) {
+    return (
+      <div>
+        <NavBar />
+        <div className="pagecontainer">
+          <VocabQuiz
+            back={abortQuiz}
+            lang={currentLang}
+            diff={quizParams.diff}
+            index={quizParams.index}
+          />
         </div>
-        <div className="dashboardelements">
-          <div>{langPathSelected ? learningButtons() : ""}</div>
-        </div>
-        <div className="dashboardelements">
-          {<div>{loaded ? langModule() : ""}</div>}
-        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
+    );
+  } else
+    return (
+      <div>
+        <NavBar />
+        <div className="pagecontainer">
+          {loaded ? (
+            <>
+              <div className="dashboardelements">
+                <div className="boxcontainer">{lessonsTitle()}</div>
+              </div>
+              <div className="dashboardelements">
+                <div>
+                  {langPathSelected ? learningButtons() : { loadingSpinner }}
+                </div>
+              </div>
+              <div className="dashboardelements">
+                <div>{loaded ? langModule() : { loadingSpinner }}</div>
+              </div>{" "}
+              s
+            </>
+          ) : (
+            <div className="dashboardelements align-items-center w-100">
+              {loadingSpinner}
+            </div>
+          )}
+        </div>
+        <Footer />
+      </div>
+    );
 };
 
 export default LearnPage;

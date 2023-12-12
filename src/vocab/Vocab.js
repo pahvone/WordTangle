@@ -16,7 +16,9 @@ export default class Lesson {
       }
       return;
     }
+
     this.lessonName = vocabList.lessons[diff][index].name;
+    this.lang = lang;
     var vocab = vocabList.lessons[diff][index].vocab;
 
     for (let i = 0; i < vocab.length; i++) {

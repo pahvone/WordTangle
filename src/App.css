@@ -161,6 +161,12 @@
   padding-left: 10px;
 }
 
+.heartscontainer {
+  flex-direction: row;
+  padding-right: 30px;
+  width: 100%;
+}
+
 .dashboardslogan {
   font-family: "Fira Mono", monospace;
   color: #000;
@@ -288,6 +294,12 @@
   color: #000;
   font-size: 50px;
   font-weight: bolder;
+  color: var(--textcolor);
+}
+
+.quiztimer {
+  padding: 10px;
+  color: #000;
   color: var(--textcolor);
 }
 

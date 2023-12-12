@@ -46,18 +46,83 @@
             ["lintu", ["bird"]],
             ["kala", ["fish"]]
           ]
+        },{
+          "name": "Basic verbs",
+          "vocab": [
+            ["kirjoittaa", ["to write"]],
+            ["lukea", ["to read"]],
+            ["kävellä", ["to walk"]],
+            ["juoda", ["to drink"]],
+            ["syödä", ["to eat"]],
+            ["nukkua", ["to sleep"]],
+            ["puhua", ["to speak"]],
+            ["kuunnella", ["to listen"]],
+            ["katsoa", ["to look", "to watch"]],
+            ["tehdä", ["to do", "to make"]],
+            ["ajatella", ["to think"]],
+            ["matkustaa", ["to travel"]],
+            ["soittaa", ["to call", "to play (instrument)"]],
+            ["ostaa", ["to buy"]],
+            ["myydä", ["to sell"]],
+            ["tavata", ["to meet"]],
+            ["opiskella", ["to study"]],
+            ["työskennellä", ["to work"]],
+            ["harjoitella", ["to practice"]],
+            ["rakastaa", ["to love"]]
+          ]
         }]
         ,
         "intermediate": [
           {
-            "name": "Name",
-            "vocab": []
+            "name" : "Basic sentences",
+            "vocab": [
+              ["Moi! Miten menee?", ["Hello! How are you?"]],
+              ["Minä olen opiskelija.", ["I am a student."]],
+              ["Olen nälkäinen. Haluan syödä.", ["I am hungry. I want to eat."]],
+              ["Mikä on nimesi?", ["What is your name?"]],
+              ["Olen Suomesta.", ["I am from Finland."]],
+              ["Haluaisin kahvia, kiitos.", ["I would like coffee, please."]],
+              ["Missä on kauppa?", ["Where is the store?"]],
+              ["Kuinka vanha olet?", ["How old are you?"]],
+              ["Minä puhun vähän suomea.", ["I speak a little Finnish."]],
+              ["Oletko ystävällinen?", ["Are you friendly?"]],
+              ["Minä rakastan musiikkia.", ["I love music."]],
+              ["Ostan kirjan.", ["I am buying a book."]],
+              ["Mitä kuuluu?", ["How are you?"]],
+              ["Olen eksyksissä.", ["I am lost."]],
+              ["Kuulen sinut selvästi.", ["I hear you clearly."]],
+              ["Mikä päivä tänään on?", ["What day is it today?"]],
+              ["Hän on opettaja.", ["He/She is a teacher."]],
+              ["Olen kiitollinen avustasi.", ["I am grateful for your help."]],
+              ["Olen väsynyt.", ["I am tired."]]
+            ]
           }
         ],
         "advanced": [
           {
-            "name": "Name",
-            "vocab": []
+            "name": "High-concepts",
+            "vocab": [
+              ["abstrakti", ["abstract"]],
+              ["analogia", ["analogy"]],
+              ["ekspansiivinen", ["expansive"]],
+              ["konkreettinen", ["concrete"]],
+              ["jäsentää", ["to structure"]],
+              ["kompleksinen", ["complex"]],
+              ["integroitu", ["integrated"]],
+              ["monitahoinen", ["multifaceted"]],
+              ["konvergenssi", ["convergence"]],
+              ["divergenssi", ["divergence"]],
+              ["efektiivinen", ["efficient"]],
+              ["futuristinen", ["futuristic"]],
+              ["heuristinen", ["heuristic"]],
+              ["interaktiivinen", ["interactive"]],
+              ["johdonmukainen", ["consistent"]],
+              ["eksponentiaalinen", ["exponential"]],
+              ["perifeerinen", ["peripheral"]],
+              ["resurssi", ["resource"]],
+              ["transsendentti", ["transcendent"]],
+              ["virtuoosi", ["virtuoso"]]
+            ]
           }
         ]
     }
