@@ -37,6 +37,14 @@ const ForumThreadView = () => {
     },
   );
 
+  const Button = ({ text, onClick }) => {
+    return (
+      <button className="styled-button" onClick={onClick}>
+        {text}
+      </button>
+    );
+  };
+
   function getThread(data) {
     let newData = data;
     const authorDbRef = ref(db, "users/" + data.author + "/username");
@@ -354,7 +362,7 @@ const ForumThreadView = () => {
                   ></textarea>
                 </label>
                 <div>
-                  <input type="button" value="Submit" onClick={createReply} />
+                  <Button onClick={createReply} text="Submit" />
                 </div>
               </form>
             </div>

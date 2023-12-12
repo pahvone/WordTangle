@@ -21,6 +21,14 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import fb from "../firebase";
 
+const Button = ({ text, onClick }) => {
+  return (
+    <button className="styled-button" onClick={onClick}>
+      {text}
+    </button>
+  );
+};
+
 const ForumView = () => {
   const [threadList, setThreadList] = useState([]);
   const { forum } = useParams();
@@ -358,7 +366,7 @@ const ForumView = () => {
                   ></textarea>
                 </label>
                 <div>
-                  <input type="button" value="Submit" onClick={createThread} />
+                  <Button onClick={createThread} text="Submit" />
                 </div>
               </form>
             </div>
