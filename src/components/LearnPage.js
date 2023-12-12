@@ -126,10 +126,10 @@ const LearnPage = (_language) => {
   };
 
   const setLang = async (lang) => {
-    setLoaded(false)
-    setLangPathSelected(false)
+    setLoaded(false);
+    setLangPathSelected(false);
     console.log("Set lang to " + lang);
-    
+
     let newLangPath = new LangPath(lang);
     setCurrentLang(lang);
     setLangPath(newLangPath);
@@ -137,11 +137,9 @@ const LearnPage = (_language) => {
       setLangPathSelected(true);
       setLangSelection(false);
       //setLoaded(true);
-  
+
       if (flagMenu) toggleDropdown();
     });
-
- 
   };
 
   const getLangFlags = () => {
@@ -284,7 +282,6 @@ const LearnPage = (_language) => {
   };
 
   const langModule = () => {
-  
     return (
       <>
         {langPathSelected ? (
@@ -314,7 +311,6 @@ const LearnPage = (_language) => {
     setLang(state.language);
     state.language = null;
   } else if (!state || !currentLang) {
-
     onAuthStateChanged(auth, (user) => {
       const userId = auth.currentUser.uid;
       if (user) {
@@ -345,32 +341,34 @@ const LearnPage = (_language) => {
         </div>
         <Footer />
       </div>
-    )
-  }
-  else return (
-    <div>
-      <NavBar />
-      <div className="pagecontainer">
-        
-
-        {loaded ? <>
-        <div className="dashboardelements">
-          
-          <div className="boxcontainer">{lessonsTitle()}</div>
+    );
+  } else
+    return (
+      <div>
+        <NavBar />
+        <div className="pagecontainer">
+          {loaded ? (
+            <>
+              <div className="dashboardelements">
+                <div className="boxcontainer">{lessonsTitle()}</div>
+              </div>
+              <div className="dashboardelements">
+                <div>{langPathSelected ? learningButtons() : ""}</div>
+              </div>
+              <div className="dashboardelements">
+                <div>{loaded ? langModule() : ""}</div>
+              </div>{" "}
+              s
+            </>
+          ) : (
+            <div className="dashboardelements align-items-center w-100">
+              <Spinner animation="border" role="status" />
+            </div>
+          )}
         </div>
-        <div className="dashboardelements">
-          <div>{langPathSelected ? learningButtons() : ""}</div>
-        </div>
-        <div className="dashboardelements">
-          <div>{loaded ? langModule() : ""}</div>
-        </div> s
-      </> : <div className="dashboardelements align-items-center w-100"><Spinner animation="border" role="status" /></div>
-        }
-
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
+    );
 };
 
 export default LearnPage;
