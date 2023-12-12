@@ -29,7 +29,7 @@ export default class ActivityTracker {
       case "dictionary":
         return "Searched the dictionary";
       case "minigame":
-        return "Played a mini-game";
+        return "Won in a mini-game";
     }
   }
 

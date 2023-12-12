@@ -529,7 +529,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
           back(e);
         }}
       >
-        Back to lesson path
+        Back to lessons
       </button>
     );
   };

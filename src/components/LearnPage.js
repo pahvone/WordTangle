@@ -11,6 +11,8 @@ import { LangPath, UserLangs as UserLangs } from "./LangPath";
 import Lessons from "./Lessons";
 import DictionarySearch from "./DictionaryModule";
 import VocabQuiz from "./VocabQuiz";
+import Games from "./Games";
+import Hangman from "./Hangman";
 
 const LearnPage = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
@@ -22,6 +24,9 @@ const LearnPage = (_language) => {
 
   const [quizRunning, setQuizRunning] = useState(false);
   const [quizParams, setQuizParams] = useState(null);
+
+  const [gameRunning, setGameRunning] = useState(false);
+  const [game, setGame] = useState(false);
 
   const [learnTab, setLearnTab] = useState("lessons");
   const [loaded, setLoaded] = useState(false);
@@ -67,6 +72,11 @@ const LearnPage = (_language) => {
 
   const toggleDropdown = () => {
     setFlagMenu(!flagMenu);
+  };
+
+  const setGameComp = (game) => {
+    setGame(game);
+    setGameRunning(true);
   };
 
   const initLangPath = (data) => {
@@ -273,6 +283,15 @@ const LearnPage = (_language) => {
         >
           DICTIONARY
         </button>
+
+        <button
+          className={`btn learningbutton${
+            learnTab === "games" ? "-active" : ""
+          }`}
+          onClick={() => setLearnTab("games")}
+        >
+          GAMES
+        </button>
       </div>
     );
   };
@@ -311,31 +330,39 @@ const LearnPage = (_language) => {
     setQuizParams(null);
   };
 
+  const abortGame = (e) => {
+    e.preventDefault();
+    setGameRunning(false);
+  };
+
   const langModule = () => {
-    return (
-      <>
-        {langPathSelected ? (
-          learnTab === "lessons" ? (
-            <Lessons
-              onPassParams={startQ}
-              currentLang={currentLang}
-              userLangs={userLangs}
-              langPath={langPath}
-            />
-          ) : (
-            <DictionarySearch currentLang={currentLang} />
-          )
-        ) : (
-          languageSelection()
-        )}
-      </>
-    );
+    if (!langPathSelected) return languageSelection();
+
+    if (learnTab === "lessons") {
+      return (
+        <Lessons
+          onPassParams={startQ}
+          currentLang={currentLang}
+          userLangs={userLangs}
+          langPath={langPath}
+        />
+      );
+    } else if (learnTab === "dictionary")
+      return <DictionarySearch currentLang={currentLang} />;
+    else if (learnTab === "games")
+      return <Games currentLang={currentLang} onSetGame={setGameComp} />;
   };
 
   const loadingSpinner = () => {
     return <Spinner animation="border" role="status" />;
   };
 
+  const getGame = () => {
+    if (game === "hangman")
+      return (
+        <Hangman langPath={langPath} userLangs={userLangs} back={abortGame} />
+      );
+  };
   if (quizRunning) {
     return (
       <div>
@@ -351,6 +378,14 @@ const LearnPage = (_language) => {
         <Footer />
       </div>
     );
+  } else if (gameRunning) {
+    return (
+      <div>
+        <NavBar />
+        <div className="pagecontainer">{getGame()}</div>
+        <Footer />
+      </div>
+    );
   } else
     return (
       <div>
@@ -363,17 +398,16 @@ const LearnPage = (_language) => {
               </div>
               <div className="dashboardelements">
                 <div>
-                  {langPathSelected ? learningButtons() : { loadingSpinner }}
+                  {langPathSelected ? learningButtons() : loadingSpinner()}
                 </div>
               </div>
               <div className="dashboardelements">
-                <div>{loaded ? langModule() : { loadingSpinner }}</div>
+                <div>{loaded ? langModule() : loadingSpinner()}</div>
               </div>{" "}
-              s
             </>
           ) : (
             <div className="dashboardelements align-items-center w-100">
-              {loadingSpinner}
+              {loadingSpinner()}
             </div>
           )}
         </div>
