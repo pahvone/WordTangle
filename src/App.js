@@ -10,7 +10,6 @@ import Forums from "./components/Shoutbox";
 import About from "./components/About";
 import UsernameChange from "./components/UsernameChange";
 import LearnPage from "./components/LearnPage";
-import LessonPage from "./components/LessonPage";
 import Lessons from "./components/Lessons";
 import PasswordChange from "./components/PasswordChange";
 import Dashboard from "./components/Dashboard";
@@ -34,13 +33,6 @@ const App = () => {
         <Route path="/PasswordChange" element={<PasswordChange />} />
         <Route path="/LearnPage" element={<LearnPage />} />
         <Route path="/LearnPage:lang" element={<LearnPage />} />
-        {/*<Route path="/Lessons" element={<Lessons />} />
-        <Route path="/Lessons:lang" element={<Lessons />} />*/}
-        <Route
-          path="/LessonPage:lang/:diff/:index/:sm"
-          element={<LessonPage />}
-        />
-        <Route path="/LessonPage" element={<LessonPage />} /> {/*debug*/}
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/SignOut" element={<SignOut />} />
         <Route path="/UserDataPage" element={<UserDataPage />} />

@@ -6,7 +6,7 @@ import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 import ActivityTracker from "./ActivityTracker";
 
-const VocabQuiz = ({ lang, diff, index }) => {
+const VocabQuiz = ({ lang, diff, index, back }) => {
   const [qIndex, setIndex] = useState(0);
   const [prevQIndex, setPrevQIndex] = useState(-1);
 
@@ -515,8 +515,8 @@ const VocabQuiz = ({ lang, diff, index }) => {
     return (
       <button
         className="btn choice-button w-100 text-center"
-        onClick={() => {
-          nav("/LearnPage");
+        onClick={(e) => {
+          back(e);
         }}
       >
         Back to lesson path

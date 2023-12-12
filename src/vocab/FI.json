@@ -46,7 +46,31 @@
             ["lintu", ["bird"]],
             ["kala", ["fish"]]
           ]
-        }]
+        },
+      {
+        "name" : "Basic sentences",
+        "vocab": [
+          ["Moi! Miten menee?", ["Hello! How are you?"]],
+          ["Minä olen opiskelija.", ["I am a student."]],
+          ["Olen nälkäinen. Haluan syödä.", ["I am hungry. I want to eat."]],
+          ["Mikä on nimesi?", ["What is your name?"]],
+          ["Olen Suomesta.", ["I am from Finland."]],
+          ["Haluaisin kahvia, kiitos.", ["I would like coffee, please."]],
+          ["Missä on kauppa?", ["Where is the store?"]],
+          ["Kuinka vanha olet?", ["How old are you?"]],
+          ["Minä puhun vähän suomea.", ["I speak a little Finnish."]],
+          ["Oletko ystävällinen?", ["Are you friendly?"]],
+          ["Minä rakastan musiikkia.", ["I love music."]],
+          ["Ostan kirjan.", ["I am buying a book."]],
+          ["Mitä kuuluu?", ["How are you?"]],
+          ["Olen eksyksissä.", ["I am lost."]],
+          ["Kuulen sinut selvästi.", ["I hear you clearly."]],
+          ["Mikä päivä tänään on?", ["What day is it today?"]],
+          ["Hän on opettaja.", ["He/She is a teacher."]],
+          ["Olen kiitollinen avustasi.", ["I am grateful for your help."]],
+          ["Olen väsynyt.", ["I am tired."]]
+        ]
+      }]
         ,
         "intermediate": [
           {
