@@ -12,6 +12,7 @@ import Lessons from "./Lessons";
 import DictionarySearch from "./DictionaryModule";
 import VocabQuiz from "./VocabQuiz";
 import Games from "./Games";
+import Hangman from "./Hangman";
 
 const LearnPage = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
@@ -23,6 +24,9 @@ const LearnPage = (_language) => {
 
   const [quizRunning, setQuizRunning] = useState(false);
   const [quizParams, setQuizParams] = useState(null);
+
+  const [gameRunning, setGameRunning] = useState(false)
+  const [game, setGame] = useState(false)
 
   const [learnTab, setLearnTab] = useState("lessons");
   const [loaded, setLoaded] = useState(false);
@@ -69,6 +73,11 @@ const LearnPage = (_language) => {
   const toggleDropdown = () => {
     setFlagMenu(!flagMenu);
   };
+  
+  const setGameComp = (game) => {
+    setGame(game)
+    setGameRunning(true)
+  }
 
   const initLangPath = (data) => {
     if (loaded) return;
@@ -322,6 +331,11 @@ const LearnPage = (_language) => {
     setQuizParams(null);
   };
 
+  const abortGame = (e) => {
+    e.preventDefault();
+    setGameRunning(false)
+  };
+
   const langModule = () => {
     if(!langPathSelected) return languageSelection()
   
@@ -334,7 +348,7 @@ const LearnPage = (_language) => {
             />
     }
     else if(learnTab === "dictionary") return <DictionarySearch currentLang={currentLang} />
-    else if(learnTab === "games") return <Games/>
+    else if(learnTab === "games") return <Games currentLang={currentLang} onSetGame={setGameComp}/>
 
   };
 
@@ -342,6 +356,9 @@ const LearnPage = (_language) => {
     return <Spinner animation="border" role="status" />;
   };
 
+  const getGame = () => {
+    if(game === "hangman") return <Hangman back={abortGame}/>
+  }
   if (quizRunning) {
     return (
       <div>
@@ -357,7 +374,20 @@ const LearnPage = (_language) => {
         <Footer />
       </div>
     );
-  } else
+  } 
+  else if(gameRunning){
+
+    return (
+      <div>
+        <NavBar />
+        <div className="pagecontainer">
+          {getGame()}
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+  else
     return (
       <div>
         <NavBar />
