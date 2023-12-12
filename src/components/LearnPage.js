@@ -357,7 +357,7 @@ const LearnPage = (_language) => {
   };
 
   const getGame = () => {
-    if(game === "hangman") return <Hangman back={abortGame}/>
+    if(game === "hangman") return <Hangman back={abortGame}/> 
   }
   if (quizRunning) {
     return (
@@ -399,17 +399,16 @@ const LearnPage = (_language) => {
               </div>
               <div className="dashboardelements">
                 <div>
-                  {langPathSelected ? learningButtons() : { loadingSpinner }}
+                  {langPathSelected ? learningButtons() :  loadingSpinner()}
                 </div>
               </div>
               <div className="dashboardelements">
-                <div>{loaded ? langModule() : { loadingSpinner }}</div>
+                <div>{loaded ? langModule() : loadingSpinner()}</div>
               </div>{" "}
-              s
             </>
           ) : (
             <div className="dashboardelements align-items-center w-100">
-              {loadingSpinner}
+              {loadingSpinner()}
             </div>
           )}
         </div>
