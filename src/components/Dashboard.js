@@ -143,7 +143,8 @@ const DashBoard = () => {
       try {
         entries.sort((a, b) => b.xpGain - a.xpGain);
 
-        for (var i = 0; i < lb.entries.length; i++) {
+        for (var i = 0; i < 10; i++) { //only first 10 entries
+          if(entries[i] === undefined) break;
           await leaderboards.getUserName(entries[i].id).then((username) => {
             lbElements.push(
               <div className="leaderlist" key={"lbEntry" + i}>
@@ -157,7 +158,7 @@ const DashBoard = () => {
         setLeaderBoardElements(lbElements);
       } catch (error) {
         console.log(error);
-        console.log("Database structure is fkd");
+        console.log("Check database structure");
         lbElements.push(
           <>
             <div>Failed to fetch leaderboards</div>
