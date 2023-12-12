@@ -78,8 +78,18 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   };
 
   const newWord = () => {
-    setQWord(lesson.wordList[qIndex]);
-    createChoices(0);
+  
+    let qWordSwitch = Math.floor(Math.random() * 2);
+    console.log("quizword() " + qWordSwitch);
+    var qWord = ""
+
+    if (qWordSwitch === 0) qWord = lesson.wordList[qIndex]
+    else qWord = lesson.translationList[qIndex][0]
+
+    console.log(qWord)
+    setQWord(qWord);
+
+    createChoices(qWordSwitch);
   };
 
   const checkEnd = () => {
@@ -372,7 +382,9 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
     }
     return indexes;
   };
+  const randomizedWordOrder = () => {
 
+  }
   //Generate the currently quizzed word
   const quizWord = () => {
     //var qWord = lesson.wordList[qIndex];
@@ -380,15 +392,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
 
     // randomly switch quizzed word to the other lang.
     // currently changing input mode breaks this because re-render
-    /*
-        let qWordSwitch = Math.floor(Math.random() * 2);
-        console.log("quizword() " + qWordSwitch);
-        createChoices(qWordSwitch)
-        var qWord = ""
-
-
-        if (qWordSwitch == 0) qWord = lesson.wordList[qIndex]
-        else qWord = lesson.translationList[qIndex][0]*/
+    
     //setWordGenerated(true);
 
     return (
@@ -424,11 +428,13 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   //Generate answer choices for the currently quizzed word
   const createChoices = (qWordSwitch) => {
     let word = "";
-    word = lesson.translationList[qIndex][0];
+    //word = lesson.translationList[qIndex][0];
 
     if (qWordSwitch === 0) word = lesson.translationList[qIndex][0];
     else if (qWordSwitch === 1) word = lesson.wordList[qIndex];
     let elements = [];
+
+    console.log("word", word)
 
     elements.push(
       <div key={"button0"} className="row">
@@ -446,7 +452,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
     let wrongAnswers = createWrongAnswers(qIndex);
 
     for (var i = 0; i < 3; i++) {
-      word = lesson.translationList[wrongAnswers[i]][0];
+      word = ""
       if (qWordSwitch === 0) word = lesson.translationList[wrongAnswers[i]][0];
       else if (qWordSwitch === 1) word = lesson.wordList[wrongAnswers[i]];
 
