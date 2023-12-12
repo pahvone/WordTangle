@@ -36,7 +36,6 @@ const Hangman = ({ langPath, userLangs, back }) => {
     let viableWords = [];
     for (var j = 0; j < langPath.lessons["beginner"].length; j++) {
       for (var i = 0; i < langPath.lessons["beginner"][j].vocab.length; i++) {
-        console.log(langPath.lessons["beginner"][j].vocab[i]);
         viableWords.push(langPath.lessons["beginner"][j].vocab[i]);
       }
     }
@@ -47,7 +46,6 @@ const Hangman = ({ langPath, userLangs, back }) => {
   };
 
   useEffect(() => {
-    // console.log(userLangs[langPath.lang], langPath)
     if (!started) {
       var word = generateWord();
       setSecretWord(word);
@@ -99,7 +97,6 @@ const Hangman = ({ langPath, userLangs, back }) => {
   };
 
   const generateLine = (word) => {
-    console.log(word);
     var line = [];
     for (var i = 0; i < word.length; i++) {
       line.push("_");
