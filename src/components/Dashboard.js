@@ -143,8 +143,9 @@ const DashBoard = () => {
       try {
         entries.sort((a, b) => b.xpGain - a.xpGain);
 
-        for (var i = 0; i < 10; i++) { //only first 10 entries
-          if(entries[i] === undefined) break;
+        for (var i = 0; i < 10; i++) {
+          //only first 10 entries
+          if (entries[i] === undefined) break;
           await leaderboards.getUserName(entries[i].id).then((username) => {
             lbElements.push(
               <div className="leaderlist" key={"lbEntry" + i}>
