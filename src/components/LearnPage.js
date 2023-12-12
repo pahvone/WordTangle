@@ -11,6 +11,7 @@ import { LangPath, UserLangs as UserLangs } from "./LangPath";
 import Lessons from "./Lessons";
 import DictionarySearch from "./DictionaryModule";
 import VocabQuiz from "./VocabQuiz";
+import Games from "./Games";
 
 const LearnPage = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
@@ -273,6 +274,16 @@ const LearnPage = (_language) => {
         >
           DICTIONARY
         </button>
+
+
+        <button
+          className={`btn learningbutton${
+            learnTab === "games" ? "-active" : ""
+          }`}
+          onClick={() => setLearnTab("games")}
+        >
+          GAMES
+        </button>
       </div>
     );
   };
@@ -312,24 +323,19 @@ const LearnPage = (_language) => {
   };
 
   const langModule = () => {
-    return (
-      <>
-        {langPathSelected ? (
-          learnTab === "lessons" ? (
-            <Lessons
+    if(!langPathSelected) return languageSelection()
+  
+    if(learnTab === "lessons") {
+      return  <Lessons
               onPassParams={startQ}
               currentLang={currentLang}
               userLangs={userLangs}
               langPath={langPath}
             />
-          ) : (
-            <DictionarySearch currentLang={currentLang} />
-          )
-        ) : (
-          languageSelection()
-        )}
-      </>
-    );
+    }
+    else if(learnTab === "dictionary") return <DictionarySearch currentLang={currentLang} />
+    else if(learnTab === "games") return <Games/>
+
   };
 
   const loadingSpinner = () => {
