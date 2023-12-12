@@ -35,6 +35,41 @@ const LearnPage = (_language) => {
   const flagStyle = "/flat/64.png";
   const [flagMenu, setFlagMenu] = useState(false);
 
+
+  useEffect(() => {
+    if(!quizRunning) {
+      console.log("hallo")
+      if (
+        state &&
+        state.language &&
+        currentLang &&
+        currentLang !== state.language
+      ) {
+        setLang(state.language);
+        state.language = null;
+      } else if (!state || !currentLang) {
+        onAuthStateChanged(auth, (user) => {
+          const userId = auth.currentUser.uid;
+          if (user) {
+            get(ref(db, "/users/" + userId)).then((snapshot) => {
+              if (snapshot.val().langs === undefined) {
+                setLangPathSelected(false);
+                setLangSelection(true);
+                setLoaded(true);
+              } else {
+                setLoaded(false);
+                initLangPath(snapshot.val());
+              }
+            });
+          }
+        });
+      }
+      }
+      if(quizRunning){
+        console.log("running")
+      }
+  }, [quizRunning])
+
   const toggleDropdown = () => {
     setFlagMenu(!flagMenu);
   };
@@ -302,31 +337,11 @@ const LearnPage = (_language) => {
     );
   };
 
-  if (
-    state &&
-    state.language &&
-    currentLang &&
-    currentLang !== state.language
-  ) {
-    setLang(state.language);
-    state.language = null;
-  } else if (!state || !currentLang) {
-    onAuthStateChanged(auth, (user) => {
-      const userId = auth.currentUser.uid;
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if (snapshot.val().langs === undefined) {
-            setLangPathSelected(false);
-            setLangSelection(true);
-            setLoaded(true);
-          } else {
-            initLangPath(snapshot.val());
-          }
-        });
-      }
-    });
+  const loadingSpinner = () => {
+    return <Spinner animation="border" role="status" />
   }
 
+ 
   if (quizRunning) {
     return (
       <div>
@@ -353,16 +368,16 @@ const LearnPage = (_language) => {
                 <div className="boxcontainer">{lessonsTitle()}</div>
               </div>
               <div className="dashboardelements">
-                <div>{langPathSelected ? learningButtons() : ""}</div>
+                <div>{langPathSelected ? learningButtons() : {loadingSpinner}}</div>
               </div>
               <div className="dashboardelements">
-                <div>{loaded ? langModule() : ""}</div>
+                <div>{loaded ? langModule() : {loadingSpinner}}</div>
               </div>{" "}
               s
             </>
           ) : (
             <div className="dashboardelements align-items-center w-100">
-              <Spinner animation="border" role="status" />
+              {loadingSpinner}
             </div>
           )}
         </div>

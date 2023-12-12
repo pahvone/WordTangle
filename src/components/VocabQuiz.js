@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
+import { getDatabase, get, ref, update} from "firebase/database";
 import Lesson from "../vocab/Vocab";
 import "./VocabLesson.css";
 import ActivityTracker from "./ActivityTracker";
@@ -26,9 +26,9 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   const [timerMode, setTimerMode] = useState(false);
   const [seconds, setSeconds] = useState(10);
 
-  const nav = useNavigate();
   const db = getDatabase();
   const auth = getAuth();
+
 
   useEffect(() => {
     if (qState === 0 && lesson === null)
@@ -51,8 +51,22 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
       }, 1000);
       return () => clearInterval(interval);
     }
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+
   }, [qIndex, qState, lesson, seconds]);
 
+  const handleBeforeUnload = (e) => {
+    const message = "Are you sure you want to leave? Your changes may not be saved.";
+    e.returnValue = message;  // Standard for most browsers
+    return message;           // For some older browsers
+  };
+
+  
   const start = () => {
     setQState(2);
     newWord();
