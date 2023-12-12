@@ -357,7 +357,7 @@ const LearnPage = (_language) => {
   };
 
   const getGame = () => {
-    if(game === "hangman") return <Hangman back={abortGame}/> 
+    if(game === "hangman") return <Hangman langPath={langPath} userLangs={userLangs} back={abortGame}/> 
   }
   if (quizRunning) {
     return (

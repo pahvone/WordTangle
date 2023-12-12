@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Hangman.css"
 import ActivityTracker from "./ActivityTracker";
 
-const Hangman = ({ back }) => {
+const Hangman = ({langPath, userLangs, back }) => {
     const [secretWord, setSecretWord] = useState("")
     const [guessedLetters, setGuessedLetters] = useState([]);
     const [answerLine, setAnswerLine] = useState([])
@@ -15,9 +15,39 @@ const Hangman = ({ back }) => {
     const [letterButtons, setLetterButtons] = useState([])
 
 
+
+    //For determining appropriate words
+    const getProgMean = (list, diff, viableWords) => {
+        //console.log(langPath)
+        //let mean = 0
+        /*
+        for(var i = 0; i < list.length; i++){
+            if(diff === "beginner") {
+                for(var j = 0; i < langPath.lessons["intermediate"][i].vocab[j].length; i++){
+                    viableWords.push(langPath.lessons["beginner"][i].vocab[j])
+                }
+            }
+            mean += list[i]
+        }*/
+        //return (mean / list.length)
+    }
+    
+    const generateWord = () => {
+        let viableWords = [];
+        for (var i = 0; i < langPath.lessons["beginner"][0].vocab.length; i++) {
+          console.log(langPath.lessons["beginner"][0].vocab[i][0]);
+          viableWords.push(langPath.lessons["beginner"][0].vocab[i][0]);
+        }
+        let word = viableWords[Math.floor(Math.random() * viableWords.length)]; // Corrected line
+      
+        return word;
+      };
+
     useEffect(() => {
+       // console.log(userLangs[langPath.lang], langPath)
         if (!started) {
-            let word = "hangman" //generate randomly from appropriate lessons
+            
+            var word = generateWord()
             setSecretWord(word)
             generateLine(word)
             generateHangmanParts()
@@ -42,7 +72,7 @@ const Hangman = ({ back }) => {
 
         
 
-    }, [secretWord, guessedLetters, answerLine])
+    }, [secretWord, guessedLetters, answerLine, started])
 
     const generateLetterButtons = () => {
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ'.split(''); //get lang specific alphabet
@@ -72,6 +102,7 @@ const Hangman = ({ back }) => {
 
 
     const generateLine = (word) => {
+        console.log(word)
         var line = []
         for (var i = 0; i < word.length; i++) {
             line.push("_")
