@@ -2,20 +2,19 @@ import React, { useState, useEffect } from "react";
 import "./Hangman.css";
 import ActivityTracker from "./ActivityTracker";
 
-const Hangman = ({langPath, userLangs, back }) => {
-    const [secretWord, setSecretWord] = useState("")
-    const [guessedLetters, setGuessedLetters] = useState([]);
-    const [answerLine, setAnswerLine] = useState([])
-    const [hangmanParts, setHangmanParts] = useState([])
-    const [visibleParts, setVisibleParts] = useState([])
-    const [started, setStarted] = useState(false)
-    const [gameOver, setGameOver] = useState(false)
-    const [win, setWin] = useState(null)
+const Hangman = ({ langPath, userLangs, back }) => {
+  const [secretWord, setSecretWord] = useState("");
+  const [guessedLetters, setGuessedLetters] = useState([]);
+  const [answerLine, setAnswerLine] = useState([]);
+  const [hangmanParts, setHangmanParts] = useState([]);
+  const [visibleParts, setVisibleParts] = useState([]);
+  const [started, setStarted] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [win, setWin] = useState(null);
 
-    const [letterButtons, setLetterButtons] = useState([])
+  const [letterButtons, setLetterButtons] = useState([]);
 
-    const [translation, setTranslation] = useState("")
-
+  const [translation, setTranslation] = useState("");
 
   //For determining appropriate words
   const getProgMean = (list, diff, viableWords) => {
@@ -33,19 +32,19 @@ const Hangman = ({langPath, userLangs, back }) => {
     //return (mean / list.length)
   };
 
-    const generateWord = () => {
-        let viableWords = [];
-        for (var j = 0; j < langPath.lessons["beginner"].length; j++) {
-            for (var i = 0; i < langPath.lessons["beginner"][j].vocab.length; i++) {
-                console.log(langPath.lessons["beginner"][j].vocab[i]);
-                viableWords.push(langPath.lessons["beginner"][j].vocab[i]);
-            }
-        }
-        let rand = Math.floor(Math.random() * viableWords.length)
-        let word = viableWords[rand][0]; // Corrected line
-        setTranslation(viableWords[rand][1][0])
-        return word;
-    };
+  const generateWord = () => {
+    let viableWords = [];
+    for (var j = 0; j < langPath.lessons["beginner"].length; j++) {
+      for (var i = 0; i < langPath.lessons["beginner"][j].vocab.length; i++) {
+        console.log(langPath.lessons["beginner"][j].vocab[i]);
+        viableWords.push(langPath.lessons["beginner"][j].vocab[i]);
+      }
+    }
+    let rand = Math.floor(Math.random() * viableWords.length);
+    let word = viableWords[rand][0]; // Corrected line
+    setTranslation(viableWords[rand][1][0]);
+    return word;
+  };
 
   useEffect(() => {
     // console.log(userLangs[langPath.lang], langPath)
@@ -165,25 +164,31 @@ const Hangman = ({langPath, userLangs, back }) => {
     setVisibleParts(parts);
   };
 
-    const victoryScreen = () => {
-        return(<div className="greycontainer">
-            
-            <p className="gameovertitle">You win!</p>
-            <p className="gameover">Correct answer was <b>{secretWord}</b> ({translation})</p>
-            </div>)
-    }
+  const victoryScreen = () => {
+    return (
+      <div className="greycontainer">
+        <p className="gameovertitle">You win!</p>
+        <p className="gameover">
+          Correct answer was <b>{secretWord}</b> ({translation})
+        </p>
+      </div>
+    );
+  };
 
-    const lossScreen = () => {
-        return(<div className="greycontainer">
-            
-            <p className="gameovertitle">You lost!</p>
-            <p className="gameover">Correct answer was <b>{secretWord}</b> ({translation})</p>
-                
-                </div>)
-    }
-    
-    const gameScreen= () => {
-        return(<>
+  const lossScreen = () => {
+    return (
+      <div className="greycontainer">
+        <p className="gameovertitle">You lost!</p>
+        <p className="gameover">
+          Correct answer was <b>{secretWord}</b> ({translation})
+        </p>
+      </div>
+    );
+  };
+
+  const gameScreen = () => {
+    return (
+      <>
         <div className="dashboardelements">
           <div className="greycontainer">
             <div class="hangman-container">{visibleParts}</div>
