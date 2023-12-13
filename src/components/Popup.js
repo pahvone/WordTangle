@@ -1,9 +1,10 @@
 import ConfettiExplosion from "react-confetti-explosion";
-import { useState } from "react";
+import React, { useState } from "react";
 import ActivityTracker from "./ActivityTracker";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Popup = ({ setIsOpenPopup }) => {
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
   const auth = getAuth();
   const [tracker, setTracker] = useState(null);
   const [currentLvl, setcurrentLvl] = useState(0);
@@ -15,7 +16,10 @@ const Popup = ({ setIsOpenPopup }) => {
       setcurrentLvl(activity.lvl);
 
       if (activity.lvl > currentLvl) {
-        console.log("Level up!");
+        setIsOpenPopup.bind(this, true);
+        {
+          isOpenPopup && <Popup setIsOpenPopup={setIsOpenPopup} />;
+        }
       }
     });
   };
