@@ -3,6 +3,7 @@ import "../vocab/FI.json";
 export default class Lesson {
   fileName = "";
   lessonName = "";
+  lessonType = ""
   lang = "";
   wordList = [];
   translationList = [];
@@ -19,6 +20,7 @@ export default class Lesson {
 
     this.lessonName = vocabList.lessons[diff][index].name;
     this.lang = lang;
+    this.lessonType = vocabList.lessons[diff][index].type;
     var vocab = vocabList.lessons[diff][index].vocab;
 
     for (let i = 0; i < vocab.length; i++) {

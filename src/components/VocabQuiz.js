@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, update } from "firebase/database";
 import Lesson from "../vocab/Vocab";
@@ -51,6 +50,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
       return () => clearInterval(interval);
     }
 
+    console.log(lesson)
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
