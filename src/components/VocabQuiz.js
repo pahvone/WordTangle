@@ -31,7 +31,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
 
   useEffect(() => {
     if (qState === 0 && lesson === null)
-      setLesson(new Lesson(lang, "beginner", index));
+      setLesson(new Lesson(lang, diff, index));
     else if (qState === 0 && lesson != null) createRandomizedQuizOrder();
     else if (qState === 2) {
       if (checkEnd()) endQuiz();
