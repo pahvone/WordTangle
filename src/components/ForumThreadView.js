@@ -277,21 +277,15 @@ const ForumThreadView = () => {
                       </div>
                     </Grid>
                     <Grid item xs={1}>
-                      <div className="reply-text">
-                        {thread.author == auth.currentUser.uid ? (
-                          editing == threadId ? (
-                            <div>
-                              <button onClick={() => submitEdit()}>✔</button>
-                              <button
-                                onClick={() => {
-                                  setEditText(null);
-                                  setEditing(null);
-                                }}
-                              >
-                                🗙
+                        <div className="thread-buttons">
+                          {thread.author == auth.currentUser.uid 
+                          ? editing == threadId 
+                          ? <div>
+                            <button onClick={() => submitEdit()}>
+                            ✔
                               </button>
                             </div>
-                          ) : (
+                           : (
                             <div>
                               <button
                                 className="round-button"
@@ -348,9 +342,9 @@ const ForumThreadView = () => {
                               </Dialog>
                             </div>
                           )
-                        ) : (
+                         : 
                           ""
-                        )}
+                        }
                       </div>
                     </Grid>
                     <Grid item xs={2}>
@@ -416,12 +410,15 @@ const ForumThreadView = () => {
                         </div>
                       </Grid>
                       <Grid item xs={2}>
-                        <div className="reply-buttons">
-                          {reply.author == auth.currentUser.uid ? (
-                            editing == reply.id ? (
-                              <div>
-                                <button onClick={() => submitEdit(reply.id)}>
-                                  submit
+                      <div className="thread-buttons">
+                          {reply.author == auth.currentUser.uid 
+                          ? editing == reply.id 
+                          ? <div>
+                            <button onClick={() => submitEdit(reply.id)}>
+                              submit
+                              </button>
+                              <button onClick={() => {setEditText(null); setEditing(null)}}>
+                                cancel
                                 </button>
                                 <button
                                   onClick={() => {
@@ -432,7 +429,7 @@ const ForumThreadView = () => {
                                   cancel
                                 </button>
                               </div>
-                            ) : (
+                             : (
                               <div>
                                 <button
                                   className="round-button"
@@ -456,7 +453,7 @@ const ForumThreadView = () => {
                                 </button>
                               </div>
                             )
-                          ) : (
+                           : (
                             ""
                           )}
                         </div>
