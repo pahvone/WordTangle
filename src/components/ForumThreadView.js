@@ -284,6 +284,9 @@ const ForumThreadView = () => {
                             <button className="round-button" onClick={() => submitEdit()}>
                             ✔
                               </button>
+                            <button className="round-button" onClick={() => setEditing(null)}>
+                            🗙
+                              </button>
                             </div>
                            : (
                             <div>
@@ -413,21 +416,14 @@ const ForumThreadView = () => {
                       <div className="thread-buttons">
                           {reply.author == auth.currentUser.uid 
                           ? editing == reply.id 
-                          ? <div>
-                            <button onClick={() => submitEdit(reply.id)}>
-                              submit
+                          ? <div className="thread-buttons">
+                            <button className="round-button" onClick={() => submitEdit(reply.id)}>
+                            ✔
                               </button>
-                              <button onClick={() => {setEditText(null); setEditing(null)}}>
-                                cancel
+                              <button className="round-button" onClick={() => {setEditText(null); setEditing(null)}}>
+                              🗙
                                 </button>
-                                <button
-                                  onClick={() => {
-                                    setEditText(null);
-                                    setEditing(null);
-                                  }}
-                                >
-                                  cancel
-                                </button>
+                                
                               </div>
                              : (
                               <div>
