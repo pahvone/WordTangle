@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
 import "./ForumThreadView.css";
 import Box from "@mui/material/Box";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Grid from "@mui/material/Grid";
 import { format } from "prettier";
 import { getAuth } from "firebase/auth";
@@ -19,7 +20,11 @@ import {
   update,
 } from "firebase/database";
 
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+
 const ForumThreadView = () => {
+  const auth = getAuth()
+  const navigate = useNavigate()
   const { forum, threadId } = useParams();
   const [replyText, setReplyText] = useState("");
   const [repliesList, setRepliesList] = useState([]);
@@ -45,7 +50,10 @@ const ForumThreadView = () => {
     );
   };
 
+ 
+
   function getThread(data) {
+    if(data==null){return}
     let newData = data;
     const authorDbRef = ref(db, "users/" + data.author + "/username");
     let username = "error";
@@ -73,12 +81,13 @@ const ForumThreadView = () => {
           author: replyObject.author,
           authorUsername: username,
           creationDate: replyObject.creationDate,
+          edited: replyObject.edited
         };
         listOfReplies.push(newReply);
       });
-      if (JSON.stringify(listOfReplies) != JSON.stringify(repliesList)) {
-        setRepliesList(listOfReplies);
-      }
+    }
+    if (JSON.stringify(listOfReplies) != JSON.stringify(repliesList)) {
+      setRepliesList(listOfReplies);
     }
   }
 
@@ -98,113 +107,59 @@ const ForumThreadView = () => {
     update(threadRef, { latestPost: Date.now() });
     setReplyText("");
   }
-  const dummyReplies = [
-    {
-      id: 0,
-      text: "They do move in herds..",
-      poster: "jack daniel enjoyer",
-      postDate: Date.now(),
-    },
-    {
-      id: 1,
-      text: "No shit mister daniel..",
-      poster: "jack daniel hater",
-      postDate: Date.now(),
-    },
-    {
-      id: 2,
-      text: "That's mr alcoholic to you",
-      poster: "jack daniel enjoyer",
-      postDate: Date.now(),
-    },
-  ];
 
-  const dummyThreads = {
-    announcements: [
-      {
-        id: 0,
-        title: "We have launched our forums!",
-        postText: "hello test test test test test test test test",
-        replies: dummyReplies,
-        postDate: Date.now(),
-        latestActivity: Date.now(),
-        threadCreator: "john",
-      },
-      {
-        id: 1,
-        title: "We are going bankrupt.",
-        postText: "hello test test test test test test test test",
-        replies: 5,
-        postDate: Date.now(),
-        latestActivity: Date.now(),
-        threadCreator: "bertha",
-      },
-    ],
-    "finnish-help": [
-      {
-        id: 0,
-        title: "What does 'hyppytyynytyydytys' mean?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        postDate: Date.now(),
-        latestActivity: Date.now(),
-        threadCreator: "mark",
-      },
-      {
-        id: 1,
-        title: "How do you say 'the fog is coming'?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        postDate: Date.now(),
-        latestActivity: Date.now(),
-        threadCreator: "maxwell",
-      },
-    ],
-    "finnish-communication": [
-      {
-        id: 0,
-        title: "Hei kaikki, puhutaan suomea!",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        postDate: Date.now(),
-        latestActivity: Date.now(),
-        threadCreator: "john",
-      },
-      {
-        id: 1,
-        title: "Mikä lempi ruokasi?",
-        postText: "hello test test test test test test test test",
-        postDate: Date.now(),
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "simone",
-      },
-    ],
-    general: [
-      {
-        id: 0,
-        title: "I'm really grateful for this wonderful service. :)",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        postDate: Date.now(),
-        latestActivity: Date.now(),
-        threadCreator: "totally_not_paid_actor",
-      },
-    ],
-    error: [
-      {
-        id: 0,
-        title: "Welcome to the backrooms.",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        postDate: Date.now(),
-        latestActivity: Date.now(),
-        threadCreator: "totally_not_paid_actor",
-      },
-    ],
-  };
+  const [editText, setEditText] = useState(null)
+  const [editing, setEditing] = useState(null)
 
-  const threadList = dummyThreads["announcements"];
+  function submitEdit(id = null){
+    if(editText==""){setEditing(null); return}
+    const db = getDatabase()
+    
+    if(!id){
+      let dbRef
+      dbRef = ref(db, "/forums/" + forum + "/" + threadId)
+      update(dbRef, {
+          text: editText,
+          edited: true
+        })
+    }
+    else{
+      let dbRef
+      dbRef = ref(db, "/forums/" + forum + "/" + threadId + "/replies/" + id)
+      update(dbRef, {
+        text: editText,
+        edited: true
+      })
+    }
+    setEditing(null)
+  }
+
+
+  const [openDeleteThreadPopup, setOpenDeleteThreadPopup] = useState(false)
+  const [openDeleteReplyPopup, setOpenDeleteReplyPopup] = useState(false)
+  const [deleteId, setDeleteId] = useState(null)
+function handleDelete(confirmed=false){
+  setOpenDeleteThreadPopup(false)
+  setOpenDeleteReplyPopup(false)
+  if(!confirmed){setDeleteId(null)}
+  else {
+    let dbRef
+    if(!deleteId){
+    let path = "/Forums/view-forum/"+forum
+    navigate(path)
+    dbRef = ref(db, "/forums/" + forum + "/" + threadId)
+    set(dbRef, null)
+    }
+    else{
+    setDeleteId(null)
+    dbRef = ref(db, "/forums/" + forum + "/" + threadId + "/replies/" + deleteId)
+      set(dbRef, null)
+    }
+  }
+}
+
+
+
 
   const threadTimestamp = new Date(thread.creationDate);
   let threadTimestring = threadTimestamp.toLocaleTimeString([], {
@@ -221,8 +176,6 @@ const ForumThreadView = () => {
       setLoaded(true);
     }
   });
-
-  const postColours = ["#bdbf3d", "#838530"];
 
   return (
     <div>
@@ -262,7 +215,7 @@ const ForumThreadView = () => {
               container
               className="forum-header-container"
             >
-              <Grid item xs={5}>
+              <Grid item style={{textAlign: "left", paddingLeft: "16px"}} xs={8}>
                 {thread.title}
               </Grid>
               <Grid item xs={2}>
@@ -284,9 +237,61 @@ const ForumThreadView = () => {
                         {formattedThreadTimestamp}
                       </div>
                     </Grid>
-                    <Grid item xs={6}>
-                      <div className="reply-text">{thread.text}</div>
+                    <Grid item xs={8}>
+                      <div className="reply-text">{thread.author == auth.currentUser.uid ? editing==threadId ? <textarea
+                    value={editText}
+                    name="text"
+                    rows="5"
+                    cols="35"
+                    wrap="soft"
+                    onChange={(e) => {
+                      setEditText(e.target.value);
+                    }}
+                  ></textarea> : <div>{thread.text}<span style={{ fontSize: 12 }}> {thread.edited ? "edited": ""}</span></div> : "test"}</div>
                     </Grid>
+                    <Grid item xs={1}>
+                        <div className="reply-text">
+                          {thread.author == auth.currentUser.uid 
+                          ? editing == threadId 
+                          ? <div>
+                            <button onClick={() => submitEdit()}>
+                            ✔
+                              </button>
+                              <button onClick={() => {setEditText(null); setEditing(null)}}>
+                              🗙
+                                </button>
+                                </div>
+                                : 
+                                <div>
+                                  <button className="round-button" onClick={() => {setEditing(threadId); setEditText(thread.text)}}>
+                                  <EditIcon/>
+                                  </button>
+                                  <button className="round-button" onClick={() => {setEditing(null); setEditText(null); setOpenDeleteThreadPopup(true)}}>
+                                    <DeleteIcon/>
+                                    </button>
+                                    <Dialog
+        open={openDeleteThreadPopup}
+        onClose={() => {handleDelete()}}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirm deletion of thread?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This action is irreversible.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <button className="styled-critical-warning-button" onClick={() => handleDelete(true)} autoFocus>
+            Agree
+          </button>
+          <button className="styled-button" onClick={() => {handleDelete()}}>Cancel</button>
+        </DialogActions>
+      </Dialog>
+                                    </div> : ""}</div>
+                      </Grid>
                     <Grid item xs={2}>
                       <div className="latest-post-header">
                         {thread.authorUsername}
@@ -307,7 +312,7 @@ const ForumThreadView = () => {
               const formattedTimestamp =
                 timestring + " " + timestamp.toLocaleDateString();
               return (
-                <Box sx={{ flexGrow: 1 }}>
+                <Box key={reply.id} sx={{ flexGrow: 1 }}>
                   <div
                     className="subforum"
                     key={reply.id}
@@ -315,15 +320,67 @@ const ForumThreadView = () => {
                       backgroundColor: index % 2 ? "#838530" : "#bdbf3d",
                     }}
                   >
-                    <Grid justifyContent="space-between" container>
-                      <Grid item xs={1}>
-                        <div className="reply-timestamp">
+                    <Grid  justifyContent="space-between" container>
+                      <Grid  item  xs={1}>
+                        <div  className="reply-timestamp">
                           {formattedTimestamp}
                         </div>
                       </Grid>
-                      <Grid item xs={6}>
-                        <div className="reply-text">{reply.text}</div>
+                      <Grid  item xs={7}>
+                      <div className="reply-text">{reply.author == auth.currentUser.uid ? editing==reply.id ? <textarea
+                    value={editText}
+                    name="text"
+                    rows="5"
+                    cols="35"
+                    wrap="soft"
+                    onChange={(e) => {
+                      setEditText(e.target.value);
+                    }}
+                  ></textarea> : <div>{reply.text}<span style={{ fontSize: 12 }}> {reply.edited ? "edited": ""}</span></div> : "test"}</div>
                       </Grid>
+                      <Grid item xs={2}>
+                      <div className="reply-buttons">
+                          {reply.author == auth.currentUser.uid 
+                          ? editing == reply.id 
+                          ? <div>
+                            <button onClick={() => submitEdit(reply.id)}>
+                              submit
+                              </button>
+                              <button onClick={() => {setEditText(null); setEditing(null)}}>
+                                cancel
+                                </button>
+                                </div>
+                                : 
+                                <div>
+                                  <button className="round-button" onClick={() => {setEditing(reply.id); setEditText(reply.text)}}>
+                                  <EditIcon/>
+                                  </button>
+                                  <button className="round-button" onClick={() => {setEditing(null); setEditText(null); setDeleteId(reply.id); setOpenDeleteReplyPopup(true)}}>
+                                    <DeleteIcon/>
+                                    </button>
+                                    </div> : ""}</div>
+                                    <Dialog
+        open={openDeleteReplyPopup}
+        onClose={() => {handleDelete()}}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirm deletion of reply?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This action is irreversible.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <button className="styled-critical-warning-button" onClick={() => {handleDelete(true)}} autoFocus>
+            Agree
+          </button>
+          <button className="styled-button" onClick={() => {handleDelete()}}>Cancel</button>
+        </DialogActions>
+      </Dialog>
+                         </Grid>
                       <Grid item xs={2}>
                         <div className="latest-post-header">
                           {reply.authorUsername}
@@ -362,7 +419,7 @@ const ForumThreadView = () => {
                   ></textarea>
                 </label>
                 <div>
-                  <Button onClick={createReply} text="Submit" />
+                  <button className="styled-button" onClick={(e) => {e.preventDefault(); createReply()}}>Submit</button>
                 </div>
               </form>
             </div>

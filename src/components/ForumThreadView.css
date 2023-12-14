@@ -52,7 +52,7 @@
 }
 .reply-timestamp {
   font-size: 14px;
-  text-align: right;
+  text-align: center;
   align-items: center;
 }
 .reply-text {
@@ -63,4 +63,26 @@
 }
 .reply-box {
   padding: 6px;
+}
+.reply-text {
+  padding-left: 20px;
+  word-break: break-all
+}
+
+.round-button {
+  background-color: #50ffc0;
+  color: #000;
+  border: none;
+  border-radius: 50px;
+  margin: 3px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #33a87bff;
+  }
+}
+
+.reply-buttons {
+  text-align: right;
 }

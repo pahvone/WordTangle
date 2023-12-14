@@ -1,3 +1,10 @@
+.responsive-container {
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .forum-header-container {
   background-color: #fbff50;
   color: black;

@@ -225,7 +225,6 @@ const ForumIndex = () => {
       route: "/Forums/view-forum/general",
     },
   ];
-  const postColours = ["#bdbf3d", "#838530"];
 
   return (
     <div>

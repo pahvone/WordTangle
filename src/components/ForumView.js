@@ -66,7 +66,7 @@ const ForumView = () => {
           postText: data[key].text,
           threadCreator: username,
           replies: repliesLength,
-          latestActivity: data[key].creationDate,
+          latestActivity: data[key].latestPost ?? data[key].creationDate,
         };
         listOfThreads.push(newThread);
       }
@@ -76,156 +76,6 @@ const ForumView = () => {
     }
   }
 
-  const dummyThreads = {
-    announcements: [
-      {
-        id: 0,
-        title: "We have launched our forums!",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "john",
-      },
-      {
-        id: 1,
-        title: "We are going bankrupt.",
-        postText: "hello test test test test test test test test",
-        replies: 5,
-        latestActivity: Date.now(),
-        threadCreator: "bertha",
-      },
-    ],
-    "upcoming-features": [
-      {
-        id: 0,
-        title: "We have launched our forums!",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "john",
-      },
-      {
-        id: 1,
-        title: "We are going bankrupt.",
-        postText: "hello test test test test test test test test",
-        replies: 5,
-        latestActivity: Date.now(),
-        threadCreator: "bertha",
-      },
-    ],
-    "finnish-help": [
-      {
-        id: 0,
-        title: "What does 'hyppytyynytyydytys' mean?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "mark",
-      },
-      {
-        id: 1,
-        title: "How do you say 'the fog is coming'?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "maxwell",
-      },
-    ],
-    "spanish-help": [
-      {
-        id: 0,
-        title: "What does 'hyppytyynytyydytys' mean?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "mark",
-      },
-      {
-        id: 1,
-        title: "How do you say 'the fog is coming'?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "maxwell",
-      },
-    ],
-    "finnish-help": [
-      {
-        id: 0,
-        title: "What does 'hyppytyynytyydytys' mean?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "mark",
-      },
-      {
-        id: 1,
-        title: "How do you say 'the fog is coming'?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "maxwell",
-      },
-    ],
-    "finnish-communication": [
-      {
-        id: 0,
-        title: "Hei kaikki, puhutaan suomea!",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "john",
-      },
-      {
-        id: 1,
-        title: "Mikä lempi ruokasi?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "simone",
-      },
-    ],
-    "spanish-communication": [
-      {
-        id: 0,
-        title: "Hei kaikki, puhutaan suomea!",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "john",
-      },
-      {
-        id: 1,
-        title: "Mikä lempi ruokasi?",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "simone",
-      },
-    ],
-    general: [
-      {
-        id: 0,
-        title: "I'm really grateful for this wonderful service. :)",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "totally_not_paid_actor",
-      },
-    ],
-    error: [
-      {
-        id: 0,
-        title: "Welcome to the backrooms.",
-        postText: "hello test test test test test test test test",
-        replies: 0,
-        latestActivity: Date.now(),
-        threadCreator: "totally_not_paid_actor",
-      },
-    ],
-  };
-
-  // const threadList = dummyThreads[forum]
   const [threadTitle, setThreadTitle] = useState("");
   const [threadText, setThreadText] = useState("");
 
@@ -249,15 +99,13 @@ const ForumView = () => {
     setThreadText("");
   }
   const [loaded, setLoaded] = useState(false);
-  // useEffect(() => {
-  //   if (!loaded) {
-  //     let tracker = new ActivityTracker();
-  //     tracker.updateLatestActivity("forums");
-  //     setLoaded(true);
-  //   }
-  // });
-
-  const postColours = ["#bdbf3d", "#838530"];
+  useEffect(() => {
+    if (!loaded) {
+      let tracker = new ActivityTracker();
+      tracker.updateLatestActivity("forums");
+      setLoaded(true);
+    }
+  });
 
   return (
     <div>
@@ -301,7 +149,7 @@ const ForumView = () => {
               const formattedTimestamp =
                 timestring + " " + timestamp.toLocaleDateString();
               return (
-                <Box sx={{ flexGrow: 1 }}>
+                <Box key={thread.id} sx={{ flexGrow: 1 }}>
                   <div
                     className="subforum"
                     key={thread.id}
@@ -366,7 +214,7 @@ const ForumView = () => {
                   ></textarea>
                 </label>
                 <div>
-                  <Button onClick={createThread} text="Submit" />
+                  <button className="styled-button" onClick={(e) => {e.preventDefault(); createThread()}}>Submit</button>
                 </div>
               </form>
             </div>
