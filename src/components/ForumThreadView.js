@@ -280,8 +280,8 @@ const ForumThreadView = () => {
                         <div className="thread-buttons">
                           {thread.author == auth.currentUser.uid 
                           ? editing == threadId 
-                          ? <div>
-                            <button onClick={() => submitEdit()}>
+                          ? <div className="thread-buttons">
+                            <button className="round-button" onClick={() => submitEdit()}>
                             ✔
                               </button>
                             </div>
