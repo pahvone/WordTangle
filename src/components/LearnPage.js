@@ -13,6 +13,7 @@ import DictionarySearch from "./DictionaryModule";
 import VocabQuiz from "./VocabQuiz";
 import Games from "./Games";
 import Hangman from "./Hangman";
+import LangResources from "./LangResources";
 
 const LearnPage = (_language) => {
   const [langPathSelected, setLangPathSelected] = useState(null);
@@ -286,6 +287,15 @@ const LearnPage = (_language) => {
 
         <button
           className={`btn learningbutton${
+            learnTab === "resources" ? "-active" : ""
+          }`}
+          onClick={() => setLearnTab("resources")}
+        >
+          RESOURCES
+        </button>
+
+        <button
+          className={`btn learningbutton${
             learnTab === "games" ? "-active" : ""
           }`}
           onClick={() => setLearnTab("games")}
@@ -349,6 +359,8 @@ const LearnPage = (_language) => {
       );
     } else if (learnTab === "dictionary")
       return <DictionarySearch currentLang={currentLang} />;
+    else if (learnTab === "resources")
+      return <LangResources _langPath={langPath} />;
     else if (learnTab === "games")
       return <Games currentLang={currentLang} onSetGame={setGameComp} />;
   };

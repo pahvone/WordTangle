@@ -5,6 +5,7 @@
     "beginner": [
       {
         "name": "Numbers 1",
+        "type": "Vocab",
         "vocab": [
           ["uno", ["one", "1"]],
           ["dos", ["two", "2"]],
@@ -32,6 +33,7 @@
         "intermediate": [
           {
             "name": "Basic verbs",
+            "type": "Vocab",
             "vocab": [
               ["escribir", ["to write"]],
               ["leer", ["to read"]],
@@ -59,6 +61,7 @@
         "advanced": [
           {
             "name": "High-concepts",
+            "type": "Vocab",
             "vocab": [
               ["abstracto", ["abstract"]],
               ["analogía", ["analogy"]],

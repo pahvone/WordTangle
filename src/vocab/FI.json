@@ -5,6 +5,7 @@
     "beginner": [
       {
         "name": "Numbers 1",
+        "type": "Vocab",
         "vocab": [
           ["yksi", ["one", "1"]],
           ["kaksi", ["two", "2"]],
@@ -30,6 +31,7 @@
       },
       {
         "name": "Basics",
+        "type": "Vocab",
         "vocab": [
             ["tervehdys", ["greeting"]],
             ["kiitos", ["thank you"]],
@@ -40,6 +42,7 @@
         },
         {
           "name" : "Animals",
+          "type": "Vocab",
           "vocab": [
             ["koira", ["dog"]],
             ["kissa", ["cat"]],
@@ -48,6 +51,7 @@
           ]
         },{
           "name": "Basic verbs",
+          "type": "Vocab",
           "vocab": [
             ["kirjoittaa", ["to write"]],
             ["lukea", ["to read"]],
@@ -75,6 +79,7 @@
         "intermediate": [
           {
             "name" : "Basic sentences",
+            "type": "Sentence",
             "vocab": [
               ["Moi! Miten menee?", ["Hello! How are you?"]],
               ["Minä olen opiskelija.", ["I am a student."]],
@@ -101,6 +106,7 @@
         "advanced": [
           {
             "name": "High-concepts",
+            "type": "Vocab",
             "vocab": [
               ["abstrakti", ["abstract"]],
               ["analogia", ["analogy"]],
