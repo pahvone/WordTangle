@@ -277,18 +277,24 @@ const ForumThreadView = () => {
                       </div>
                     </Grid>
                     <Grid item xs={1}>
-                        <div className="thread-buttons">
-                          {thread.author == auth.currentUser.uid 
-                          ? editing == threadId 
-                          ? <div className="thread-buttons">
-                            <button className="round-button" onClick={() => submitEdit()}>
-                            ✔
+                      <div className="thread-buttons">
+                        {thread.author == auth.currentUser.uid ? (
+                          editing == threadId ? (
+                            <div className="thread-buttons">
+                              <button
+                                className="round-button"
+                                onClick={() => submitEdit()}
+                              >
+                                ✔
                               </button>
-                            <button className="round-button" onClick={() => setEditing(null)}>
-                            🗙
+                              <button
+                                className="round-button"
+                                onClick={() => setEditing(null)}
+                              >
+                                🗙
                               </button>
                             </div>
-                           : (
+                          ) : (
                             <div>
                               <button
                                 className="round-button"
@@ -345,9 +351,9 @@ const ForumThreadView = () => {
                               </Dialog>
                             </div>
                           )
-                         : 
+                        ) : (
                           ""
-                        }
+                        )}
                       </div>
                     </Grid>
                     <Grid item xs={2}>
@@ -413,19 +419,27 @@ const ForumThreadView = () => {
                         </div>
                       </Grid>
                       <Grid item xs={2}>
-                      <div className="thread-buttons">
-                          {reply.author == auth.currentUser.uid 
-                          ? editing == reply.id 
-                          ? <div className="thread-buttons">
-                            <button className="round-button" onClick={() => submitEdit(reply.id)}>
-                            ✔
-                              </button>
-                              <button className="round-button" onClick={() => {setEditText(null); setEditing(null)}}>
-                              🗙
+                        <div className="thread-buttons">
+                          {reply.author == auth.currentUser.uid ? (
+                            editing == reply.id ? (
+                              <div className="thread-buttons">
+                                <button
+                                  className="round-button"
+                                  onClick={() => submitEdit(reply.id)}
+                                >
+                                  ✔
                                 </button>
-                                
+                                <button
+                                  className="round-button"
+                                  onClick={() => {
+                                    setEditText(null);
+                                    setEditing(null);
+                                  }}
+                                >
+                                  🗙
+                                </button>
                               </div>
-                             : (
+                            ) : (
                               <div>
                                 <button
                                   className="round-button"
@@ -449,7 +463,7 @@ const ForumThreadView = () => {
                                 </button>
                               </div>
                             )
-                           : (
+                          ) : (
                             ""
                           )}
                         </div>
