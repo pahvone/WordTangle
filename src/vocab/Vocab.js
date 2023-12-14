@@ -3,7 +3,7 @@ import "../vocab/FI.json";
 export default class Lesson {
   fileName = "";
   lessonName = "";
-  lessonType = ""
+  lessonType = "";
   lang = "";
   wordList = [];
   translationList = [];
