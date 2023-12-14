@@ -9,6 +9,8 @@ import ActivityTracker from "./ActivityTracker";
 import { useNavigate } from "react-router-dom";
 import Leaderboards from "./Leaderboards";
 import Shoutbox from "./Shoutbox";
+import muiError from "./muiError";
+import MuiError from "./muiError";
 
 const DashBoard = () => {
   const auth = getAuth();
@@ -24,7 +26,6 @@ const DashBoard = () => {
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
-
   const [userAmount, setUserAmount] = useState(0);
 
   const redirect = useNavigate();

@@ -14,6 +14,7 @@ import {
 import fb from "../firebase";
 import Footer from "./Footter.js";
 import Leaderboards from "./Leaderboards.js";
+import MuiError from "./muiError";
 
 const Settings = () => {
   const dbRef = ref(getDatabase(fb));
@@ -22,6 +23,9 @@ const Settings = () => {
   const [password, setpassword] = useState("");
   const redirect = useNavigate();
   const [googleVar, setGoogleVar] = useState(true);
+  const [error, setError] = useState(false); //Controls Alert
+  const [message, setMessage] = useState(""); //Controls Message
+  const [errorseverity, seterrorseverity] = useState(""); // Controls Error Severity
 
   auth.onAuthStateChanged(function (user) {
     if (user) {
@@ -98,16 +102,19 @@ const Settings = () => {
         .catch((error) => {
           switch (error.code) {
             case "auth/invalid-login-credentials":
-              alert(
+              setMessage(
                 "The password in the confirmation field is wrong! You should type in your current password to confirm the account deletion.",
               );
+              setError(true);
+              seterrorseverity("warning");
               break;
             case "auth/too-many-requests":
-              alert(
-                "You have done too many requests to the server! Please wait a moment.",
-              );
+              setMessage("You have done too many requests to the server!");
+              setError(true);
+              seterrorseverity("warning");
           }
           // alert(error.code); uncomment for catching un-documented errors.
+          setError(false);
         })
         .finally(() => {
           //here because the
@@ -181,6 +188,12 @@ const Settings = () => {
           />
         </div>
       </div>
+
+      {error ? (
+        <MuiError message={message} errorseverity={errorseverity} />
+      ) : (
+        ``
+      )}
       <Footer />
     </div>
   );
