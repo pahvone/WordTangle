@@ -214,7 +214,15 @@ const ForumView = () => {
                   ></textarea>
                 </label>
                 <div>
-                  <button className="styled-button" onClick={(e) => {e.preventDefault(); createThread()}}>Submit</button>
+                  <button
+                    className="styled-button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      createThread();
+                    }}
+                  >
+                    Submit
+                  </button>
                 </div>
               </form>
             </div>
