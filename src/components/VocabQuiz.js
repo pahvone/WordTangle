@@ -9,7 +9,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   const [qIndex, setIndex] = useState(0);
   const [prevQIndex, setPrevQIndex] = useState(-1);
 
-  const [lessonType, setLessonType] = useState("")  //vocab, sentence
+  const [lessonType, setLessonType] = useState(""); //vocab, sentence
 
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
@@ -22,8 +22,8 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   const [choiceElements, setChoiceElements] = useState(null);
 
   const [words, setWords] = useState([]);
-  const [sentenceAnswerElements, setSentenceAnswerElements] = useState([])
-  const [sentenceChoiceElements, setSentenceChoiceElements] = useState(null)
+  const [sentenceAnswerElements, setSentenceAnswerElements] = useState([]);
+  const [sentenceChoiceElements, setSentenceChoiceElements] = useState(null);
 
   const [strikeMode, setStrikeMode] = useState(false);
   const [strikes, setStrikes] = useState(3);
@@ -35,15 +35,12 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   const auth = getAuth();
 
   useEffect(() => {
-
-    if (qState === 0 && lesson === null){
+    if (qState === 0 && lesson === null) {
       setLesson(new Lesson(lang, diff, index));
-    }
-    else if (qState === 0 && lesson != null) {
+    } else if (qState === 0 && lesson != null) {
       createRandomizedQuizOrder();
-      setLessonType(lesson.lessonType)
-    }
-    else if (qState === 2) {
+      setLessonType(lesson.lessonType);
+    } else if (qState === 2) {
       if (checkEnd()) endQuiz();
       else if (qIndex !== prevQIndex) newWord();
     }
@@ -60,7 +57,6 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
       }, 1000);
       return () => clearInterval(interval);
     }
-
 
     window.addEventListener("beforeunload", handleBeforeUnload);
 
@@ -87,7 +83,6 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   };
 
   const newWord = () => {
-
     let qWord = "";
    // if (lessonType === "Vocab") {
       let qWordSwitch = Math.floor(Math.random() * 2);
@@ -100,9 +95,8 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
     /*else if (lessonType === "Sentence") {
       qWord = lesson.translationList[qIndex][0]
       //initSentenceCards()
-    }
-    else if (lessonType === "Missingword") {
-      qWord = lesson.translationList[qIndex][0]
+    } else if (lessonType === "Missingword") {
+      qWord = lesson.translationList[qIndex][0];
       //initSentenceCards()
     }*/
     setQWord(qWord);
@@ -289,13 +283,8 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
       /*else if (lessonType === "Sentence") {
         return (
           <div>
-
-            <div className="greycontainer">
-            {sentenceAnswerElements}
-            </div>
-            <span className="align-middle">
-              {sentenceChoiceElements}
-            </span>
+            <div className="greycontainer">{sentenceAnswerElements}</div>
+            <span className="align-middle">{sentenceChoiceElements}</span>
           </div>
         )
       }*/

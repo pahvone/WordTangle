@@ -359,8 +359,8 @@ const LearnPage = (_language) => {
       );
     } else if (learnTab === "dictionary")
       return <DictionarySearch currentLang={currentLang} />;
-      else if (learnTab === "resources")
-      return <LangResources _langPath={langPath}/>
+    else if (learnTab === "resources")
+      return <LangResources _langPath={langPath} />;
     else if (learnTab === "games")
       return <Games currentLang={currentLang} onSetGame={setGameComp} />;
   };
