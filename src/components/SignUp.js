@@ -36,26 +36,33 @@ const SignUp = () => {
       .catch((error) => {
         switch (error.code) {
           case "auth/weak-password":
-            alert(
+            setMessage(
               "Your Password Is Too Weak! Your password should be at least 6 Characters!",
             );
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/invalid-email":
-            alert("The given email is invalid.");
+            setMessage("The given email is invalid.");
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/email-already-in-use":
-            alert("The given email is already in use.");
+            setMessage("The given email is already in use.");
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/too-many-requests":
-            alert(
-              "You have done too many requests to the server! Please wait a moment.",
-            );
+            setMessage("You have done too many requests to the server!");
+            setError(true);
+            seterrorseverity("warning");
         }
         // alert(error.code); Uncomment me if error code is not listed in the cases above.
       });
+    setError(false);
   }
 
   const RedirectToDashboard = () => {
