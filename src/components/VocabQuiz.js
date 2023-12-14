@@ -9,6 +9,8 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   const [qIndex, setIndex] = useState(0);
   const [prevQIndex, setPrevQIndex] = useState(-1);
 
+  const [lessonType, setLessonType] = useState("")  //vocab, sentence
+
   const [lesson, setLesson] = useState(null);
   const [qState, setQState] = useState(0);
   const [result, setResult] = useState("");
@@ -18,6 +20,10 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
 
   const textInputRef = useRef(null);
   const [choiceElements, setChoiceElements] = useState(null);
+
+  const [words, setWords] = useState([]);
+  const [sentenceAnswerElements, setSentenceAnswerElements] = useState([])
+  const [sentenceChoiceElements, setSentenceChoiceElements] = useState(null)
 
   const [strikeMode, setStrikeMode] = useState(false);
   const [strikes, setStrikes] = useState(3);
@@ -29,9 +35,14 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   const auth = getAuth();
 
   useEffect(() => {
-    if (qState === 0 && lesson === null)
+
+    if (qState === 0 && lesson === null){
       setLesson(new Lesson(lang, diff, index));
-    else if (qState === 0 && lesson != null) createRandomizedQuizOrder();
+    }
+    else if (qState === 0 && lesson != null) {
+      createRandomizedQuizOrder();
+      setLessonType(lesson.lessonType)
+    }
     else if (qState === 2) {
       if (checkEnd()) endQuiz();
       else if (qIndex !== prevQIndex) newWord();
@@ -50,13 +61,13 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
       return () => clearInterval(interval);
     }
 
-    console.log(lesson)
+
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [qIndex, qState, lesson, seconds]);
+  }, [qIndex, qState, lesson, seconds, sentenceAnswerElements]);
 
   const handleBeforeUnload = (e) => {
     const message =
@@ -76,15 +87,25 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   };
 
   const newWord = () => {
-    let qWordSwitch = Math.floor(Math.random() * 2);
-    var qWord = "";
 
-    if (qWordSwitch === 0) qWord = lesson.wordList[qIndex];
-    else qWord = lesson.translationList[qIndex][0];
+    let qWord = "";
+    if (lessonType === "Vocab") {
+      let qWordSwitch = Math.floor(Math.random() * 2);
 
+      if (qWordSwitch === 0) qWord = lesson.wordList[qIndex];
+      else qWord = lesson.translationList[qIndex][0];
+
+      createChoices(qWordSwitch);
+    }
+    else if (lessonType === "Sentence") {
+      qWord = lesson.translationList[qIndex][0]
+      //initSentenceCards()
+    }
+    else if (lessonType === "Missingword") {
+      qWord = lesson.translationList[qIndex][0]
+      //initSentenceCards()
+    }
     setQWord(qWord);
-
-    createChoices(qWordSwitch);
   };
 
   const checkEnd = () => {
@@ -262,8 +283,23 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
 
   //Returns a text input form if inputMode == 1
   const userInput = (qWordSwitch) => {
-    if (inputMode === 0) return choiceElements;
-    else
+    if (inputMode === 0) {
+      if (lessonType === "Vocab") return choiceElements;
+      else if (lessonType === "Sentence") {
+        return (
+          <div>
+
+            <div className="greycontainer">
+            {sentenceAnswerElements}
+            </div>
+            <span className="align-middle">
+              {sentenceChoiceElements}
+            </span>
+          </div>
+        )
+      }
+    }
+    else if(inputMode === 1)
       return (
         <div>
           <span className="align-middle">
@@ -417,6 +453,66 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
       </div>
     );
   };
+
+  // WIP Sentence forming quiz
+  /*
+  const handleSentenceUndo = (event, word, index) => {
+    event.preventDefault();
+    console.log("pressed " + word);
+  
+    let answerEles = [...sentenceAnswerElements];
+    answerEles.splice(index, 1);
+
+    setSentenceAnswerElements(answerEles);
+    generateSentenceChoices(words);
+  };
+  
+  const handleSentenceChoice = (event, selectedWord, index) => {
+    event.preventDefault();
+    console.log("pressed " + selectedWord, index);
+  
+    let _words = words;
+    //_words.splice(index, 1);
+    
+   //generateSentenceChoices(_words);
+    setWords(_words)
+    console.log(_words)
+    let answers = [...sentenceAnswerElements];
+  
+    answers.push(
+      <button key={"card " + index} onClick={(event) => handleSentenceUndo(event, selectedWord, answers.length)}>
+        {selectedWord}
+      </button>
+    );
+  
+    setSentenceAnswerElements(answers);
+  };
+  
+  const generateSentenceChoices = (_words) => {
+    console.log(_words)
+    let cards = []
+    for(let i = 0; i < _words.length; i++){
+      cards.push(<button key={"card " + i} onClick={(event) => handleSentenceChoice(event, _words[i], index)}>
+      {_words[i]}
+    </button>)
+    }
+  
+    setSentenceChoiceElements(cards);
+  };
+
+  const initSentenceCards = () => {
+    console.log(lesson.wordList[qIndex])
+    var str = lesson.wordList[qIndex].slice(0, -1)
+    var punct = lesson.wordList[qIndex].slice(-1)
+
+    let _words = str.split(" ")
+    for (let i = 0; i < _words.length; i++) {
+      _words[i] = _words[i].toLowerCase();
+  }
+    setWords(_words)
+    generateSentenceChoices(_words)
+  }
+*/
 
   //Generate answer choices for the currently quizzed word
   const createChoices = (qWordSwitch) => {
