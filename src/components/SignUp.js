@@ -82,26 +82,31 @@ const SignUp = () => {
       .catch((error) => {
         switch (error.code) {
           case "auth/too-many-requests":
-            alert(
-              "You have done too many requests to the server! Please wait a moment.",
-            );
+            setMessage("You have done too many requests to the server!");
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/cancelled-popup-request":
-            alert(
+            setMessage(
               "You cancelled the popup request, please choose a Google account to log in with.",
             );
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/popup-blocked":
-            alert(
+            setMessage(
               "Please allow pop-up windows from your browser settings, as the google sign-in was blocked by this.",
             );
+            setError(true);
+            seterrorseverity("warning");
             break;
         }
 
-        alert(error.code);
+        // alert(error.code); uncomment me to discover new errors if nothing happens.
       });
+    setError(false);
   }
 
   const redirect = useNavigate();
