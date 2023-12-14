@@ -84,13 +84,13 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
 
   const newWord = () => {
     let qWord = "";
-   // if (lessonType === "Vocab") {
-      let qWordSwitch = Math.floor(Math.random() * 2);
+    // if (lessonType === "Vocab") {
+    let qWordSwitch = Math.floor(Math.random() * 2);
 
-      if (qWordSwitch === 0) qWord = lesson.wordList[qIndex];
-      else qWord = lesson.translationList[qIndex][0];
+    if (qWordSwitch === 0) qWord = lesson.wordList[qIndex];
+    else qWord = lesson.translationList[qIndex][0];
 
-      createChoices(qWordSwitch);
+    createChoices(qWordSwitch);
     //}
     /*else if (lessonType === "Sentence") {
       qWord = lesson.translationList[qIndex][0]
@@ -278,7 +278,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   //Returns a text input form if inputMode == 1
   const userInput = (qWordSwitch) => {
     if (inputMode === 0) {
-      //if (lessonType === "Vocab") 
+      //if (lessonType === "Vocab")
       return choiceElements;
       /*else if (lessonType === "Sentence") {
         return (
@@ -288,8 +288,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
           </div>
         )
       }*/
-    }
-    else if(inputMode === 1)
+    } else if (inputMode === 1)
       return (
         <div>
           <span className="align-middle">
