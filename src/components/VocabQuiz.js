@@ -89,22 +89,22 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   const newWord = () => {
 
     let qWord = "";
-    if (lessonType === "Vocab") {
+   // if (lessonType === "Vocab") {
       let qWordSwitch = Math.floor(Math.random() * 2);
 
       if (qWordSwitch === 0) qWord = lesson.wordList[qIndex];
       else qWord = lesson.translationList[qIndex][0];
 
       createChoices(qWordSwitch);
-    }
-    else if (lessonType === "Sentence") {
+    //}
+    /*else if (lessonType === "Sentence") {
       qWord = lesson.translationList[qIndex][0]
       //initSentenceCards()
     }
     else if (lessonType === "Missingword") {
       qWord = lesson.translationList[qIndex][0]
       //initSentenceCards()
-    }
+    }*/
     setQWord(qWord);
   };
 
@@ -284,8 +284,9 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
   //Returns a text input form if inputMode == 1
   const userInput = (qWordSwitch) => {
     if (inputMode === 0) {
-      if (lessonType === "Vocab") return choiceElements;
-      else if (lessonType === "Sentence") {
+      //if (lessonType === "Vocab") 
+      return choiceElements;
+      /*else if (lessonType === "Sentence") {
         return (
           <div>
 
@@ -297,7 +298,7 @@ const VocabQuiz = ({ lang, diff, index, back }) => {
             </span>
           </div>
         )
-      }
+      }*/
     }
     else if(inputMode === 1)
       return (
