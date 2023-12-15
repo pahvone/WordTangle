@@ -29,12 +29,9 @@ const Settings = () => {
       user.providerData.forEach(function (profile) {
         if (profile) {
           if (profile.providerId) {
-            console.log("Sign-in provider: " + profile.providerId);
             if (profile.providerId == "google.com") {
-              console.log("google found");
               setGoogleVar(false);
             } else {
-              console.log("no google found");
               setGoogleVar(true);
             }
           }
@@ -42,10 +39,6 @@ const Settings = () => {
       });
     }
   });
-
-  if (user) {
-    console.log("Auth provider: " + user.providerId);
-  }
 
   function Usernameredirect() {
     redirect("/UsernameChange");
