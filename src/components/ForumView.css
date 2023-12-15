@@ -1,0 +1,69 @@
+.responsive-container {
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.forum-header-container {
+  background-color: #fbff50;
+  color: black;
+  display: flex;
+  padding: 6px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.forum-title-header {
+  display: inline-block;
+  text-align: left;
+  padding-left: 14px;
+  font-family: "Fira Mono";
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.latest-post-header {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: 6px;
+  font-family: "Fira Mono";
+  font-weight: bold;
+}
+
+.forums {
+  background-color: #fbff50;
+  color: black;
+  text-align: left;
+  margin-bottom: 15px;
+  font-family: "Fira Mono";
+}
+.forums .subforum {
+  padding-left: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 0px;
+  text-align: center;
+}
+.forums .header {
+  display: flex;
+}
+.forums .navlink {
+  display: inline-block;
+}
+.navlink {
+  color: black;
+}
+.forums .latest-post {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: 6px;
+}
+.forums .description {
+  font-size: 14px;
+  text-align: left;
+}
+
+.create-thread-box {
+  padding: 6px;
+}
