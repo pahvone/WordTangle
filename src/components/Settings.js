@@ -30,6 +30,13 @@ const Settings = () => {
         if (profile) {
           if (profile.providerId) {
             console.log("Sign-in provider: " + profile.providerId);
+            if (profile.providerId == "google.com") {
+              console.log("google found");
+              setGoogleVar(false);
+            } else {
+              console.log("no google found");
+              setGoogleVar(true);
+            }
           }
         }
       });
@@ -128,25 +135,6 @@ const Settings = () => {
       });
   }
 
-  const showTextbox = () => {
-    auth.onAuthStateChanged(function (user) {
-      if (user) {
-        //check provider data
-        user.providerData.forEach(function (profile) {
-          const signInProvider = profile.providerId;
-          console.log("Sign-in provider in showbox: " + signInProvider);
-          if (signInProvider == "google.com") {
-            console.log("google found");
-            setGoogleVar(false);
-          } else {
-            console.log("no google found");
-            setGoogleVar(true);
-          }
-        });
-      }
-    });
-  };
-
   return (
     <div>
       <NavBar />
@@ -162,7 +150,6 @@ const Settings = () => {
           <br />
           <WarningButton text="Sign Out" onClick={SignOut} />
           <br />
-          {showTextbox()}
           <p>
             {googleVar && (
               <input
