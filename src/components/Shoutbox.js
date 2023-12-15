@@ -67,7 +67,7 @@ const Shoutbox = () => {
 
   return (
     <ul id="shoutbox">
-      <div classname="shoutbox">
+      <div className="shoutbox">
         {shouts.map((shout) => (
           <li key={shout.timestamp}>
             {" "}

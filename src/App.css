@@ -108,6 +108,29 @@
   }
 }
 
+/* PopUp VVV */
+
+@keyframes dropTop {
+  0% {
+    transform: translateY(-20%) scale(0.5);
+
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+}
+.testi {
+  animation: popUpper;
+}
+.confettiposition {
+  padding-left: 7em;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
 /* DashBoard VVV */
 
 @import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans&display=swap");
@@ -191,7 +214,7 @@
 .title {
   font-family: "Fira Mono", monospace;
   color: #000;
-  font-size: 30px;
+  font-size: 16px;
   font-weight: bolder;
 }
 .dashline {
