@@ -50,6 +50,8 @@ const DashBoard = () => {
       width: `${xp}%`,
       backgroundColor: "#50FFC0",
       borderRadius: 40,
+      animation: "ekspiibar 2s ease-in-out forwards",
+      animationFillMode: "forwards",
     };
 
     const progresstext = {
@@ -59,7 +61,7 @@ const DashBoard = () => {
 
     return (
       <>
-        <div className="" style={Parentdiv}>
+        <div style={Parentdiv}>
           <div style={Childdiv}>
             <span style={progresstext}>{`${xp}`}</span>
           </div>
