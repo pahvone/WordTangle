@@ -1,6 +1,8 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import React, { useState, useEffect } from "react";
-import { getDatabase, get, ref, set, update, onValue } from "firebase/database";
+import { getDatabase, get, ref, update } from "firebase/database";
+import Leaderboards from "./Leaderboards";
+import Popup from "./Popup";
+import React from "react";
 
 export class Activity {
   latest = [""];
@@ -29,7 +31,7 @@ export default class ActivityTracker {
       case "dictionary":
         return "Searched the dictionary";
       case "minigame":
-        return "Played a mini-game";
+        return "Won in a mini-game";
     }
   }
 
@@ -39,49 +41,14 @@ export default class ActivityTracker {
     return tresh;
   }
 
-  debugGetXP() {
-    const db = getDatabase();
-    const auth = getAuth();
-
-    const userId = auth.currentUser.uid;
-    let activity = null;
-    return new Promise((resolve) => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          get(ref(db, "/users/" + userId)).then((snapshot) => {
-            activity = snapshot.val().activity;
-            activity.xp += 40;
-            let tresh = 100; //calc()
-
-            if (activity.xp > tresh) {
-              activity.lvl++;
-              activity.xp = activity.xp - tresh;
-            }
-            // console.log("Updating daily completion to db");
-            update(ref(db, "/users/" + userId), {
-              activity: activity,
-            });
-
-            resolve(activity);
-          });
-        }
-      });
-    });
-  }
-
-  async initActivities() {
+  async updateActivity(activity) {
     const db = getDatabase();
     const auth = getAuth();
     const userId = auth.currentUser.uid;
 
-    let activity = new Activity();
-
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          get(ref(db, "/users/" + userId)).then((snapshot) => {
-            if (snapshot.val().activity) return snapshot.val().activity;
-          });
           update(ref(db, "/users/" + userId), {
             activity: activity,
           });
@@ -91,99 +58,112 @@ export default class ActivityTracker {
     });
   }
 
-  getLatestQuizActivity() {
+  async getActivity() {
     const db = getDatabase();
     const auth = getAuth();
-
-    let activity = new Activity();
+    const userId = auth.currentUser.uid;
 
     return new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
-        const userId = auth.currentUser.uid;
         if (user) {
           get(ref(db, "/users/" + userId)).then((snapshot) => {
-            activity = snapshot.val().activity;
-            if (!activity.latestQuizActivity) {
-              console.log("no latestq");
-              activity = new Activity();
-              activity.latest = snapshot.val().activity.latest;
-              activity.latestQuizActivity = [
-                { lang: "", diff: "", lessonName: "" },
-              ];
-              activity.dailyTasks = snapshot.val().activity.dailyTasks;
-              activity.dailyGenDate = snapshot.val().activity.dailyGenDate;
-              activity.xp = snapshot.val().activity.xp;
-              activity.lvl = snapshot.val().activity.lvl;
-            }
-            console.log(activity);
-            resolve(activity.latestQuizActivity);
+            resolve(snapshot.val().activity);
           });
         }
       });
     });
   }
 
-  generateDailyTasks() {
-    const db = getDatabase();
-    const auth = getAuth();
+  async debugGetXP(uid) {
+    let activity = null;
+    activity = await this.getActivity();
 
+    let amount = 40;
+
+    activity.xp += amount;
+    let tresh = 100; //calc()
+
+    if (activity.xp > tresh) {
+      console.log("popup tässä");
+      activity.lvl++;
+      activity.xp = activity.xp - tresh;
+    }
+    const lb = new Leaderboards();
+
+    lb.updateEntry(uid, amount, activity.lvl);
+
+    this.updateActivity(activity);
+    return activity;
+  }
+
+  async initActivities() {
+    let activity = new Activity();
+
+    await this.getActivity().then((_activity) => {
+      if (_activity) return _activity;
+    });
+    await this.updateActivity(activity).then((_act) => {
+      return _act;
+    });
+  }
+
+  async getLatestQuizActivity() {
+    return new Promise(async (resolve) => {
+      await this.getActivity().then((_activity) => {
+        if (!_activity.latestQuizActivity) {
+          console.log("no latestq");
+          let activity = new Activity();
+          activity.latest = _activity.activity.latest;
+          activity.latestQuizActivity = [
+            { lang: "", diff: "", lessonName: "" },
+          ];
+          activity.dailyTasks = _activity.dailyTasks;
+          activity.dailyGenDate = _activity.dailyGenDate;
+          activity.xp = _activity.xp;
+          activity.lvl = _activity.lvl;
+        }
+        resolve(_activity.latestQuizActivity);
+      });
+    });
+  }
+
+  async generateDailyTasks() {
     let dailyTasks = [{ task: "", completed: false }];
 
-    const currentDate = new Date();
+    const response = await fetch("https://worldtimeapi.org/api/ip");
+    const data = await response.json();
+    const currentDate = new Date(data.utc_datetime);
     const timestamp = currentDate.toLocaleDateString("en-US", {
       day: "numeric",
       month: "numeric",
       year: "numeric",
     });
 
-    let act = new Activity();
+    let newDailies;
 
-    return new Promise((resolve) => {
-      onAuthStateChanged(auth, (user) => {
-        const userId = auth.currentUser.uid;
-        if (user) {
-          get(ref(db, "/users/" + userId)).then((snapshot) => {
-            act = snapshot.val().activity;
-
-            var newDailies = false;
-
-            if (snapshot.val().activity.dailyTasks.length !== 3) {
-              //console.log("No daily tasks in db");
-              newDailies = true;
-            } else {
-              let lastGen = snapshot.val().activity.dailyGenDate;
-
-              /*
-            console.log(
-              "Previous dailies were generated on " +
-                lastGen +
-                " vs " +
-                timestamp,
-            );*/
-
-              if (timestamp !== lastGen) {
-                console.log("New date, generate new dailies");
-                newDailies = true;
-              }
-            }
-
-            if (newDailies) {
-              console.log("Generate new dailies");
-              for (var i = 0; i < 3; i++) {
-                let randomDaily = this.getRandomDaily(dailyTasks);
-                dailyTasks[i] = { task: randomDaily, completed: false };
-              }
-              act.dailyGenDate = timestamp;
-              act["dailyTasks"] = dailyTasks;
-            }
-
-            update(ref(db, "/users/" + userId), {
-              activity: act,
-            });
-
-            resolve(act);
-          });
+    return new Promise(async (resolve) => {
+      await this.getActivity().then(async (_activity) => {
+        if (_activity.dailyTasks.length !== 3) {
+          newDailies = true;
+        } else {
+          let lastGen = _activity.dailyGenDate;
+          if (timestamp !== lastGen) {
+            console.log("New date, generate new dailies");
+            newDailies = true;
+          }
         }
+        if (newDailies) {
+          console.log("Generate new dailies");
+          for (var i = 0; i < 3; i++) {
+            let randomDaily = this.getRandomDaily(dailyTasks);
+            dailyTasks[i] = { task: randomDaily, completed: false };
+          }
+          _activity.dailyGenDate = timestamp;
+          _activity["dailyTasks"] = dailyTasks;
+        }
+        await this.updateActivity(_activity).then((act) => {
+          resolve(act);
+        });
       });
     });
   }
@@ -195,128 +175,58 @@ export default class ActivityTracker {
       if (dailyTasks[i].task === this.dailyTaskList[rand]) {
         i--;
         rand = Math.floor(Math.random() * (this.dailyTaskList.length - 1)) + 0;
-        //console.log(this.dailyTaskList[rand] + " is already a daily task")
       }
     }
     return this.dailyTaskList[rand];
   }
 
   async getDailyTasks() {
-    const db = getDatabase();
-    const auth = getAuth();
-
     return new Promise((resolve) => {
-      const userId = auth.currentUser.uid;
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          get(ref(db, "/users/" + userId)).then((snapshot) => {
-            if (!snapshot.val().activity.dailyTasks) return;
-            const dailyTasks = snapshot.val().activity.dailyTasks;
-            resolve(snapshot.val().activity.dailyTasks);
-          });
-        }
+      this.getActivity().then((activity) => {
+        if (!activity.dailyTasks) return;
+        resolve(activity.dailyTasks);
       });
     });
   }
 
-  completeDailyTask(task) {
-    const db = getDatabase();
-    const auth = getAuth();
-
-    const userId = auth.currentUser.uid;
-    let activity = null;
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          activity = snapshot.val().activity;
-          let dailys = activity.dailyTasks;
-          let complete = false;
-          for (var i = 0; i < dailys.length; i++) {
-            if (dailys[i].task === task && !dailys[i].completed) {
-              dailys[i].completed = true;
-              complete = true;
-              //console.log(task + " is completed");
-              break;
-            }
-          }
-          activity.dailyTasks = dailys;
-          if (!complete) return;
-
-          activity.xp += this.dailyXPTable[task];
-          let tresh = 100; //calc()
-
-          if (activity.xp > tresh) {
-            activity.lvl++;
-            activity.xp = activity.xp - tresh;
-          }
-          // console.log("Updating daily completion to db");
-          update(ref(db, "/users/" + userId), {
-            activity: activity,
-          });
-        });
-      }
-    });
-
-    //console.log("complete daily done");
-  }
-
-  async getLatestActivity() {
-    const db = getDatabase();
-    const auth = getAuth();
-
-    return new Promise((resolve) => {
-      if (auth.currentUser === null) {
-        resolve(null);
-      }
-
-      const userId = auth.currentUser.uid;
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          get(ref(db, "/users/" + userId)).then((snapshot) => {
-            if (!snapshot.val().activity) return;
-            // console.log("Getting activity")
-            const activity = snapshot.val().activity;
-            resolve(activity);
-          });
+  async completeDailyTask(task) {
+    this.getActivity().then(async (activity) => {
+      let dailys = activity.dailyTasks;
+      let complete = false;
+      for (var i = 0; i < dailys.length; i++) {
+        if (dailys[i].task === task && !dailys[i].completed) {
+          dailys[i].completed = true;
+          complete = true;
+          break;
         }
-      });
+      }
+      activity.dailyTasks = dailys;
+      if (!complete) return;
+
+      activity.xp += this.dailyXPTable[task];
+      let tresh = 100; //calc()
+
+      if (activity.xp > tresh) {
+        activity.lvl++;
+        activity.xp = activity.xp - tresh;
+      }
+      this.updateActivity(activity);
     });
   }
 
-  updateLatestActivity(_activity) {
-    const db = getDatabase();
-    const auth = getAuth();
+  async updateLatestActivity(_activity) {
+    await this.getActivity().then((activity) => {
+      if (activity === undefined) {
+        console.log("No activities in db");
+        activity["latest"].push(_activity);
+      } else {
+        activity["latest"].push(_activity);
 
-    if (auth === null) return;
-    if (auth.currentUser === null) return;
-
-    const userId = auth.currentUser.uid;
-
-    var xpAmount = this.dailyXPTable[_activity];
-
-    let activity = new Activity();
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        get(ref(db, "/users/" + userId)).then((snapshot) => {
-          if (snapshot.val().activity === undefined) {
-            console.log("No activities in db");
-            activity["latest"].push(_activity);
-          } else {
-            activity = snapshot.val().activity;
-            activity["latest"].push(_activity);
-
-            if (activity["latest"].length > 3) activity["latest"].shift();
-          }
-
-          update(ref(db, "/users/" + userId), {
-            activity: activity,
-          });
-          this.completeDailyTask(_activity);
-        });
+        if (activity["latest"].length > 3) activity["latest"].shift();
       }
+
+      this.updateActivity(activity);
+      this.completeDailyTask(_activity);
     });
   }
 }

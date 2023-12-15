@@ -3,7 +3,7 @@ import NavBar from "./NavBar";
 import logo from "../img/WTlogo_stacked_white_bordered.png";
 import "./Settings.css";
 import { useNavigate } from "react-router-dom";
-import { child, get, getDatabase, ref, remove } from "firebase/database";
+import { child, getDatabase, ref, remove } from "firebase/database";
 import {
   getAuth,
   deleteUser,
@@ -13,6 +13,8 @@ import {
 } from "firebase/auth";
 import fb from "../firebase";
 import Footer from "./Footter.js";
+import Leaderboards from "./Leaderboards.js";
+import MuiError from "./muiError";
 
 const Settings = () => {
   const dbRef = ref(getDatabase(fb));
@@ -21,6 +23,9 @@ const Settings = () => {
   const [password, setpassword] = useState("");
   const redirect = useNavigate();
   const [googleVar, setGoogleVar] = useState(true);
+  const [error, setError] = useState(false); //Controls Alert
+  const [message, setMessage] = useState(""); //Controls Message
+  const [errorseverity, seterrorseverity] = useState(""); // Controls Error Severity
 
   auth.onAuthStateChanged(function (user) {
     if (user) {
@@ -28,17 +33,16 @@ const Settings = () => {
       user.providerData.forEach(function (profile) {
         if (profile) {
           if (profile.providerId) {
-            const signInProvider = profile.providerId;
-            console.log("Sign-in provider: " + profile.providerId);
+            if (profile.providerId == "google.com") {
+              setGoogleVar(false);
+            } else {
+              setGoogleVar(true);
+            }
           }
         }
       });
     }
   });
-
-  if (user) {
-    console.log("Auth provider: " + user.providerId);
-  }
 
   function Usernameredirect() {
     redirect("/UsernameChange");
@@ -91,21 +95,31 @@ const Settings = () => {
             remove(child(dbRef, "/users/" + userId));
             redirect("/");
             console.log("User Succesfully Deleted!");
+            const leaderboard = new Leaderboards();
+            leaderboard.deleteEntry(userId);
           });
         })
         .catch((error) => {
           switch (error.code) {
             case "auth/invalid-login-credentials":
-              alert(
+              setMessage(
                 "The password in the confirmation field is wrong! You should type in your current password to confirm the account deletion.",
               );
+              setError(true);
+              seterrorseverity("warning");
               break;
             case "auth/too-many-requests":
-              alert(
-                "You have done too many requests to the server! Please wait a moment.",
-              );
+              setMessage("You have done too many requests to the server!");
+              setError(true);
+              seterrorseverity("warning");
           }
           // alert(error.code); uncomment for catching un-documented errors.
+          setError(false);
+        })
+        .finally(() => {
+          //here because the
+          const leaderboard = new Leaderboards();
+          leaderboard.deleteEntry(userId);
         });
     }
   }
@@ -120,25 +134,6 @@ const Settings = () => {
         console.error();
       });
   }
-
-  const showTextbox = () => {
-    auth.onAuthStateChanged(function (user) {
-      if (user) {
-        //check provider data
-        user.providerData.forEach(function (profile) {
-          const signInProvider = profile.providerId;
-          console.log("Sign-in provider in showbox: " + signInProvider);
-          if (signInProvider == "google.com") {
-            console.log("google found");
-            setGoogleVar(false);
-          } else {
-            console.log("no google found");
-            setGoogleVar(true);
-          }
-        });
-      }
-    });
-  };
 
   return (
     <div>
@@ -155,7 +150,6 @@ const Settings = () => {
           <br />
           <WarningButton text="Sign Out" onClick={SignOut} />
           <br />
-          {showTextbox()}
           <p>
             {googleVar && (
               <input
@@ -174,6 +168,12 @@ const Settings = () => {
           />
         </div>
       </div>
+
+      {error ? (
+        <MuiError message={message} errorseverity={errorseverity} />
+      ) : (
+        ``
+      )}
       <Footer />
     </div>
   );

@@ -1,0 +1,139 @@
+.hangman-container {
+  position: relative;
+  width: 200px;
+  height: 300px;
+}
+
+.hangman-post {
+  position: absolute;
+  top: 0;
+  left: 100px;
+  width: 10px;
+  height: 250px;
+  background-color: #555;
+}
+
+.hangman-post-top {
+  position: absolute;
+  top: 0;
+  left: 100px;
+  width: 80px;
+  height: 10px;
+  background-color: #555;
+}
+
+.hangman-post-support {
+  position: absolute;
+  top: 20px;
+  left: 95px;
+  width: 60px;
+  height: 10px;
+  background-color: #555;
+  transform: rotate(-45deg);
+}
+
+.hangman-rope {
+  position: absolute;
+  top: 0;
+  left: 180px;
+  width: 2px;
+  height: 50px;
+  background-color: #555;
+}
+
+.hangman-head {
+  position: absolute;
+  top: 50px;
+  left: 170px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #333;
+}
+
+.hangman-torso {
+  position: absolute;
+  top: 70px;
+  left: 177px;
+  width: 5px;
+  height: 50px;
+  background-color: #333;
+}
+
+.hangman-left-leg {
+  position: absolute;
+  top: 113px;
+  left: 161px;
+  width: 5px;
+  height: 50px;
+  background-color: #333;
+}
+.hangman-right-leg {
+  position: absolute;
+  top: 113px;
+  left: 193px;
+  width: 5px;
+  height: 50px;
+  background-color: #333;
+}
+.hangman-left-arm {
+  position: absolute;
+  top: 120px;
+  left: 180px;
+  width: 5px;
+  height: 50px;
+  background-color: #333;
+}
+.hangman-right-arm {
+  position: absolute;
+  top: 120px;
+  left: 150px;
+  width: 5px;
+  height: 50px;
+  background-color: #333;
+}
+
+.hangman-left-leg {
+  transform: rotate(45deg);
+}
+
+.hangman-right-leg {
+  transform: rotate(-45deg);
+}
+
+.hangman-left-arm {
+  top: 70px;
+  left: 161px;
+  transform: rotate(45deg);
+}
+
+.hangman-right-arm {
+  top: 70px;
+  left: 193px;
+  transform: rotate(-45deg);
+}
+.visible {
+  visibility: visible;
+}
+
+.letter-button {
+  width: 50px;
+  height: 50px;
+}
+.answerline {
+  font-size: 35px;
+  letter-spacing: 10px;
+}
+.gameovertitle {
+  font-size: 25px;
+}
+
+.gameover {
+  font-size: 20px;
+}
+.confettiposition {
+  padding-left: 7em;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}

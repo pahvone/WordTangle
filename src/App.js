@@ -11,11 +11,13 @@ import ForumView from "./components/ForumView";
 import ForumThreadView from "./components/ForumThreadView";
 import About from "./components/About";
 import UsernameChange from "./components/UsernameChange";
-import LessonPath from "./components/LessonPath";
-import LessonPage from "./components/LessonPage";
+import LearnPage from "./components/LearnPage";
+import Lessons from "./components/Lessons";
 import PasswordChange from "./components/PasswordChange";
 import Dashboard from "./components/Dashboard";
 import UserDataPage from "./components/UserDataPage";
+import Shoutbox from "./components/Shoutbox";
+import Tester from "./components/placeholder";
 
 /* NOTE THAT GHPAGES REQUIRES ROUTING LIKE 
   <Route path="wordtangle/DashBoard" element={<Dashboard />} /> */
@@ -37,13 +39,12 @@ const App = () => {
         <Route path="/About" element={<About />} />
         <Route path="/UsernameChange" element={<UsernameChange />} />
         <Route path="/PasswordChange" element={<PasswordChange />} />
-        <Route path="/LessonPath" element={<LessonPath />} />
-        <Route path="/LessonPath:lang" element={<LessonPath />} />
-        <Route path="/LessonPage:lang/:diff/:index" element={<LessonPage />} />
-        <Route path="/LessonPage" element={<LessonPage />} /> {/*debug*/}
+        <Route path="/LearnPage" element={<LearnPage />} />
+        <Route path="/LearnPage:lang" element={<LearnPage />} />
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/SignOut" element={<SignOut />} />
         <Route path="/UserDataPage" element={<UserDataPage />} />
+        <Route path="/Test" element={<Tester />} />
       </Routes>
     </>
   );

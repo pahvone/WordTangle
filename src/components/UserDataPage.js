@@ -8,6 +8,7 @@ import { child, get, getDatabase, ref } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "./UserDataPage.css";
+import MuiError from "./muiError";
 
 const UserDataPage = () => {
   const redirect = useNavigate();
@@ -17,6 +18,10 @@ const UserDataPage = () => {
   let [XP, SetXP] = useState("");
   let [Email, SetEmail] = useState("");
   let [Latest, SetLatest] = useState("");
+  let [Logintime, SetLogintime] = useState("");
+  const [error, setError] = useState(false); //Controls Alert
+  const [message, setMessage] = useState(""); //Controls Message
+  const [errorseverity, seterrorseverity] = useState(""); // Controls Error Severity
 
   const Button = ({ text, onClick }) => {
     return (
@@ -41,6 +46,10 @@ const UserDataPage = () => {
           SetLevel(snapshot.val().activity.lvl);
           SetXP(snapshot.val().activity.xp);
           SetLatest(snapshot.val().activity.latest[2]);
+          SetLogintime(auth.currentUser.metadata.lastSignInTime);
+          setMessage("Data Retrieval Succesful");
+          setError(true);
+          seterrorseverity("success");
           // functionality: snapshot.val().insertvaluetobefetchedhere[indeksinumero]
         } else {
           console.log("No data available");
@@ -49,6 +58,7 @@ const UserDataPage = () => {
       .catch((error) => {
         console.error(error);
       });
+    setError(false);
   }
 
   function SettingsRedirect() {
@@ -74,6 +84,7 @@ const UserDataPage = () => {
                 <th>User XP</th>
                 <th>Email</th>
                 <th>Latest Activity</th>
+                <th>Last Login Time</th>
               </tr>
               <tr>
                 <td>{Nickname}</td>
@@ -82,9 +93,15 @@ const UserDataPage = () => {
                 <td>{XP}</td>
                 <td>{Email}</td>
                 <td>{Latest}</td>
+                <td>{Logintime}</td>
               </tr>
             </tbody>
           </table>
+          {error ? (
+            <MuiError message={message} errorseverity={errorseverity} />
+          ) : (
+            ``
+          )}
         </div>
       </div>
       <Footer />

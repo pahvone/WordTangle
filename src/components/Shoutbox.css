@@ -1,0 +1,21 @@
+#shoutbox {
+  margin-top: 1%;
+}
+
+#shoutbox li {
+  color: var(--textcolor);
+  list-style-type: none;
+  margin-left: 15%;
+  font-family: "Fira Mono";
+}
+
+#shoutbox input {
+  width: 30%;
+  margin-left: 15%;
+}
+
+#shoutbox button {
+  margin-left: 15%;
+  margin-top: 1%;
+  width: 30%;
+}

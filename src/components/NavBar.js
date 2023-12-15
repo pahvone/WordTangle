@@ -27,14 +27,14 @@ const Navbar = () => {
             </li>
             <li>
               <span className="merkki">{">> "}</span>
-              <NavLink data-testid="learn-main" to="/LessonPath">
+              <NavLink data-testid="learn-main" to="/LearnPage">
                 Learn
               </NavLink>
             </li>
             <li>
               <span className="merkki">{">> "}</span>
-              <NavLink data-testid="forums-main" to="/Forums">
-                Forums
+              <NavLink data-testid="forums-main" to="/Shoutbox">
+                Community
               </NavLink>
             </li>
             <li>
@@ -76,10 +76,10 @@ const Navbar = () => {
               <NavLink to="/Dashboard">Dashboard</NavLink>
             </li>
             <li>
-              <NavLink to="/LessonPath">Learn</NavLink>
+              <NavLink to="/LearnPage">Learn</NavLink>
             </li>
             <li>
-              <NavLink to="/Forums">Forums</NavLink>
+              <NavLink to="/Shoutbox">Community</NavLink>
             </li>
             <li>
               <NavLink to="/Settings">Settings</NavLink>

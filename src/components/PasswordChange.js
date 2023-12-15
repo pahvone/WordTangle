@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./UsernameChange.css";
 import { getAuth, updatePassword } from "firebase/auth";
-import fb from "../firebase";
+import muiError from "./muiError";
+import MuiError from "./muiError";
 
 const auth = getAuth();
 
@@ -18,6 +19,9 @@ const Button = ({ text, onClick }) => {
 const PasswordChange = () => {
   const redirect = useNavigate();
   const [password, setpassword] = useState("");
+  const [error, setError] = useState(false); //Controls Alert
+  const [message, setMessage] = useState(""); //Controls Message
+  const [errorseverity, seterrorseverity] = useState(""); // Controls Error Severity
 
   function ChangePassword() {
     const user = auth.currentUser;
@@ -27,8 +31,28 @@ const PasswordChange = () => {
         redirect("/");
       })
       .catch((error) => {
-        console.error();
+        switch (error.code) {
+          case "auth/too-many-requests":
+            setMessage("You have done too many requests to the server!");
+            setError(true);
+            seterrorseverity("warning");
+            break;
+          case "auth/weak-password":
+            setMessage(
+              "Your Password Is Too Weak! Your password should be at least 6 Characters!",
+            );
+            setError(true);
+            seterrorseverity("warning");
+            break;
+          case "auth/requires-recent-login":
+            setMessage("Your login has timed out.");
+            setError(true);
+            seterrorseverity("error");
+            break;
+        }
+        // alert(error.code); if nothing happens uncomment me.
       });
+    setError(false);
   }
   return (
     <div>
@@ -49,6 +73,11 @@ const PasswordChange = () => {
         />
         <Button text="Update Password" onClick={ChangePassword} />
       </div>
+      {error ? (
+        <MuiError message={message} errorseverity={errorseverity} />
+      ) : (
+        ``
+      )}
     </div>
   );
 };

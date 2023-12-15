@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import "./Settings.css";
-import { child, get, getDatabase, ref, remove } from "firebase/database";
+import { get, getDatabase, ref } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import fb from "../firebase";
 import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
 import ActivityTracker from "./ActivityTracker";
 import { useNavigate } from "react-router-dom";
+import Leaderboards from "./Leaderboards";
+import Shoutbox from "./Shoutbox";
+import muiError from "./muiError";
+import MuiError from "./muiError";
 
 const DashBoard = () => {
   const auth = getAuth();
-  const dbRef = ref(getDatabase(fb)); //NEEDED?
   const db = getDatabase();
 
   const [userName, setuserName] = useState(null);
@@ -20,9 +22,11 @@ const DashBoard = () => {
   const [activityElements, setActivityElements] = useState([]);
   const [dailyTaskElements, setDailyTasks] = useState(null);
   const [latestQuizElements, setLatestQuizElements] = useState(null);
+  const [leaderboardElements, setLeaderBoardElements] = useState(null);
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
+  const [userAmount, setUserAmount] = useState(0);
 
   const redirect = useNavigate();
 
@@ -92,7 +96,7 @@ const DashBoard = () => {
           key={"lang" + langObj}
           className="btn"
           onClick={() =>
-            redirect("/LessonPath", { state: { language: langObj } })
+            redirect("/LearnPage", { state: { language: langObj } })
           }
         >
           <img src={flagsAPI + langObj + flagStyle} />
@@ -104,7 +108,6 @@ const DashBoard = () => {
 
   const getLatestQuizActivity = async () => {
     await tracker.getLatestQuizActivity().then((qAct) => {
-      console.log(qAct);
       let latestQuizElements = [];
 
       qAct.reverse();
@@ -130,47 +133,47 @@ const DashBoard = () => {
     });
   };
 
-  //TODO: LEADERBOARDS
-  const getLeaderBoards = () => {
-    onAuthStateChanged(auth, (user) => {
-      const userId = auth.currentUser.uid;
-      /*
-      if (user) {
-        get(ref(db, "/leaderboards/" + userId)).then((snapshot) => {
-          console.log(snapshot.val())
-        });
-      }*/
-    });
+  const getLeaderBoards = async () => {
+    const leaderboards = new Leaderboards();
+    let lbElements = [];
 
-    return (
-      <>
-        {" "}
-        <div className="leaderlist">
-          {" "}
-          1. Kyle
-          <span className="xp">25XP</span>
-        </div>
-        <div className="leaderlist">
-          {" "}
-          2. Eric
-          <span className="xp">15XP</span>
-        </div>
-        <div className="leaderlist">
-          {" "}
-          3. Stan
-          <span className="xp">10XP</span>
-        </div>
-        <div className="leaderlist">
-          {" "}
-          3. Juu
-          <span className="xp">10XP</span>
-        </div>
-      </>
-    );
+    await leaderboards.getLeaderboard().then(async (lb) => {
+      if (!lb.entries) return;
+      let entries = lb.entries;
+
+      try {
+        entries.sort((a, b) => b.xpGain - a.xpGain);
+
+        for (var i = 0; i < 10; i++) {
+          //only first 10 entries
+          if (entries[i] === undefined) break;
+          await leaderboards.getUserName(entries[i].id).then((username) => {
+            lbElements.push(
+              <div className="leaderlist" key={"lbEntry" + i}>
+                {" "}
+                {i + 1}. {username} (Lvl {entries[i].lvl})
+                <span className="xp">{entries[i].xpGain} XP</span>
+              </div>,
+            );
+          });
+        }
+        setLeaderBoardElements(lbElements);
+      } catch (error) {
+        console.log(error);
+        console.log("Check database structure");
+        lbElements.push(
+          <>
+            <div>Failed to fetch leaderboards</div>
+          </>,
+        );
+        setLeaderBoardElements(lbElements);
+        leaderboards.fixStruct(entries);
+      }
+    });
   };
 
   const getLatestActivity = async () => {
-    await tracker.getLatestActivity().then((act) => {
+    await tracker.getActivity().then((act) => {
       const latest = act.latest;
       if (!latest) return;
       latest.reverse();
@@ -201,7 +204,7 @@ const DashBoard = () => {
       const userId = auth.currentUser.uid;
       if (user) {
         get(ref(db, "/users/" + userId)).then(async (snapshot) => {
-          setuserName(snapshot.val().username);
+          if (snapshot.val().username) setuserName(snapshot.val().username);
           setUserLangs(snapshot.val().langs);
           if (!snapshot.val().activity) {
             await tracker.initActivities().then(async (act) => {
@@ -218,6 +221,7 @@ const DashBoard = () => {
             });
             getLatestActivity();
             getLatestQuizActivity();
+            getLeaderBoards();
           }
         });
       }
@@ -226,8 +230,8 @@ const DashBoard = () => {
 
   if (userLangs !== null && langButtons === null) getCurrentLangs();
 
-  const debugXP = () => {
-    tracker.debugGetXP().then((activity) => {
+  const debugXP = async () => {
+    await tracker.debugGetXP(auth.currentUser.uid).then((activity) => {
       setXP(activity.xp);
       setLvl(activity.lvl);
     });
@@ -250,7 +254,10 @@ const DashBoard = () => {
         <div className="dashboardelements">
           <div className="boxcontainer">
             <div className="greycontainer">
-              <div className="title">Hi {userName}</div>
+              <div className="title">
+                Hi {userName}! <br></br> Last login:{" "}
+                {auth.currentUser.metadata.lastSignInTime}
+              </div>
               <div className="dashline" />
               <div className="latestactivity">Latest activity:</div>
               {activityElements}
@@ -297,10 +304,11 @@ const DashBoard = () => {
                 {"("}XP gained during the last 7 days{")"}
               </span>
               <div className="dashline" />
-              {getLeaderBoards()}
+              {leaderboardElements}
             </div>
           </div>
         </div>
+        <Shoutbox></Shoutbox>
       </div>
       <Footer />
     </div>

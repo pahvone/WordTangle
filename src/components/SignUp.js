@@ -25,7 +25,6 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const userId = userCredential.user.uid;
-        const user = userCredential.user;
 
         update(ref(db, `users/${userId}`), {
           username: username,
@@ -37,26 +36,33 @@ const SignUp = () => {
       .catch((error) => {
         switch (error.code) {
           case "auth/weak-password":
-            alert(
+            setMessage(
               "Your Password Is Too Weak! Your password should be at least 6 Characters!",
             );
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/invalid-email":
-            alert("The given email is invalid.");
+            setMessage("The given email is invalid.");
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/email-already-in-use":
-            alert("The given email is already in use.");
+            setMessage("The given email is already in use.");
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/too-many-requests":
-            alert(
-              "You have done too many requests to the server! Please wait a moment.",
-            );
+            setMessage("You have done too many requests to the server!");
+            setError(true);
+            seterrorseverity("warning");
         }
         // alert(error.code); Uncomment me if error code is not listed in the cases above.
       });
+    setError(false);
   }
 
   const RedirectToDashboard = () => {
@@ -67,11 +73,6 @@ const SignUp = () => {
     const auth = getAuth();
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
         console.log("Registering Succesful!");
         console.log(username);
         redirect("/Login");
@@ -81,30 +82,31 @@ const SignUp = () => {
       .catch((error) => {
         switch (error.code) {
           case "auth/too-many-requests":
-            alert(
-              "You have done too many requests to the server! Please wait a moment.",
-            );
+            setMessage("You have done too many requests to the server!");
+            setError(true);
+            seterrorseverity("warning");
+            break;
 
           case "auth/cancelled-popup-request":
-            alert(
+            setMessage(
               "You cancelled the popup request, please choose a Google account to log in with.",
             );
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/popup-blocked":
-            alert(
+            setMessage(
               "Please allow pop-up windows from your browser settings, as the google sign-in was blocked by this.",
             );
+            setError(true);
+            seterrorseverity("warning");
             break;
         }
 
-        alert(error.code);
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+        // alert(error.code); uncomment me to discover new errors if nothing happens.
       });
+    setError(false);
   }
 
   const redirect = useNavigate();
@@ -155,7 +157,6 @@ const SignUp = () => {
       <p style={{ margin: "0px" }} />
       <input
         className="textfield"
-        role="textbox"
         type="password"
         id="password"
         value={password}
