@@ -8,6 +8,7 @@ import nonstackedlogo from "../img/wtlogo_nonstacked.png";
 import Footer from "./Footter";
 import "./Shoutbox.css";
 import moment from "moment";
+import MuiError from "./muiError";
 
 const auth = getAuth();
 const current_time = serverTimestamp();
@@ -23,6 +24,9 @@ const Button = ({ text, onClick }) => {
 const Shoutbox = () => {
   const [shouts, setShouts] = useState([]);
   const [newShout, setNewShout] = useState("");
+  const [error, setError] = useState(false); //Controls Alert
+  const [message, setMessage] = useState(""); //Controls Message
+  const [errorseverity, seterrorseverity] = useState(""); // Controls Error Severity
 
   useEffect(() => {
     const shoutsRef = fb.database().ref("shouts");
@@ -59,7 +63,11 @@ const Shoutbox = () => {
               convertedtimestamp: moment().format("MMMM Do YYYY, H:mm:ss"),
             });
             setNewShout("");
+            setMessage("Shout sent succesfully!");
+            setError(true);
+            seterrorseverity("success");
           });
+          setError(false);
         }
       });
     });
@@ -79,6 +87,11 @@ const Shoutbox = () => {
         <br></br>
         <Button onClick={handleAddShout} text="Add Shout"></Button>
         <p />
+        {error ? (
+          <MuiError message={message} errorseverity={errorseverity} />
+        ) : (
+          ``
+        )}
       </div>
     </ul>
   );

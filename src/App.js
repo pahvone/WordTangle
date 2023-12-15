@@ -6,16 +6,12 @@ import SignOut from "./components/SignOut";
 import Login from "./components/Login";
 import Welcome from "./components/Welcome";
 import Settings from "./components/Settings";
-import Forums from "./components/Shoutbox";
 import About from "./components/About";
 import UsernameChange from "./components/UsernameChange";
 import LearnPage from "./components/LearnPage";
-import Lessons from "./components/Lessons";
 import PasswordChange from "./components/PasswordChange";
 import Dashboard from "./components/Dashboard";
 import UserDataPage from "./components/UserDataPage";
-import Shoutbox from "./components/Shoutbox";
-import Tester from "./components/placeholder";
 
 /* NOTE THAT GHPAGES REQUIRES ROUTING LIKE 
   <Route path="wordtangle/DashBoard" element={<Dashboard />} /> */
@@ -36,7 +32,6 @@ const App = () => {
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/SignOut" element={<SignOut />} />
         <Route path="/UserDataPage" element={<UserDataPage />} />
-        <Route path="/Test" element={<Tester />} />
       </Routes>
     </>
   );
