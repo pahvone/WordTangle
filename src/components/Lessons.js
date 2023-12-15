@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 const Lessons = (props) => {
-  const redirect = useNavigate();
-
   const [currentLang, setCurrentLang] = useState(null);
 
   const [lessonButtons, setLessonButtons] = useState({
@@ -18,10 +14,8 @@ const Lessons = (props) => {
     </button>
   );
 
-  const startLesson = (_index, _diff) => {
-    redirect(
-      `/LessonPage?lang=${props.langPath.lang}&diff=${_diff}&index=${_index}`,
-    );
+  const startQuiz = (_index, _diff) => {
+    props.onPassParams({ _index, _diff });
   };
 
   const allComplete = (difficulty) => {
@@ -82,19 +76,19 @@ const Lessons = (props) => {
       beginner: createLessonButtons(
         props.langPath.lessons["beginner"],
         "beginner",
-        startLesson,
+        startQuiz,
         lessonProg.beginner,
       ),
       intermediate: createLessonButtons(
         props.langPath.lessons["intermediate"],
         "intermediate",
-        startLesson,
+        startQuiz,
         lessonProg.intermediate,
       ),
       advanced: createLessonButtons(
         props.langPath.lessons["advanced"],
         "advanced",
-        startLesson,
+        startQuiz,
         lessonProg.advanced,
       ),
     });
@@ -105,33 +99,37 @@ const Lessons = (props) => {
     generateLessonButtons(props.currentLang);
   }
 
-  return (
-    <>
-      <div className="lessoncontainer">
-        <div className="greycontainer">
-          <div className="difficulty-title">Beginner</div>
-          <div className="dashline" />
-          <div>{lessonButtons.beginner}</div>
+  const lessonContainers = () => {
+    return (
+      <>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Beginner</div>
+            <div className="dashline" />
+            <div>{lessonButtons.beginner}</div>
+          </div>
         </div>
-      </div>
 
-      <div className="lessoncontainer">
-        <div className="greycontainer">
-          <div className="difficulty-title">Intermediate</div>
-          <div className="dashline" />
-          <div>{lessonButtons.intermediate}</div>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Intermediate</div>
+            <div className="dashline" />
+            <div>{lessonButtons.intermediate}</div>
+          </div>
         </div>
-      </div>
 
-      <div className="lessoncontainer">
-        <div className="greycontainer">
-          <div className="difficulty-title">Advanced</div>
-          <div className="dashline" />
-          <div>{lessonButtons.advanced}</div>
+        <div className="lessoncontainer">
+          <div className="greycontainer">
+            <div className="difficulty-title">Advanced</div>
+            <div className="dashline" />
+            <div>{lessonButtons.advanced}</div>
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  };
+
+  return lessonContainers();
 };
 
 export default Lessons;

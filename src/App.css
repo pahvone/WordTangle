@@ -184,6 +184,12 @@
   padding-left: 10px;
 }
 
+.heartscontainer {
+  flex-direction: row;
+  padding-right: 30px;
+  width: 100%;
+}
+
 .dashboardslogan {
   font-family: "Fira Mono", monospace;
   color: #000;
@@ -314,6 +320,12 @@
   color: var(--textcolor);
 }
 
+.quiztimer {
+  padding: 10px;
+  color: #000;
+  color: var(--textcolor);
+}
+
 .dictionarytitle {
   font-family: "Fira Mono", monospace;
   color: #000;
@@ -434,4 +446,8 @@
 
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   padding: 10px;
+}
+
+.games-desc {
+  font-size: 20px;
 }

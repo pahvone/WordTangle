@@ -9,12 +9,16 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import MuiError from "./muiError";
 
 const provider = new GoogleAuthProvider();
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false); //Controls Alert
+  const [message, setMessage] = useState(""); //Controls Message
+  const [errorseverity, seterrorseverity] = useState(""); // Controls Error Severity
   const Button = ({ text, onClick }) => {
     return (
       <button className="styled-button" onClick={onClick}>
@@ -35,26 +39,26 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        console.log("login success!");
-        console.log(userCredential.user.uid);
         redirect("/Dashboard");
-        // ...
       })
       .catch((error) => {
         switch (error.code) {
           case "auth/invalid-email":
-            alert("The given email is invalid.");
-            break;
+            setMessage("Your email adress is invalid!");
+            setError(true);
+            seterrorseverity("warning");
           case "auth/invalid-login-credentials":
-            alert("The given email or password is invalid.");
+            setMessage("Your login credentials are invalid!");
+            setError(true);
+            seterrorseverity("warning");
             break;
           case "auth/too-many-requests":
-            alert(
-              "You have done too many requests to the server! Please wait a moment.",
-            );
+            setMessage("You have done too many requests to the server!");
+            setError(true);
+            seterrorseverity("warning");
         }
-        alert(error.code);
       });
+    setError(false);
   }
 
   const redirect = useNavigate();
@@ -65,8 +69,8 @@ const Login = () => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         // The signed-in user info.
         const user = result.user;
-        console.log("Login Successful!");
-        console.log(user.uid);
+        setMessage("Login Successful!");
+        setError(true);
         redirect("/UsernameChange");
         // IdP data available using getAdditionalUserInfo(result)
         // ...
@@ -74,27 +78,33 @@ const Login = () => {
       .catch((error) => {
         switch (error.code) {
           case "auth/too-many-requests":
-            alert(
-              "You have done too many requests to the server! Please wait a moment.",
-            );
+            setMessage("You have done too many requests to the server!");
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/cancelled-popup-request":
-            alert(
+            setMessage(
               "You cancelled the popup request, please choose a Google account to log in with.",
             );
+            setError(true);
+            seterrorseverity("warning");
             break;
 
           case "auth/popup-blocked":
-            alert(
+            setMessage(
               "Please allow pop-up windows from your browser settings, as the google sign-in was blocked by this.",
             );
+            setError(true);
+            seterrorseverity("warning");
             break;
         }
-        alert(error.code);
+
         // The AuthCredential type that was used.
         // ...
       });
+
+    setError(false);
   }
 
   const handleLoginButtonClick = () => {
@@ -154,6 +164,11 @@ const Login = () => {
       <button className="button-icon" onClick={handleAlternateLoginButtonClick}>
         <img src={google} height={100} width={100} alt="Google logo" />
       </button>
+      {error ? (
+        <MuiError message={message} errorseverity={errorseverity} />
+      ) : (
+        ``
+      )}
     </div>
   );
 };

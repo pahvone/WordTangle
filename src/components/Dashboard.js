@@ -9,6 +9,8 @@ import ActivityTracker from "./ActivityTracker";
 import { useNavigate } from "react-router-dom";
 import Leaderboards from "./Leaderboards";
 import Shoutbox from "./Shoutbox";
+import muiError from "./muiError";
+import MuiError from "./muiError";
 
 const DashBoard = () => {
   const auth = getAuth();
@@ -24,7 +26,6 @@ const DashBoard = () => {
   const [xp, setXP] = useState(0);
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
-
   const [userAmount, setUserAmount] = useState(0);
 
   const redirect = useNavigate();
@@ -143,7 +144,9 @@ const DashBoard = () => {
       try {
         entries.sort((a, b) => b.xpGain - a.xpGain);
 
-        for (var i = 0; i < lb.entries.length; i++) {
+        for (var i = 0; i < 10; i++) {
+          //only first 10 entries
+          if (entries[i] === undefined) break;
           await leaderboards.getUserName(entries[i].id).then((username) => {
             lbElements.push(
               <div className="leaderlist" key={"lbEntry" + i}>
@@ -157,7 +160,7 @@ const DashBoard = () => {
         setLeaderBoardElements(lbElements);
       } catch (error) {
         console.log(error);
-        console.log("Database structure is fkd");
+        console.log("Check database structure");
         lbElements.push(
           <>
             <div>Failed to fetch leaderboards</div>

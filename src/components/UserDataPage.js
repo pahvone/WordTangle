@@ -8,6 +8,7 @@ import { child, get, getDatabase, ref } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "./UserDataPage.css";
+import MuiError from "./muiError";
 
 const UserDataPage = () => {
   const redirect = useNavigate();
@@ -18,6 +19,9 @@ const UserDataPage = () => {
   let [Email, SetEmail] = useState("");
   let [Latest, SetLatest] = useState("");
   let [Logintime, SetLogintime] = useState("");
+  const [error, setError] = useState(false); //Controls Alert
+  const [message, setMessage] = useState(""); //Controls Message
+  const [errorseverity, seterrorseverity] = useState(""); // Controls Error Severity
 
   const Button = ({ text, onClick }) => {
     return (
@@ -43,6 +47,9 @@ const UserDataPage = () => {
           SetXP(snapshot.val().activity.xp);
           SetLatest(snapshot.val().activity.latest[2]);
           SetLogintime(auth.currentUser.metadata.lastSignInTime);
+          setMessage("Data Retrieval Succesful");
+          setError(true);
+          seterrorseverity("success");
           // functionality: snapshot.val().insertvaluetobefetchedhere[indeksinumero]
         } else {
           console.log("No data available");
@@ -51,6 +58,7 @@ const UserDataPage = () => {
       .catch((error) => {
         console.error(error);
       });
+    setError(false);
   }
 
   function SettingsRedirect() {
@@ -89,6 +97,11 @@ const UserDataPage = () => {
               </tr>
             </tbody>
           </table>
+          {error ? (
+            <MuiError message={message} errorseverity={errorseverity} />
+          ) : (
+            ``
+          )}
         </div>
       </div>
       <Footer />
