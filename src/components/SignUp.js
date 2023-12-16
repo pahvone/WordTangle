@@ -10,6 +10,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import MuiError from "./muiError";
 
 const provider = new GoogleAuthProvider();
 
@@ -177,6 +178,11 @@ const SignUp = () => {
         onClick={HandleAlternateSignUpButtonClick}
       >
         <img src={google} height={100} width={100} alt="Google logo" />
+        {error ? (
+          <MuiError message={message} errorseverity={errorseverity} />
+        ) : (
+          ``
+        )}
       </button>
     </div>
   );
