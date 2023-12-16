@@ -140,6 +140,15 @@
   src: url("./components/fonts/mega boxs.otf");
 }
 
+@keyframes ekspiibar {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100;
+  }
+}
+
 .pagecontainer {
   min-width: 50em;
   min-height: 100vh;

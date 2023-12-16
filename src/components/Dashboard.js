@@ -9,7 +9,6 @@ import ActivityTracker from "./ActivityTracker";
 import { useNavigate } from "react-router-dom";
 import Leaderboards from "./Leaderboards";
 import Shoutbox from "./Shoutbox";
-import muiError from "./muiError";
 import MuiError from "./muiError";
 
 const DashBoard = () => {
@@ -27,6 +26,10 @@ const DashBoard = () => {
   const [lvl, setLvl] = useState(1);
   const [tracker, setTracker] = useState(null);
   const [userAmount, setUserAmount] = useState(0);
+  const [error, setError] = useState(false); //Controls Alert
+  const [message, setMessage] = useState(""); //Controls Message
+  const [errorseverity, seterrorseverity] = useState(""); // Controls Error Severity
+  const [currentLvl, setcurrentLvl] = useState(0);
 
   const redirect = useNavigate();
 
@@ -47,6 +50,8 @@ const DashBoard = () => {
       width: `${xp}%`,
       backgroundColor: "#50FFC0",
       borderRadius: 40,
+      animation: "ekspiibar 2s ease-in-out forwards",
+      animationFillMode: "forwards",
     };
 
     const progresstext = {
@@ -56,7 +61,7 @@ const DashBoard = () => {
 
     return (
       <>
-        <div className="" style={Parentdiv}>
+        <div style={Parentdiv}>
           <div style={Childdiv}>
             <span style={progresstext}>{`${xp}`}</span>
           </div>
@@ -180,6 +185,9 @@ const DashBoard = () => {
 
       setXP(act.xp);
       setLvl(act.lvl);
+      setMessage("User Levelled Up!");
+      setError(true);
+      seterrorseverity("success");
 
       let activityElements = [];
       for (var i = 0; i < latest.length; i++) {
@@ -189,6 +197,7 @@ const DashBoard = () => {
             {">"} {tracker.getActivityDesc(latest[i])}
           </div>,
         );
+        setError(false);
       }
 
       setActivityElements(activityElements);
@@ -213,7 +222,6 @@ const DashBoard = () => {
               });
             });
           } else {
-            // console.log("get latest")
             await getLatestActivity().then(async (act) => {
               await tracker.generateDailyTasks().then((act) => {
                 getDailyTasks();
@@ -222,6 +230,7 @@ const DashBoard = () => {
             getLatestActivity();
             getLatestQuizActivity();
             getLeaderBoards();
+            CheckLvlUp();
           }
         });
       }
@@ -237,6 +246,21 @@ const DashBoard = () => {
     });
   };
 
+  const CheckLvlUp = async () => {
+    await tracker.debugGetXP(auth.currentUser.uid).then((activity) => {
+      setcurrentLvl(activity.lvl);
+
+      if (activity.lvl > currentLvl) {
+        {
+          setMessage("User Levelled Up!");
+          setError(true);
+          seterrorseverity("success");
+        }
+      }
+    });
+    setError(false);
+  };
+
   return (
     <div>
       <NavBar />
@@ -250,7 +274,6 @@ const DashBoard = () => {
 
           <span className="dashboardslogan">Your #1 language learning app</span>
         </div>
-
         <div className="dashboardelements">
           <div className="boxcontainer">
             <div className="greycontainer">
@@ -285,7 +308,6 @@ const DashBoard = () => {
             </div>
           </div>
         </div>
-
         <div className="dashboardelements">
           <div className="boxcontainer">
             <div className="greycontainer">
@@ -310,6 +332,11 @@ const DashBoard = () => {
         </div>
         <Shoutbox></Shoutbox>
       </div>
+      {error ? (
+        <MuiError message={message} errorseverity={errorseverity} />
+      ) : (
+        ``
+      )}
       <Footer />
     </div>
   );

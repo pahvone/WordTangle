@@ -1,7 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, get, ref, update } from "firebase/database";
 import Leaderboards from "./Leaderboards";
-import Popup from "./Popup";
 import React from "react";
 
 export class Activity {
