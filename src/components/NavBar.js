@@ -33,8 +33,8 @@ const Navbar = () => {
             </li>
             <li>
               <span className="merkki">{">> "}</span>
-              <NavLink data-testid="forums-main" to="/Shoutbox">
-                Community
+              <NavLink data-testid="forums-main" to="/Forums">
+                Forums
               </NavLink>
             </li>
             <li>
