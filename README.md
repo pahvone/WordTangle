@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# Wordtangle
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A gamified language learning app created for the 
+optional course Product design and implementation 2023.
 
-## Available Scripts
+ [DEMOVIDEO](https://youtu.be/ambtunIhA5Q)
 
-In the project directory, you can run:
+<img src="https://github.com/pahvone/wordtangle/assets/101520172/2e3f2087-bc6b-487b-933a-f426bcb0eb8f" alt="alt text" width="550" height="550">
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<img src="https://github.com/pahvone/wordtangle/assets/101520172/07882df0-6f9b-4708-ab3c-851413ccc17b" alt="alt text" width="600" height="400">
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## About Wordtangle
+The project was created for the course "Product design and implementation 2023" by a group consisting of five:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* [@Tinosaurus](https://github.com/Tinosaurus) 
+* [@Raitokomniak](https://github.com/Raitokomniak) 
+* [@pahvone](https://github.com/pahvone) 
+* [@t1rima00](https://github.com/t1rima00) 
+* [@Shambambulish](https://github.com/Shambambulish)
 
-### `npm run build`
+The idea for the application is that the user can learn languages, have fun while learning the languages
+and can connect to other users to help/receive help via the forums. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The goal for the project was for the group to work together as a team, learning new skills
+and creating a working web-application which would be hosted on an external site.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Build
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The project was mainly built with React and JavaScript while utilizing the Google Firebase real-time database.
+The Authentication for the site is achieved with Firebase Auth and Google Account Auth.
 
-### `npm run eject`
+The APIs utilized in the project:
+* [Flags API](https://flagsapi.com)
+* [World Time API](https://worldtimeapi.org/api/ip)
+* [Google Fonts API](https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
