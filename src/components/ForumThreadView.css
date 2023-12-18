@@ -1,0 +1,88 @@
+.forum-header-container {
+  background-color: #fbff50;
+  color: black;
+  display: flex;
+  padding: 6px;
+}
+
+.forum-title-header {
+  display: inline-block;
+  text-align: left;
+  padding-left: 14px;
+  font-family: "Fira Mono";
+}
+
+.latest-post-header {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: 6px;
+}
+
+.forums {
+  background-color: #fbff50;
+  color: black;
+  text-align: left;
+  margin-bottom: 15px;
+  font-family: "Fira Mono";
+}
+.forums .subforum {
+  padding-left: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 0px;
+  text-align: center;
+}
+.forums .header {
+  display: flex;
+}
+.forums .navlink {
+  display: inline-block;
+}
+.navlink {
+  color: black;
+}
+.forums .latest-post {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: 6px;
+}
+.forums .description {
+  font-size: 14px;
+  text-align: left;
+}
+.reply-timestamp {
+  font-size: 14px;
+  text-align: center;
+  align-items: center;
+}
+.reply-text {
+  text-align: start;
+}
+.original-post {
+  margin-bottom: 15px;
+}
+.reply-box {
+  padding: 6px;
+}
+.reply-text {
+  padding-left: 20px;
+  word-break: break-all;
+}
+
+.round-button {
+  background-color: #50ffc0;
+  color: #000;
+  border: none;
+  border-radius: 50%;
+  margin: 3px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #33a87bff;
+  }
+}
+
+.thread-buttons {
+  text-align: right;
+}

@@ -1,0 +1,168 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #fcfcfc;
+}
+
+.container {
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 5;
+}
+
+.navbar {
+  height: 5em;
+  background-color: #fbff50;
+  box-shadow: 0px 10px 30px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+}
+.navbar li {
+  display: flex;
+  list-style: none;
+  margin-right: 1em;
+}
+.navbar ul {
+  text-decoration: none;
+  white-space: nowrap;
+  display: flex;
+  padding-top: 1em;
+}
+
+.navbar ul a {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 20px;
+  text-decoration: none;
+  margin-right: 5px;
+  transition: 0.2s ease-in-out;
+}
+
+.navbar ul a:hover {
+  color: #8d922b;
+}
+.nav-elements-right ul a.active,
+.nav-elements ul a.active {
+  color: #000;
+  font-weight: 500;
+  position: relative;
+}
+.nav-elements-right ul a.active::after,
+.nav-elements ul a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+}
+.merkki {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 20px;
+  text-decoration: none;
+  margin-right: 6px;
+  transition: 0.2s ease-in-out;
+  user-select: none;
+}
+
+.logo img {
+  width: 4em;
+  height: 4em;
+  background-color: #8e59ff;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.nav-item {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+.nav-elements {
+  display: flex;
+  align-items: center;
+}
+.nav-elements-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.hamburgermenu {
+  display: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .hamburgermenucontainer {
+    position: absolute;
+    top: 5em;
+    right: 0;
+    z-index: 1;
+    width: 17em;
+    height: auto;
+    overflow-y: auto;
+  }
+  .hamburgermenu ul {
+    flex-direction: column;
+    padding: 5%;
+  }
+  .hamburgermenu li {
+    padding: 5px;
+  }
+
+  .hamburgermenu.active {
+    display: flex;
+    background-color: #e0e247;
+    justify-content: center;
+    box-shadow: inset 0px 00px 20px 10px rgba(0, 0, 0, 0.1);
+  }
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+    padding-right: 5%;
+  }
+
+  .menu-toggle:before {
+    content: "\2630";
+    font-size: 30px;
+    color: #000;
+  }
+
+  .nav-elements,
+  .nav-elements-right {
+    display: none;
+  }
+}
+.hamburgermenu.active ul a:hover {
+  color: #575a1d;
+  font-size: 20.5px;
+}
+.hamburgermenu.active ul a.active {
+  color: #000;
+  font-weight: 500;
+  position: relative;
+}
+
+.hamburgermenu.active a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+}
+.hamburgermenu.active ul a {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 20px;
+  text-decoration: none;
+  margin-right: 5px;
+  transition: 0.2s ease-in-out;
+}
+.spacer {
+  padding-bottom: 3em;
+}

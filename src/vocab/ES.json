@@ -1,0 +1,90 @@
+{
+    "lang" : "ES",
+    "langDesc" : "Spanish",
+    "lessons": {
+    "beginner": [
+      {
+        "name": "Numbers 1",
+        "type": "Vocab",
+        "vocab": [
+          ["uno", ["one", "1"]],
+          ["dos", ["two", "2"]],
+          ["tres", ["three", "3"]],
+          ["cuatro", ["four", "4"]],
+          ["cinco", ["five", "5"]],
+          ["seis", ["six", "6"]],
+          ["siete", ["seven", "7"]],
+          ["ocho", ["eight", "8"]],
+          ["nueve", ["nine", "9"]],
+          ["diez", ["ten", "10"]],
+          ["once", ["eleven", "11"]],
+          ["doce", ["twelve", "12"]],
+          ["trece", ["thirteen", "13"]],
+          ["catorce", ["fourteen", "14"]],
+          ["quince", ["fifteen", "15"]],
+          ["dieciséis", ["sixteen", "16"]],
+          ["diecisiete", ["seventeen", "17"]],
+          ["dieciocho", ["eighteen", "18"]],
+          ["diecinueve", ["nineteen", "19"]],
+          ["veinte", ["twenty", "20"]]
+        ]
+      }]
+        ,
+        "intermediate": [
+          {
+            "name": "Basic verbs",
+            "type": "Vocab",
+            "vocab": [
+              ["escribir", ["to write"]],
+              ["leer", ["to read"]],
+              ["caminar", ["to walk"]],
+              ["beber", ["to drink"]],
+              ["comer", ["to eat"]],
+              ["dormir", ["to sleep"]],
+              ["hablar", ["to speak"]],
+              ["escuchar", ["to listen"]],
+              ["mirar", ["to look", "to watch"]],
+              ["hacer", ["to do", "to make"]],
+              ["pensar", ["to think"]],
+              ["viajar", ["to travel"]],
+              ["llamar", ["to call", "to play (instrument)"]],
+              ["comprar", ["to buy"]],
+              ["vender", ["to sell"]],
+              ["encontrar", ["to meet"]],
+              ["estudiar", ["to study"]],
+              ["trabajar", ["to work"]],
+              ["practicar", ["to practice"]],
+              ["amar", ["to love"]]
+            ]
+          }
+        ],
+        "advanced": [
+          {
+            "name": "High-concepts",
+            "type": "Vocab",
+            "vocab": [
+              ["abstracto", ["abstract"]],
+              ["analogía", ["analogy"]],
+              ["expansivo", ["expansive"]],
+              ["concreto", ["concrete"]],
+              ["estructurar", ["to structure"]],
+              ["complejo", ["complex"]],
+              ["integrado", ["integrated"]],
+              ["multifacético", ["multifaceted"]],
+              ["convergencia", ["convergence"]],
+              ["divergencia", ["divergence"]],
+              ["eficiente", ["efficient"]],
+              ["futurista", ["futuristic"]],
+              ["heurístico", ["heuristic"]],
+              ["interactivo", ["interactive"]],
+              ["coherente", ["consistent"]],
+              ["exponencial", ["exponential"]],
+              ["periférico", ["peripheral"]],
+              ["recurso", ["resource"]],
+              ["trascendental", ["transcendent"]],
+              ["virtuoso", ["virtuoso"]]
+            ]
+          }
+        ]
+    }
+  }

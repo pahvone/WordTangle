@@ -1,0 +1,65 @@
+.quizelements {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  padding-top: 20px;
+  padding-left: 5%;
+}
+
+.lessontitle {
+  font-family: "Fira Mono", monospace;
+  color: #000;
+  font-size: 30px;
+  font-weight: bolder;
+  color: var(--textcolor);
+}
+
+.quiztext {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: #000;
+  font-size: 20px;
+  color: var(--textcolor);
+}
+
+.wordcontainer {
+  padding: 10px;
+  background: #e0e0e0;
+  border: none;
+  border-radius: 2px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.choice-button {
+  background-color: #50ffc0;
+  color: #000000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  width: 100px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+
+  &:hover {
+    background-color: rgb(51, 168, 123);
+  }
+}
+
+.skip-button {
+  background-color: #8e59ff;
+  color: #000000;
+  padding: 15px 100px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 20px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgb(142, 89, 255);
+  }
+}
